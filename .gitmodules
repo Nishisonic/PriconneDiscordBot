@@ -1,0 +1,3 @@
+[submodule "PriconneResource"]
+	path = PriconneResource
+	url = https://github.com/Nishisonic/PriconneResource.git
