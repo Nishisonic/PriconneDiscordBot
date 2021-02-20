@@ -306,7 +306,6 @@ server.on("request", function (_, res) {
 server.listen(process.env.PORT || 5000);
 
 client.on("ready", async () => {
-  console.log("Bot準備完了");
   await client.user?.setPresence({
     status: "online",
   });
@@ -402,7 +401,7 @@ async function schedule(message: Message) {
           new Date(end_time).getTime() >= nowTime &&
           nowTime >= new Date(start_time).getTime()
       )
-      .map(({ name }) => name);
+      .map(({ name }) => `・${name}`);
 
     const clanBattleMessages = clanBattlePeriod
       .filter(
@@ -515,12 +514,6 @@ async function schedule(message: Message) {
 }
 
 function uniqueWrap(mes: string) {
-  console.log(
-    mes.replace(
-      "ノーマル（プレイヤーEXP）1.5倍・ハード（プレイヤーEXP）1.5倍・ベリーハード（プレイヤーEXP）1.5倍・[サイドストーリー]ノーマル（プレイヤーEXP）1.5倍・[サイドストーリー]ハード（プレイヤーEXP）1.5倍",
-      "全マップ（プレイヤーEXP）1.5倍"
-    )
-  );
   return mes
     .replace(
       "ノーマル（プレイヤーEXP）1.5倍・ハード（プレイヤーEXP）1.5倍・ベリーハード（プレイヤーEXP）1.5倍・[サイドストーリー]ノーマル（プレイヤーEXP）1.5倍・[サイドストーリー]ハード（プレイヤーEXP）1.5倍",

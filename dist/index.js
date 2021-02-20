@@ -221,7 +221,6 @@ server.on("request", function (_, res) {
 server.listen(process.env.PORT || 5000);
 client.on("ready", () => __awaiter(void 0, void 0, void 0, function* () {
     var _j;
-    console.log("Bot準備完了");
     yield ((_j = client.user) === null || _j === void 0 ? void 0 : _j.setPresence({
         status: "online",
     }));
@@ -302,7 +301,7 @@ function schedule(message) {
             const fortuneMessages = fortuneSchedule
                 .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
                 nowTime >= new Date(start_time).getTime())
-                .map(({ name }) => name);
+                .map(({ name }) => `・${name}`);
             const clanBattleMessages = clanBattlePeriod
                 .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
                 nowTime >= new Date(start_time).getTime())
@@ -375,7 +374,6 @@ function schedule(message) {
     });
 }
 function uniqueWrap(mes) {
-    console.log(mes.replace("ノーマル（プレイヤーEXP）1.5倍・ハード（プレイヤーEXP）1.5倍・ベリーハード（プレイヤーEXP）1.5倍・[サイドストーリー]ノーマル（プレイヤーEXP）1.5倍・[サイドストーリー]ハード（プレイヤーEXP）1.5倍", "全マップ（プレイヤーEXP）1.5倍"));
     return mes
         .replace("ノーマル（プレイヤーEXP）1.5倍・ハード（プレイヤーEXP）1.5倍・ベリーハード（プレイヤーEXP）1.5倍・[サイドストーリー]ノーマル（プレイヤーEXP）1.5倍・[サイドストーリー]ハード（プレイヤーEXP）1.5倍", "全マップ（プレイヤーEXP）1.5倍")
         .replace("[イベント]ノーマル（プレイヤーEXP）1.5倍・[イベント]ハード（プレイヤーEXP）1.5倍", "[イベント]全マップ（プレイヤーEXP）1.5倍")
