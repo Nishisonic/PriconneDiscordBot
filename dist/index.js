@@ -1,12 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var _a, _b, _c, _d, _e, _f, _g;
 import twitter from "twitter";
 import http from "http";
@@ -17,18 +8,15 @@ import format from "date-fns/format/index.js";
 import getMonth from "date-fns/getMonth/index.js";
 import getDate from "date-fns/getDate/index.js";
 import retryPromise from "ts-retry-promise";
+import fetch from "node-fetch";
 const client = new discord.Client();
 const server = http.createServer();
 class Database extends sqlite3.Database {
-    allAsync(sql) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve, reject) => this.all(sql, (err, rows) => (err ? reject(err) : resolve(rows))));
-        });
+    async allAsync(sql) {
+        return new Promise((resolve, reject) => this.all(sql, (err, rows) => (err ? reject(err) : resolve(rows))));
     }
-    getAsync(sql) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve, reject) => this.get(sql, (err, rows) => (err ? reject(err) : resolve(rows))));
-        });
+    async getAsync(sql) {
+        return new Promise((resolve, reject) => this.get(sql, (err, rows) => (err ? reject(err) : resolve(rows))));
     }
 }
 const DISCORD_BOT_TOKEN = (_a = process.env.DISCORD_BOT_TOKEN) !== null && _a !== void 0 ? _a : "";
@@ -41,7 +29,28 @@ const twConfig = {
     access_token_secret: (_g = process.env.ACCESS_TOKEN_SECRET) !== null && _g !== void 0 ? _g : "",
 };
 const twClient = new twitter(twConfig);
-const master = new Database("./PriconneResource/master.db");
+const URL = "https://raw.githubusercontent.com/esterTion/redive_master_db_diff/master";
+const TABLE_LIST = [
+    "unit_profile",
+    "unit_attack_pattern",
+    "skill_data",
+    "unit_skill_data",
+    "unit_data",
+    "campaign_schedule",
+    "campaign_freegacha",
+    "chara_fortune_schedule",
+    "clan_battle_period",
+    "tower_schedule",
+];
+const fetchDB = async () => {
+    const db = new Database(":memory:", sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE);
+    return await Promise.allSettled(TABLE_LIST.map(async (table) => {
+        db.exec(await (await fetch(`${URL}/${table}.sql`)).text());
+    })).then(() => db);
+};
+const fetchVersion = async () => await (await fetch(`${URL}/!TruthVersion.txt`)).text();
+let master = await fetchDB();
+let version = await fetchVersion();
 const CampaignCategory = new Map([
     [0, ""],
     // スタミナ半減
@@ -130,38 +139,36 @@ const CampaignCategory = new Map([
     [352, "[サイドストーリー]ハード（プレイヤーEXP）%s倍"],
 ]);
 const getUserTimelineAsync = (params) => new Promise((resolve, reject) => twClient.get("statuses/user_timeline", params, (error, tweets) => error ? reject(error) : resolve(tweets)));
-const getUserTimelineRetryAsync = (params, retries = 5) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield retryPromise.retryDecorator(() => __awaiter(void 0, void 0, void 0, function* () { return yield getUserTimelineAsync(params); }), {
-        timeout: 1000,
-        retries,
-    })();
-});
+const getUserTimelineRetryAsync = async (params, retries = 5) => await retryPromise.retryDecorator(async () => await getUserTimelineAsync(params), {
+    timeout: 1000,
+    retries,
+})();
 const NICO_LEPO = '<a href="http://www.nicovideo.jp/" rel="nofollow">niconico ニコレポ連携</a>';
-const nishikumaBroadcastTweetProcess = (lastUpdateTime) => __awaiter(void 0, void 0, void 0, function* () {
+const nishikumaBroadcastTweetProcess = async (lastUpdateTime) => {
     const params = { screen_name: "nishikkuma" };
-    const tweets = (yield getUserTimelineRetryAsync(params));
+    const tweets = (await getUserTimelineRetryAsync(params));
     return Promise.allSettled(tweets
         .filter(({ source }) => source === NICO_LEPO)
         .filter(({ text }) => /^【生放送】.* を開始しました。.*$/.test(text))
         .filter(({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime)
-        .map((tweet) => __awaiter(void 0, void 0, void 0, function* () {
-        const channel = (yield client.channels.fetch(CHAT));
-        return yield channel.send(tweet.text.replace(/^【生放送】(.*) を開始しました。.* #(.*)$/, "$1\nhttps://live2.nicovideo.jp/watch/$2"));
-    })));
-});
-const priconneTweetProcess = (lastUpdateTime) => __awaiter(void 0, void 0, void 0, function* () {
+        .map(async (tweet) => {
+        const channel = (await client.channels.fetch(CHAT));
+        return await channel.send(tweet.text.replace(/^【生放送】(.*) を開始しました。.* #(.*)$/, "$1\nhttps://live2.nicovideo.jp/watch/$2"));
+    }));
+};
+const priconneTweetProcess = async (lastUpdateTime) => {
     const params = { screen_name: "priconne_redive" };
-    const tweets = (yield getUserTimelineRetryAsync(params));
+    const tweets = (await getUserTimelineRetryAsync(params));
     return Promise.allSettled(tweets
         .filter(({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime)
-        .map((tweet) => __awaiter(void 0, void 0, void 0, function* () {
-        const channel = (yield client.channels.fetch(OFFICIAL));
-        return yield channel.send(`https://twitter.com/${params.screen_name}/status/${tweet.id_str}`);
-    })));
-});
-const birthdayProcess = () => __awaiter(void 0, void 0, void 0, function* () {
+        .map(async (tweet) => {
+        const channel = (await client.channels.fetch(OFFICIAL));
+        return await channel.send(`https://twitter.com/${params.screen_name}/status/${tweet.id_str}`);
+    }));
+};
+const birthdayProcess = async () => {
     const date = Date.now();
-    const unitNames = (yield master.allAsync(`
+    const unitNames = (await master.allAsync(`
     SELECT unit_name
     FROM (SELECT MIN(unit_id) AS unit_id FROM chara_identity GROUP BY chara_type) AS C
     LEFT JOIN unit_profile AS P
@@ -170,208 +177,212 @@ const birthdayProcess = () => __awaiter(void 0, void 0, void 0, function* () {
     AND birth_day = '${getDate(date)}'
   `));
     if (unitNames.length > 0) {
-        const channel = (yield client.channels.fetch(CHAT));
-        return yield channel.send(`【Happy Birthday♪】**${unitNames
+        const channel = (await client.channels.fetch(CHAT));
+        return await channel.send(`【Happy Birthday♪】**${unitNames
             .map(({ unit_name }) => unit_name)
             .join(", ")}**`);
     }
     return null;
-});
-const presenceProcess = () => __awaiter(void 0, void 0, void 0, function* () {
-    var _h;
+};
+const presenceProcess = async () => {
+    var _a;
     const date = Date.now();
-    return yield ((_h = client.user) === null || _h === void 0 ? void 0 : _h.setPresence({
+    return await ((_a = client.user) === null || _a === void 0 ? void 0 : _a.setPresence({
         activity: {
             name: `${format(date, "HH:mm")} JST`,
             type: "LISTENING",
         },
     }));
-});
-const arenaRemind = (minutes = 0) => __awaiter(void 0, void 0, void 0, function* () {
-    const channel = (yield client.channels.fetch(CHAT));
-    return yield channel.send(minutes > 0
+};
+const arenaRemind = async (minutes = 0) => {
+    const channel = (await client.channels.fetch(CHAT));
+    return await channel.send(minutes > 0
         ? `アリーナ締切まで【${minutes}】分前`
         : "-----アリーナ締切-----");
-});
-const updateActivity = () => __awaiter(void 0, void 0, void 0, function* () {
+};
+const updateActivity = async () => {
     // 一日毎
-    cron.schedule("0 0 * * *", () => __awaiter(void 0, void 0, void 0, function* () { return yield Promise.allSettled([birthdayProcess()]); }));
+    cron.schedule("0 0 * * *", async () => await Promise.allSettled([birthdayProcess()]));
     // 14:30
-    cron.schedule("30 14 * * *", () => __awaiter(void 0, void 0, void 0, function* () { return yield Promise.allSettled([arenaRemind(30)]); }));
+    cron.schedule("30 14 * * *", async () => await Promise.allSettled([arenaRemind(30)]));
     // 14:55
-    cron.schedule("55 14 * * *", () => __awaiter(void 0, void 0, void 0, function* () { return yield Promise.allSettled([arenaRemind(5)]); }));
+    cron.schedule("55 14 * * *", async () => await Promise.allSettled([arenaRemind(5)]));
     // 15:00
-    cron.schedule("0 15 * * *", () => __awaiter(void 0, void 0, void 0, function* () { return yield Promise.allSettled([arenaRemind()]); }));
+    cron.schedule("0 15 * * *", async () => await Promise.allSettled([arenaRemind()]));
     // 一分毎
     let lastUpdateTime = Date.now();
-    cron.schedule("* * * * *", () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield Promise.allSettled([
-            nishikumaBroadcastTweetProcess(lastUpdateTime),
-            priconneTweetProcess(lastUpdateTime),
-            presenceProcess(),
-        ]).then(() => {
-            lastUpdateTime = Date.now();
-        });
+    cron.schedule("* * * * *", async () => await Promise.allSettled([
+        nishikumaBroadcastTweetProcess(lastUpdateTime),
+        priconneTweetProcess(lastUpdateTime),
+        presenceProcess(),
+        updateMaster(),
+    ]).then(() => {
+        lastUpdateTime = Date.now();
     }));
-});
+};
+async function updateMaster() {
+    const newVersion = await fetchVersion();
+    console.log(`${version}`);
+    if (version !== newVersion) {
+        console.log(`${version} → ${newVersion}`);
+        master = await fetchDB();
+    }
+    return master;
+}
 server.on("request", function (_, res) {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end();
 });
 server.listen(process.env.PORT || 5000);
-client.on("ready", () => __awaiter(void 0, void 0, void 0, function* () {
-    var _j;
-    yield ((_j = client.user) === null || _j === void 0 ? void 0 : _j.setPresence({
+client.on("ready", async () => {
+    var _a;
+    await ((_a = client.user) === null || _a === void 0 ? void 0 : _a.setPresence({
         status: "online",
     }));
-    yield updateActivity();
-}));
-client.on("message", (message) => __awaiter(void 0, void 0, void 0, function* () {
-    var _k;
+    await updateActivity();
+});
+client.on("message", async (message) => {
+    var _a;
     if (message.author.bot) {
         return;
     }
-    if (message.mentions.has((_k = client.user) !== null && _k !== void 0 ? _k : "")) {
-        yield message.reply("呼びましたか？");
+    if (message.mentions.has((_a = client.user) !== null && _a !== void 0 ? _a : "")) {
+        await message.reply("呼びましたか？");
         return;
     }
     if (message.content.match(/・。・ｖ/)) {
-        yield message.channel.send("・。・ｖ");
+        await message.channel.send("・。・ｖ");
         return;
     }
-    yield birthday(message);
-    yield schedule(message);
-    yield skill(message);
-}));
+    await birthday(message);
+    await schedule(message);
+    await skill(message);
+});
 if (DISCORD_BOT_TOKEN == undefined) {
     console.log("DISCORD_BOT_TOKENが設定されていません。");
     process.exit(0);
 }
 client.login(DISCORD_BOT_TOKEN);
-function birthday(message) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (message.content.match(/^\.birthday .+$/)) {
-            const name = message.content.replace(/^\.birthday (.+)$/, "$1");
-            const unit = (yield master.getAsync(`
+async function birthday(message) {
+    if (message.content.match(/^\.birthday .+$/)) {
+        const name = message.content.replace(/^\.birthday (.+)$/, "$1");
+        const unit = (await master.getAsync(`
       SELECT *
       FROM unit_profile
       WHERE unit_name = '${name}'
     `));
-            if (unit) {
-                yield message.channel.send(`「${unit.unit_name}」の誕生日は${unit.birth_month}月${unit.birth_day}日です。`);
-            }
-            else {
-                yield message.channel.send(`「${name}」のキャラ情報が見つかりませんでした。`);
-            }
+        if (unit) {
+            await message.channel.send(`「${unit.unit_name}」の誕生日は${unit.birth_month}月${unit.birth_day}日です。`);
         }
-    });
+        else {
+            await message.channel.send(`「${name}」のキャラ情報が見つかりませんでした。`);
+        }
+    }
 }
-function schedule(message) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (message.content === ".schedule") {
-            const nowTime = Date.now();
-            const schedule = (yield master.allAsync(`
+async function schedule(message) {
+    if (message.content === ".schedule") {
+        const nowTime = Date.now();
+        const schedule = (await master.allAsync(`
         SELECT *
         FROM campaign_schedule
         WHERE NOT campaign_category IN (84, 85)
       `));
-            const freegacha = (yield master.allAsync(`
+        const freegacha = (await master.allAsync(`
         SELECT *
         FROM campaign_freegacha
         WHERE relation_id = 0
       `));
-            const fortuneSchedule = (yield master.allAsync(`
+        const fortuneSchedule = (await master.allAsync(`
       SELECT *
       FROM chara_fortune_schedule
     `));
-            const clanBattlePeriod = (yield master.allAsync(`
+        const clanBattlePeriod = (await master.allAsync(`
       SELECT *
       FROM clan_battle_period
     `));
-            const towerSchedule = (yield master.allAsync(`
+        const towerSchedule = (await master.allAsync(`
       SELECT *
       FROM tower_schedule
     `));
-            const freegachaMessages = freegacha
+        const freegachaMessages = freegacha
+            .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
+            nowTime >= new Date(start_time).getTime())
+            .map(({ freegacha_1, freegacha_10 }) => {
+            return `・無料${freegacha_1 === 1 ? 1 : freegacha_10 === 1 ? 10 : "?"}連ガチャ`;
+        });
+        const fortuneMessages = fortuneSchedule
+            .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
+            nowTime >= new Date(start_time).getTime())
+            .map(({ name }) => `・${name}`);
+        const clanBattleMessages = clanBattlePeriod
+            .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
+            nowTime >= new Date(start_time).getTime())
+            .map(() => "・クランバトル");
+        const nextClanBattleMessages = clanBattlePeriod
+            .filter(({ start_time }) => new Date(start_time).getTime() >= nowTime)
+            .reduce((p, clan) => {
+            var _a;
+            const dateString = `${format(new Date(clan.start_time), "yyyy-MM-dd")} ~ ${format(new Date(clan.end_time), "yyyy-MM-dd")}`;
+            p[dateString] = compileMessage((_a = p[dateString]) !== null && _a !== void 0 ? _a : "", "クランバトル");
+            return p;
+        }, {});
+        const towerScheduleMessages = towerSchedule
+            .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
+            nowTime >= new Date(start_time).getTime())
+            .map(() => "・ルナの塔");
+        const nextTowerScheduleMessages = towerSchedule
+            .filter(({ start_time }) => new Date(start_time).getTime() >= nowTime)
+            .reduce((p, clan) => {
+            var _a;
+            const dateString = `${format(new Date(clan.start_time), "yyyy-MM-dd")} ~ ${format(new Date(clan.end_time), "yyyy-MM-dd")}`;
+            p[dateString] = compileMessage((_a = p[dateString]) !== null && _a !== void 0 ? _a : "", "ルナの塔");
+            return p;
+        }, {});
+        const sessionMessage = [
+            ...uniqueWrap(schedule
                 .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
                 nowTime >= new Date(start_time).getTime())
-                .map(({ freegacha_1, freegacha_10 }) => {
-                return `・無料${freegacha_1 === 1 ? 1 : freegacha_10 === 1 ? 10 : "?"}連ガチャ`;
-            });
-            const fortuneMessages = fortuneSchedule
-                .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
-                nowTime >= new Date(start_time).getTime())
-                .map(({ name }) => `・${name}`);
-            const clanBattleMessages = clanBattlePeriod
-                .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
-                nowTime >= new Date(start_time).getTime())
-                .map(() => "・クランバトル");
-            const nextClanBattleMessages = clanBattlePeriod
-                .filter(({ start_time }) => new Date(start_time).getTime() >= nowTime)
-                .reduce((p, clan) => {
-                var _a;
-                const dateString = `${format(new Date(clan.start_time), "yyyy-MM-dd")} ~ ${format(new Date(clan.end_time), "yyyy-MM-dd")}`;
-                p[dateString] = compileMessage((_a = p[dateString]) !== null && _a !== void 0 ? _a : "", "クランバトル");
-                return p;
-            }, {});
-            const towerScheduleMessages = towerSchedule
-                .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
-                nowTime >= new Date(start_time).getTime())
-                .map(() => "・ルナの塔");
-            const nextTowerScheduleMessages = towerSchedule
-                .filter(({ start_time }) => new Date(start_time).getTime() >= nowTime)
-                .reduce((p, clan) => {
-                var _a;
-                const dateString = `${format(new Date(clan.start_time), "yyyy-MM-dd")} ~ ${format(new Date(clan.end_time), "yyyy-MM-dd")}`;
-                p[dateString] = compileMessage((_a = p[dateString]) !== null && _a !== void 0 ? _a : "", "ルナの塔");
-                return p;
-            }, {});
-            const sessionMessage = [
-                ...uniqueWrap(schedule
-                    .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
-                    nowTime >= new Date(start_time).getTime())
-                    .sort(({ campaign_category: ac, start_time: at }, { campaign_category: bc, start_time: bt }) => {
-                    const aTime = new Date(at).getTime();
-                    const bTime = new Date(bt).getTime();
-                    if (aTime > bTime)
-                        return 1;
-                    if (aTime < bTime)
-                        return -1;
-                    if (ac > bc)
-                        return 1;
-                    if (ac < bc)
-                        return -1;
-                    return 0;
-                })
-                    .reduce((p, campaign) => {
-                    var _a, _b;
-                    const text = (_b = (_a = CampaignCategory.get(campaign.campaign_category)) === null || _a === void 0 ? void 0 : _a.replace("%s", String(campaign.value / 1000))) !== null && _b !== void 0 ? _b : "不明";
-                    p = compileMessage(p, text);
-                    return p;
-                }, ""))
-                    .split("・")
-                    .filter((str) => str.length > 0)
-                    .map((v) => `・${v}`),
-                ...towerScheduleMessages,
-                ...clanBattleMessages,
-                ...freegachaMessages,
-                ...fortuneMessages,
-            ].join("\n");
-            const scheduleMessages = schedule
-                .filter(({ start_time }) => new Date(start_time).getTime() >= nowTime)
+                .sort(({ campaign_category: ac, start_time: at }, { campaign_category: bc, start_time: bt }) => {
+                const aTime = new Date(at).getTime();
+                const bTime = new Date(bt).getTime();
+                if (aTime > bTime)
+                    return 1;
+                if (aTime < bTime)
+                    return -1;
+                if (ac > bc)
+                    return 1;
+                if (ac < bc)
+                    return -1;
+                return 0;
+            })
                 .reduce((p, campaign) => {
-                var _a, _b, _c;
-                const dateString = `${format(new Date(campaign.start_time), "yyyy-MM-dd")} ~ ${format(new Date(campaign.end_time), "yyyy-MM-dd")}`;
+                var _a, _b;
                 const text = (_b = (_a = CampaignCategory.get(campaign.campaign_category)) === null || _a === void 0 ? void 0 : _a.replace("%s", String(campaign.value / 1000))) !== null && _b !== void 0 ? _b : "不明";
-                p[dateString] = compileMessage((_c = p[dateString]) !== null && _c !== void 0 ? _c : "", text);
+                p = compileMessage(p, text);
                 return p;
-            }, {});
-            const scheduleMessage = Object.entries(assign(scheduleMessages, nextTowerScheduleMessages, nextClanBattleMessages))
-                .map(([key, value]) => `**${key}**\n${uniqueWrap(value)}`)
-                .join("\n\n");
-            yield message.channel.send(`__**【開催中】**__\n${sessionMessage}\n\n__**【今後の予定】**__\n${scheduleMessage}`);
-        }
-    });
+            }, ""))
+                .split("・")
+                .filter((str) => str.length > 0)
+                .map((v) => `・${v}`),
+            ...towerScheduleMessages,
+            ...clanBattleMessages,
+            ...freegachaMessages,
+            ...fortuneMessages,
+        ].join("\n");
+        const scheduleMessages = schedule
+            .filter(({ start_time }) => new Date(start_time).getTime() >= nowTime)
+            .reduce((p, campaign) => {
+            var _a, _b, _c;
+            const dateString = `${format(new Date(campaign.start_time), "yyyy-MM-dd")} ~ ${format(new Date(campaign.end_time), "yyyy-MM-dd")}`;
+            const text = (_b = (_a = CampaignCategory.get(campaign.campaign_category)) === null || _a === void 0 ? void 0 : _a.replace("%s", String(campaign.value / 1000))) !== null && _b !== void 0 ? _b : "不明";
+            p[dateString] = compileMessage((_c = p[dateString]) !== null && _c !== void 0 ? _c : "", text);
+            return p;
+        }, {});
+        const scheduleMessage = Object.entries(assign(scheduleMessages, nextTowerScheduleMessages, nextClanBattleMessages))
+            .map(([key, value]) => `**${key}**\n${uniqueWrap(value)}`)
+            .join("\n\n");
+        await message.channel.send(`__**【開催中】**__\n${sessionMessage}\n\n__**【今後の予定】**__\n${scheduleMessage}`);
+    }
 }
 function uniqueWrap(mes) {
     return mes
@@ -432,87 +443,77 @@ function assign(...arrays) {
     })
         .reduce((p, [key, value]) => Object.assign(p, { [key]: value }), {});
 }
-function skill(message) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (message.content.match(/^\.skill .+$/)) {
-            const name = message.content
-                .replace(/^\.skill (.+)$/, "$1")
-                .replace(/\(/g, "（")
-                .replace(/\)/g, "）");
-            const unit = (yield master.getAsync(`
+async function skill(message) {
+    if (message.content.match(/^\.skill .+$/)) {
+        const name = message.content
+            .replace(/^\.skill (.+)$/, "$1")
+            .replace(/\(/g, "（")
+            .replace(/\)/g, "）");
+        const unit = (await master.getAsync(`
       SELECT *
       FROM unit_data
       WHERE unit_name = '${name}'
     `));
-            if (unit) {
-                const unitSkillData = yield findUnitSkillDataAsync(unit.unit_id);
-                yield message.channel.send(`${name}\n\n**攻撃パターン**\n${yield getAttackPatternStringAsync(unit.unit_id)}\n\n${skillFormat(yield findSkillDataAsync(unitSkillData.union_burst), "UB")}${skillFormat(yield findSkillDataAsync(unitSkillData.union_burst_evolution), "UB+", false)}${skillFormat(yield findSkillDataAsync(unitSkillData.main_skill_1), "スキル1")}${skillFormat(yield findSkillDataAsync(unitSkillData.main_skill_evolution_1), "スキル1+", false)}${skillFormat(yield findSkillDataAsync(unitSkillData.main_skill_2), "スキル2")}${skillFormat(yield findSkillDataAsync(unitSkillData.main_skill_evolution_2), "スキル2+", false)}${skillFormat(yield findSkillDataAsync(unitSkillData.ex_skill_1), "EXスキル")}${skillFormat(yield findSkillDataAsync(unitSkillData.ex_skill_evolution_1), "EXスキル+", false)}`);
-            }
-            else {
-                yield message.channel.send(`「${name}」のキャラ情報が見つかりませんでした。`);
-            }
+        if (unit) {
+            const unitSkillData = await findUnitSkillDataAsync(unit.unit_id);
+            await message.channel.send(`${name}\n\n**攻撃パターン**\n${await getAttackPatternStringAsync(unit.unit_id)}\n\n${skillFormat(await findSkillDataAsync(unitSkillData.union_burst), "UB")}${skillFormat(await findSkillDataAsync(unitSkillData.union_burst_evolution), "UB+", false)}${skillFormat(await findSkillDataAsync(unitSkillData.main_skill_1), "スキル1")}${skillFormat(await findSkillDataAsync(unitSkillData.main_skill_evolution_1), "スキル1+", false)}${skillFormat(await findSkillDataAsync(unitSkillData.main_skill_2), "スキル2")}${skillFormat(await findSkillDataAsync(unitSkillData.main_skill_evolution_2), "スキル2+", false)}${skillFormat(await findSkillDataAsync(unitSkillData.ex_skill_1), "EXスキル")}${skillFormat(await findSkillDataAsync(unitSkillData.ex_skill_evolution_1), "EXスキル+", false)}`);
         }
-    });
+        else {
+            await message.channel.send(`「${name}」のキャラ情報が見つかりませんでした。`);
+        }
+    }
 }
-function findUnitSkillDataAsync(unitId) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return (yield master.getAsync(`
+async function findUnitSkillDataAsync(unitId) {
+    return (await master.getAsync(`
     SELECT *
     FROM unit_skill_data
     WHERE unit_id = '${unitId}'
   `));
-    });
 }
-function findSkillDataAsync(skillId) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return (yield master.getAsync(`
+async function findSkillDataAsync(skillId) {
+    return (await master.getAsync(`
     SELECT *
     FROM skill_data
     WHERE skill_id = '${skillId}'
   `));
-    });
 }
-function getAttackPatternStringAsync(unitId) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const pattern = yield findUnitAttackPatternAsync(unitId);
-        const atkPatternList = [
-            pattern.atk_pattern_1,
-            pattern.atk_pattern_2,
-            pattern.atk_pattern_3,
-            pattern.atk_pattern_4,
-            pattern.atk_pattern_5,
-            pattern.atk_pattern_6,
-            pattern.atk_pattern_7,
-            pattern.atk_pattern_8,
-            pattern.atk_pattern_9,
-            pattern.atk_pattern_10,
-            pattern.atk_pattern_11,
-            pattern.atk_pattern_12,
-            pattern.atk_pattern_13,
-            pattern.atk_pattern_14,
-            pattern.atk_pattern_15,
-            pattern.atk_pattern_16,
-            pattern.atk_pattern_17,
-            pattern.atk_pattern_18,
-            pattern.atk_pattern_19,
-            pattern.atk_pattern_20,
-        ].filter((value) => value > 0);
-        const loopStart = pattern.loop_start;
-        const loopEnd = pattern.loop_end;
-        return atkPatternList.reduce((p, v, i) => {
-            const attack = `${i + 1 === loopStart ? "[" : ""}${v === 1001 ? "１" : v === 1002 ? "２" : "通"}${i + 1 === loopEnd ? "]" : ""}`;
-            return i > 0 ? `${p}→${attack}` : `${attack}`;
-        }, "");
-    });
+async function getAttackPatternStringAsync(unitId) {
+    const pattern = await findUnitAttackPatternAsync(unitId);
+    const atkPatternList = [
+        pattern.atk_pattern_1,
+        pattern.atk_pattern_2,
+        pattern.atk_pattern_3,
+        pattern.atk_pattern_4,
+        pattern.atk_pattern_5,
+        pattern.atk_pattern_6,
+        pattern.atk_pattern_7,
+        pattern.atk_pattern_8,
+        pattern.atk_pattern_9,
+        pattern.atk_pattern_10,
+        pattern.atk_pattern_11,
+        pattern.atk_pattern_12,
+        pattern.atk_pattern_13,
+        pattern.atk_pattern_14,
+        pattern.atk_pattern_15,
+        pattern.atk_pattern_16,
+        pattern.atk_pattern_17,
+        pattern.atk_pattern_18,
+        pattern.atk_pattern_19,
+        pattern.atk_pattern_20,
+    ].filter((value) => value > 0);
+    const loopStart = pattern.loop_start;
+    const loopEnd = pattern.loop_end;
+    return atkPatternList.reduce((p, v, i) => {
+        const attack = `${i + 1 === loopStart ? "[" : ""}${v === 1001 ? "１" : v === 1002 ? "２" : "通"}${i + 1 === loopEnd ? "]" : ""}`;
+        return i > 0 ? `${p}→${attack}` : `${attack}`;
+    }, "");
 }
-function findUnitAttackPatternAsync(unitId) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return (yield master.getAsync(`
+async function findUnitAttackPatternAsync(unitId) {
+    return (await master.getAsync(`
     SELECT *
     FROM unit_attack_pattern
     WHERE unit_id = '${unitId}'
   `));
-    });
 }
 function skillFormat(skillData, kind, disp = true) {
     if (skillData) {

@@ -12,6 +12,7 @@ import format from "date-fns/format/index.js";
 import getMonth from "date-fns/getMonth/index.js";
 import getDate from "date-fns/getDate/index.js";
 import retryPromise from "ts-retry-promise";
+import fetch from "node-fetch";
 const client = new discord.Client();
 const server = http.createServer();
 
@@ -51,7 +52,37 @@ import {
   UnitSkillData,
 } from "./master";
 const twClient = new twitter(twConfig);
-const master = new Database("./PriconneResource/master.db");
+const URL =
+  "https://raw.githubusercontent.com/esterTion/redive_master_db_diff/master";
+const TABLE_LIST = [
+  "unit_profile",
+  "unit_attack_pattern",
+  "skill_data",
+  "unit_skill_data",
+  "unit_data",
+  "campaign_schedule",
+  "campaign_freegacha",
+  "chara_fortune_schedule",
+  "clan_battle_period",
+  "tower_schedule",
+];
+
+const fetchDB = async () => {
+  const db = new Database(
+    ":memory:",
+    sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE
+  );
+  return await Promise.allSettled(
+    TABLE_LIST.map(async (table) => {
+      db.exec(await (await fetch(`${URL}/${table}.sql`)).text());
+    })
+  ).then(() => db);
+};
+
+const fetchVersion = async () => await (await fetch(`${URL}/!TruthVersion.txt`)).text();
+
+let master = await fetchDB();
+let version: string = await fetchVersion();
 
 type Tweet = {
   source: string;
@@ -292,11 +323,22 @@ const updateActivity = async () => {
         nishikumaBroadcastTweetProcess(lastUpdateTime),
         priconneTweetProcess(lastUpdateTime),
         presenceProcess(),
+        updateMaster(),
       ]).then(() => {
         lastUpdateTime = Date.now();
       })
   );
 };
+
+async function updateMaster() {
+  const newVersion = await fetchVersion();
+  console.log(`${version}`);
+  if (version !== newVersion) {
+    console.log(`${version} → ${newVersion}`);
+    master = await fetchDB();
+  }
+  return master;
+}
 
 server.on("request", function (_, res) {
   res.writeHead(200, { "Content-Type": "text/plain" });
