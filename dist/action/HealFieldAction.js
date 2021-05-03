@@ -31,9 +31,9 @@ export class HealFieldAction extends ActionParameter {
         switch (this.fieldType.value) {
             case FieldType.repeat:
                 if (this.targetParameter.targetType.value === TargetType.absolute) {
-                    return `半径 [${this.actionValue7}] のフィールドを展開し、${this.targetParameter.buildTargetClause()}に毎秒 [${this.buildExpression()}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                    return `半径 [${this.actionValue7.value}] のフィールドを展開し、${this.targetParameter.buildTargetClause()}に毎秒 [${this.buildExpression()}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
                 }
-                return `${this.targetParameter.buildTargetClause()}の位置で半径 [${this.actionValue7}] のフィールドを展開し、毎秒 [${this.buildExpression()}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                return `${this.targetParameter.buildTargetClause()}の位置で半径 [${this.actionValue7.value}] のフィールドを展開し、毎秒 [${this.buildExpression()}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
             default:
                 return super.localizedDetail();
         }

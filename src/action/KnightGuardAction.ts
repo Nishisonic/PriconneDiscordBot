@@ -22,7 +22,7 @@ export class KnightGuardAction extends ActionParameter {
 
   constructor(skillAction: SkillAction) {
     super(skillAction);
-    this.guardType = GuardType.parse(this.actionValue1);
+    this.guardType = GuardType.parse(this.actionValue1.value);
     switch (this.guardType.value) {
       case GuardType.magic:
         this.actionValues.push(

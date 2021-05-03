@@ -19,16 +19,12 @@ export class DamageAction extends ActionParameter {
     switch (skillAction.action_detail_1) {
       case ClassModifier.magical:
         this.actionValues.push(
-          new ActionValue(
-            skillAction.action_value_1,
-            skillAction.action_value_2,
-            null
-          )
+          new ActionValue(this.actionValue1, this.actionValue2, null)
         );
         this.actionValues.push(
           new ActionValue(
-            skillAction.action_value_3,
-            skillAction.action_value_4,
+            this.actionValue3,
+            this.actionValue4,
             PropertyKey.parse(PropertyKey.magicStr)
           )
         );
@@ -36,16 +32,12 @@ export class DamageAction extends ActionParameter {
       case ClassModifier.physical:
       case ClassModifier.inevitablePhysical:
         this.actionValues.push(
-          new ActionValue(
-            skillAction.action_value_1,
-            skillAction.action_value_2,
-            null
-          )
+          new ActionValue(this.actionValue1, this.actionValue2, null)
         );
         this.actionValues.push(
           new ActionValue(
-            skillAction.action_value_3,
-            skillAction.action_value_4,
+            this.actionValue3,
+            this.actionValue4,
             PropertyKey.parse(PropertyKey.atk)
           )
         );
@@ -63,13 +55,13 @@ export class DamageAction extends ActionParameter {
         break;
       case CriticalModifier.critical:
         sentence += `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] の${this.damageClass.description()}ダメージを与える。このアクションの ${
-          this.actionValue5
+          this.actionValue5.value
         }hitは必ずクリティカルする。`;
         break;
     }
-    if (this.actionValue6 !== 0) {
+    if (this.actionValue6.value !== 0) {
       sentence += `クリティカルした場合、ダメージ倍率が [${
-        2 * this.actionValue6
+        2 * this.actionValue6.value
       }] 倍になる。`;
     }
     return sentence;

@@ -7,12 +7,12 @@ export class HealAction extends ActionParameter {
         this.percentModifier = PercentModifier.parse(Math.floor(skillAction.action_value_1));
         switch (this.healClass.value) {
             case ClassModifier.magical:
-                this.actionValues.push(new ActionValue(skillAction.action_value_4, skillAction.action_value_5, PropertyKey.parse(PropertyKey.magicStr)));
-                this.actionValues.push(new ActionValue(skillAction.action_value_2, skillAction.action_value_3, null));
+                this.actionValues.push(new ActionValue(this.actionValue4, this.actionValue5, PropertyKey.parse(PropertyKey.magicStr)));
+                this.actionValues.push(new ActionValue(this.actionValue2, this.actionValue3, null));
                 break;
             case ClassModifier.physical:
-                this.actionValues.push(new ActionValue(skillAction.action_value_4, skillAction.action_value_5, PropertyKey.parse(PropertyKey.atk)));
-                this.actionValues.push(new ActionValue(skillAction.action_value_2, skillAction.action_value_3, null));
+                this.actionValues.push(new ActionValue(this.actionValue4, this.actionValue5, PropertyKey.parse(PropertyKey.atk)));
+                this.actionValues.push(new ActionValue(this.actionValue2, this.actionValue3, null));
                 break;
         }
     }

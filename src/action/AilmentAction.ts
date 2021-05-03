@@ -19,18 +19,10 @@ export class AilmentAction extends ActionParameter {
       skillAction.action_detail_1
     );
     this.actionValues.push(
-      new ActionValue(
-        skillAction.action_value_1,
-        skillAction.action_value_2,
-        null
-      )
+      new ActionValue(this.actionValue1, this.actionValue2, null)
     );
     this.chanceValues.push(
-      new ActionValue(
-        skillAction.action_value_3,
-        skillAction.action_value_4,
-        null
-      )
+      new ActionValue(this.actionValue3, this.actionValue4, null)
     );
     this.durationValues = this.chanceValues;
   }
@@ -42,9 +34,9 @@ export class AilmentAction extends ActionParameter {
         switch ((this.ailment.ailmentDetail?.detail as ActionDetail).value) {
           case ActionDetail.haste:
           case ActionDetail.slow:
-            str = `${this.targetParameter.buildTargetClause()}の行動速度を本来の [${+this.buildExpression(
-              this.actionValues
-            ) * 100}%] にする、効果時間 [${this.buildExpression(
+            str = `${this.targetParameter.buildTargetClause()}の行動速度を本来の [${
+              +this.buildExpression(this.actionValues) * 100
+            }%] にする、効果時間 [${this.buildExpression(
               this.durationValues
             )}] 秒。`;
             break;

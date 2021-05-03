@@ -12,8 +12,8 @@ export class ChangeParameterFieldAction extends AuraAction {
     }
     localizedDetail() {
         if (this.targetParameter.targetType.value === TargetType.absolute) {
-            return `半径 [${this.actionValue5}] のフィールドを展開し、${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${this.buildExpression()}${this.percentModifier.description()}] ${this.auraActionType.description()}させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+            return `半径 [${this.actionValue5.value}] のフィールドを展開し、${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${this.buildExpression()}${this.percentModifier.description()}] ${this.auraActionType.description()}させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
         }
-        return `${this.targetParameter.buildTargetClause()}の位置で半径 [${this.actionValue5}] のフィールドを展開し、${this.auraType.description()}を [${this.buildExpression()}${this.percentModifier.description()}] ${this.auraActionType.description()}させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+        return `${this.targetParameter.buildTargetClause()}の位置で半径 [${this.actionValue5.value}] のフィールドを展開し、${this.auraType.description()}を [${this.buildExpression()}${this.percentModifier.description()}] ${this.auraActionType.description()}させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
     }
 }

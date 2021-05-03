@@ -22,7 +22,7 @@ export class LogBarrierAction extends ActionParameter {
 
   constructor(skillAction: SkillAction) {
     super(skillAction);
-    this.barrierType = BarrierType.parse(this.actionValue1);
+    this.barrierType = BarrierType.parse(this.actionValue1.value);
     this.actionValues.push(
       new ActionValue(this.actionValue1, this.actionValue2, null)
     );
@@ -33,7 +33,7 @@ export class LogBarrierAction extends ActionParameter {
 
   localizedDetail() {
     return `${this.targetParameter.buildTargetClause()}にバリアを展開する、一回の行動で受けたダメージが [${
-      this.actionValue5
+      this.actionValue5.value
     }] を超えた場合、ダメージが減衰される、減衰係数 [${this.buildExpression()}]（この値が小さいほど減衰されやすい）、効果時間 [${this.buildExpression(
       this.durationValues
     )}] 秒。`;

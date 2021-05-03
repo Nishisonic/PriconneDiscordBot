@@ -81,7 +81,7 @@ class AuraActionType {
   }
 
   static parse(value: number) {
-    if (value % 10 == 1) {
+    if (value % 10 === 1) {
       return new this(AuraActionType.reduce);
     }
     return new this(AuraActionType.raise);
@@ -133,7 +133,7 @@ export class AuraAction extends ActionParameter {
 
   constructor(skillAction: SkillAction) {
     super(skillAction);
-    this.percentModifier = PercentModifier.parse(this.actionValue1);
+    this.percentModifier = PercentModifier.parse(this.actionValue1.value);
     this.actionValues.push(
       new ActionValue(this.actionValue2, this.actionValue3, null)
     );
@@ -144,7 +144,7 @@ export class AuraAction extends ActionParameter {
     if (this.actionDetail1 === 1) {
       this.auraType = AuraType.parse(AuraType.maxHP);
     } else {
-      this.auraType = AuraType.parse(this.actionDetail1 / 10);
+      this.auraType = AuraType.parse(Math.floor(this.actionDetail1 / 10));
     }
     this.breakType = BreakType.parse(this.actionDetail2);
     if (this.auraType.value === AuraType.receivedCriticalDamage) {

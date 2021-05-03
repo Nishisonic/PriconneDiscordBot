@@ -30,11 +30,11 @@ export class ModeChangeAction extends ActionParameter {
       case ModeChangeType.time:
         return `行動パターンを${
           this.actionDetail2 % 10
-        }に変化させる、効果時間 [${this.actionValue1}] 秒。`;
+        }に変化させる、効果時間 [${this.actionValue1.value}] 秒。`;
       case ModeChangeType.energy:
         return `TPが使い切るまで行動パターンを${
           this.actionDetail2 % 10
-        }に変化させ、TPを毎秒 [${this.actionValue1}] 消耗する。`;
+        }に変化させ、TPを毎秒 [${this.actionValue1.value}] 消耗する。`;
       case ModeChangeType.release:
         return `効果終了後、行動パターンを${
           this.actionDetail2 % 10

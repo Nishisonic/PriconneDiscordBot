@@ -50,30 +50,30 @@ export class AttackSealAction extends ActionParameter {
   localizedDetail() {
     if (this.condition.value === Condition.hit) {
       return `自分がHitするたび、${this.targetParameter.buildTargetClause()}にマーク [ID: ${
-        this.actionValue2
+        this.actionValue2.value
       }] を1スタック増やせる、効果時間 [${this.buildExpression(
         this.durationValues
-      )}] 秒。この効果は最大 [${this.actionValue1}] までスタックする。`;
+      )}] 秒。この効果は最大 [${this.actionValue1.value}] までスタックする。`;
     }
     if (
       this.condition.value === Condition.damage &&
       this.target.value === Target.owner
     ) {
       return `${this.targetParameter.buildTargetClause()}がダメージを与えるたび、マーク [ID: ${
-        this.actionValue2
+        this.actionValue2.value
       }] を1スタック増やせる、効果時間 [${this.buildExpression(
         this.durationValues
-      )}] 秒、この効果は最大 [${this.actionValue1}] までスタックする。`;
+      )}] 秒、この効果は最大 [${this.actionValue1.value}] までスタックする。`;
     }
     if (
-      this.condition.value == Condition.criticalHit &&
-      this.target.value == Target.owner
+      this.condition.value === Condition.criticalHit &&
+      this.target.value === Target.owner
     ) {
       return `${this.targetParameter.buildTargetClause()}がクリティカルダメージを与えるたび、マーク [ID: ${
-        this.actionValue2
+        this.actionValue2.value
       }] を1スタック増やせる、効果時間 [${this.buildExpression(
         this.durationValues
-      )}] 秒。この効果は最大 [${this.actionValue1}] までスタックする。`;
+      )}] 秒。この効果は最大 [${this.actionValue1.value}] までスタックする。`;
     }
     return super.localizedDetail();
   }

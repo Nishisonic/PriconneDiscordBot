@@ -35,7 +35,7 @@ export class LoopTriggerAction extends ActionParameter {
     switch (this.triggerType.value) {
       case TriggerType.damaged:
         return `条件分岐：[${
-          this.actionValue4
+          this.actionValue4.value
         }] 秒内ダメージを受けた場合、[${this.buildExpression()}%] の確率で [アクション${
           this.actionDetail2 % 10
         }] を使う。`;

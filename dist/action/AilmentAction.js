@@ -6,8 +6,8 @@ export class AilmentAction extends ActionParameter {
         this.chanceValues = [];
         this.durationValues = [];
         this.ailment = new Ailment(skillAction.action_type, skillAction.action_detail_1);
-        this.actionValues.push(new ActionValue(skillAction.action_value_1, skillAction.action_value_2, null));
-        this.chanceValues.push(new ActionValue(skillAction.action_value_3, skillAction.action_value_4, null));
+        this.actionValues.push(new ActionValue(this.actionValue1, this.actionValue2, null));
+        this.chanceValues.push(new ActionValue(this.actionValue3, this.actionValue4, null));
         this.durationValues = this.chanceValues;
     }
     localizedDetail() {

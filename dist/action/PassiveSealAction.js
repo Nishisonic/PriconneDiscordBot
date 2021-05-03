@@ -43,13 +43,13 @@ export class PassiveSealAction extends ActionParameter {
         super(skillAction);
         this.sealDuration = [];
         this.lifeTime = [];
-        this.sealNumLimit = this.actionValue1;
+        this.sealNumLimit = this.actionValue1.value;
         this.sealDuration.push(new ActionValue(this.actionValue3, this.actionValue4, null));
         this.lifeTime.push(new ActionValue(this.actionValue5, this.actionValue6, null));
         this.passiveTiming = ePassiveTiming.parse(this.actionDetail1);
         this.sealTarget = eSealTarget.parse(this.actionDetail3);
     }
     localizedDetail() {
-        return `パッシブ：${this.targetParameter.buildTargetClause()}が${this.passiveTiming.description()}を受けるたび、${this.sealTarget.description()}にマーク [ID: ${this.actionValue2}] を [${this.actionDetail2}] 追加する、マークの継続時間 [${this.buildExpression(this.sealDuration)}] 秒、最大 [${this.actionValue1}] までスタックする。このパッシブ効果は [${this.buildExpression(this.lifeTime)}] 秒継続する。`;
+        return `パッシブ：${this.targetParameter.buildTargetClause()}が${this.passiveTiming.description()}を受けるたび、${this.sealTarget.description()}にマーク [ID: ${this.actionValue2.value}] を [${this.actionDetail2}] 追加する、マークの継続時間 [${this.buildExpression(this.sealDuration)}] 秒、最大 [${this.actionValue1.value}] までスタックする。このパッシブ効果は [${this.buildExpression(this.lifeTime)}] 秒継続する。`;
     }
 }

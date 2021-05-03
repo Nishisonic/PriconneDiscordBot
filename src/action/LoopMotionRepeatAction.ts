@@ -20,10 +20,12 @@ export class LoopMotionRepeatAction extends ActionParameter {
   }
 
   localizedDetail() {
-    const mainClause = `[${this.actionValue2}] 秒ごとに [アクション${
+    const mainClause = `[${this.actionValue2.value}] 秒ごとに [アクション${
       this.actionDetail1 % 10
-    }] を使い、最大 [${this.actionValue1}] 秒まで続く。受けたダメージ量が [${
-      this.actionValue3
+    }] を使い、最大 [${
+      this.actionValue1.value
+    }] 秒まで続く。受けたダメージ量が [${
+      this.actionValue3.value
     }] を超えた時この効果を中断する。`;
     if (this.successClause !== null && this.failureClause !== null) {
       return mainClause + this.successClause + this.failureClause;

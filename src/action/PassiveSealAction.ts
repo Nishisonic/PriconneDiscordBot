@@ -59,7 +59,7 @@ export class PassiveSealAction extends ActionParameter {
 
   constructor(skillAction: SkillAction) {
     super(skillAction);
-    this.sealNumLimit = this.actionValue1;
+    this.sealNumLimit = this.actionValue1.value;
     this.sealDuration.push(
       new ActionValue(this.actionValue3, this.actionValue4, null)
     );
@@ -72,13 +72,13 @@ export class PassiveSealAction extends ActionParameter {
 
   localizedDetail() {
     return `パッシブ：${this.targetParameter.buildTargetClause()}が${this.passiveTiming.description()}を受けるたび、${this.sealTarget.description()}にマーク [ID: ${
-      this.actionValue2
+      this.actionValue2.value
     }] を [${
       this.actionDetail2
     }] 追加する、マークの継続時間 [${this.buildExpression(
       this.sealDuration
     )}] 秒、最大 [${
-      this.actionValue1
+      this.actionValue1.value
     }] までスタックする。このパッシブ効果は [${this.buildExpression(
       this.lifeTime
     )}] 秒継続する。`;

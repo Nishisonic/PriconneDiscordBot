@@ -28,7 +28,7 @@ export class RevivalAction extends ActionParameter {
     switch (this.revivalType.value) {
       case RevivalType.normal:
         return `${this.targetParameter.buildTargetClause()}を復活させ、HPを [${Math.round(
-          this.actionValue2 * 100
+          this.actionValue2.value * 100
         )}%] 回復させる。（この値はキャラの回復量上昇値に影響される）`;
       default:
         return super.localizedDetail();

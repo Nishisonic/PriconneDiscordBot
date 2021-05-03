@@ -13,7 +13,7 @@ CountType.count = 2;
 export class CountBlindAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);
-        this.countType = CountType.parse(this.actionValue1);
+        this.countType = CountType.parse(this.actionValue1.value);
     }
     localizedDetail() {
         switch (this.countType.value) {

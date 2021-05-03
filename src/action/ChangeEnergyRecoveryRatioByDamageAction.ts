@@ -16,8 +16,8 @@ export class ChangeEnergyRecoveryRatioByDamageAction extends ActionParameter {
   }
 
   localizedDetail() {
-    return `ダメージによるTP回復を含めて、${this.targetParameter.buildTargetClause()}が [アクション${this.getChildrenActionString()}] を受けた時全てのTP回復効果を [本来の値 * ${
-      this.actionValue1
+    return `ダメージによるTP回復を含めて、${this.targetParameter.buildTargetClause()}が [アクション${this.getChildrenActionString()}] を受けた時全てのTP回復効果を [本来の値 \* ${
+      this.actionValue1.value
     }] に変更させる。`;
   }
 }

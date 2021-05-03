@@ -68,7 +68,7 @@ export class IfForChildrenAction extends ActionParameter {
                 else if (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) {
                     this.trueClause = `${this.targetParameter.buildTargetClause(true)}のHPが [${this.actionDetail1 - 900}%] 以下の場合、[アクション${this.actionDetail2 % 10}] を使う。`;
                 }
-                else if (this.actionDetail1 == 1300) {
+                else if (this.actionDetail1 === 1300) {
                     this.trueClause = `${this.targetParameter.buildTargetClause(true)}が魔法攻撃を行う対象の場合、[アクション${this.actionDetail2 % 10}] を使う。`;
                 }
             }
@@ -80,34 +80,34 @@ export class IfForChildrenAction extends ActionParameter {
             }
             else {
                 if ((this.actionDetail1 >= 600 && this.actionDetail1 < 700) ||
-                    this.actionDetail1 == 710) {
+                    this.actionDetail1 === 710) {
                     this.falseClause = `${this.targetParameter.buildTargetClause(true)}がマーク [ID: ${this.actionDetail1 - 600}] を持っていない場合、[アクション${this.actionDetail3 % 10}] を使う。`;
                 }
-                else if (this.actionDetail1 == 700) {
+                else if (this.actionDetail1 === 700) {
                     this.falseClause = `${this.targetParameter.buildTargetClause(true)}が単独でない場合、[アクション${this.actionDetail3 % 10}] を使う。`;
                 }
                 else if (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) {
                     this.falseClause = `${this.targetParameter.buildTargetClause(true)}のHPが [${this.actionDetail1 - 900}%] 以下でない場合、[アクション${this.actionDetail3 % 10}] を使う。`;
                 }
-                else if (this.actionDetail1 == 1300) {
+                else if (this.actionDetail1 === 1300) {
                     this.falseClause = `${this.targetParameter.buildTargetClause(true)}が魔法攻撃を行う対象でない場合、[アクション${this.actionDetail3 % 10}] を使う。`;
                 }
             }
         }
     }
     localizedDetail() {
-        if (this.actionDetail1 == 100 ||
-            this.actionDetail1 == 200 ||
-            this.actionDetail1 == 300 ||
-            this.actionDetail1 == 500 ||
-            this.actionDetail1 == 501 ||
-            this.actionDetail1 == 502 ||
-            this.actionDetail1 == 503 ||
-            this.actionDetail1 == 512 ||
+        if (this.actionDetail1 === 100 ||
+            this.actionDetail1 === 200 ||
+            this.actionDetail1 === 300 ||
+            this.actionDetail1 === 500 ||
+            this.actionDetail1 === 501 ||
+            this.actionDetail1 === 502 ||
+            this.actionDetail1 === 503 ||
+            this.actionDetail1 === 512 ||
             (this.actionDetail1 >= 600 && this.actionDetail1 < 900) ||
             (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) ||
-            this.actionDetail1 == 1300 ||
-            this.actionDetail1 == 1400) {
+            this.actionDetail1 === 1300 ||
+            this.actionDetail1 === 1400) {
             if (this.trueClause !== null && this.falseClause !== null) {
                 return `条件分岐：${this.trueClause + this.falseClause}`;
             }

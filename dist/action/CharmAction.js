@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
+import { ActionParameter, ActionValue, eActionValue, } from "./ActionParameter.js";
 class CharmType {
     constructor(value) {
         this.value = value;
@@ -19,10 +19,10 @@ export class CharmAction extends ActionParameter {
         this.durationValues.push(new ActionValue(this.actionValue1, this.actionValue2, null));
         switch (this.charmType.value) {
             case CharmType.charm:
-                this.chanceValues.push(new ActionValue(this.actionValue3, this.actionValue4 * 100, null));
+                this.chanceValues.push(new ActionValue(this.actionValue3.value, this.actionValue4.value * 100, new eActionValue(eActionValue.VALUE3), new eActionValue(eActionValue.VALUE4), null));
                 break;
             default:
-                this.chanceValues.push(new ActionValue(this.actionValue3 * 100, this.actionValue4 * 100, null));
+                this.chanceValues.push(new ActionValue(this.actionValue3.value * 100, this.actionValue4.value * 100, new eActionValue(eActionValue.VALUE3), new eActionValue(eActionValue.VALUE4), null));
                 break;
         }
     }

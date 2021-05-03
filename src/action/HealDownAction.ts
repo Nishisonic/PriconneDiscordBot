@@ -11,7 +11,7 @@ export class HealDownAction extends ActionParameter {
 
   constructor(skillAction: SkillAction) {
     super(skillAction);
-    this.percentModifier = PercentModifier.parse(this.actionValue1);
+    this.percentModifier = PercentModifier.parse(this.actionValue1.value);
     this.actionValues.push(
       new ActionValue(this.actionValue1, this.actionValue2, null)
     );

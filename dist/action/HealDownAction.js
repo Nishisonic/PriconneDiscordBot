@@ -3,7 +3,7 @@ export class HealDownAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);
         this.durationValues = [];
-        this.percentModifier = PercentModifier.parse(this.actionValue1);
+        this.percentModifier = PercentModifier.parse(this.actionValue1.value);
         this.actionValues.push(new ActionValue(this.actionValue1, this.actionValue2, null));
         this.durationValues.push(new ActionValue(this.actionValue3, this.actionValue4, null));
     }

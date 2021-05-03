@@ -1,5 +1,9 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue, ClassModifier } from "./ActionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  ClassModifier,
+} from "./ActionParameter.js";
 import { FieldType } from "./HealFieldAction.js";
 import { TargetType } from "./parameter/TargetType.js";
 import { PropertyKey } from "./PropertyKey.js";
@@ -56,13 +60,13 @@ export class AttackFieldAction extends ActionParameter {
       case FieldType.repeat:
         if (this.targetParameter.targetType.value === TargetType.absolute) {
           return `半径 [${
-            this.actionValue7
+            this.actionValue7.value
           }] のフィールドを展開し、${this.targetParameter.buildTargetClause()}に毎秒 [${this.buildExpression()}] の${this.damageClass.description()}ダメージを与える、効果時間 [${this.buildExpression(
             this.durationValues
           )}] 秒。`;
         }
         return `${this.targetParameter.buildTargetClause()}の位置で半径 [${
-          this.actionValue7
+          this.actionValue7.value
         }] のフィールドを展開し、毎秒 [${this.targetParameter.buildTargetClause()}] の${this.damageClass.description()}ダメージを与える、効果時間 [${this.buildExpression(
           this.durationValues
         )}] 秒。`;

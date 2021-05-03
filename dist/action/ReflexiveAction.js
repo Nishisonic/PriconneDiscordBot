@@ -19,7 +19,7 @@ export class ReflexiveAction extends ActionParameter {
     }
     localizedDetail() {
         if (this.targetParameter.targetType.value === TargetType.absolute) {
-            return `自分の視点を${this.targetParameter.buildTargetClause()}に向ける、距離 [${this.actionValue1}]。`;
+            return `自分の視点を${this.targetParameter.buildTargetClause()}に向ける、距離 [${this.actionValue1.value}]。`;
         }
         if (this.reflexiveType.value === ReflexiveType.search) {
             return `サーチし、自分の視点を${this.targetParameter.buildTargetClause()}に向ける。`;

@@ -376,7 +376,7 @@ client.on("message", async (message) => {
   await skill(message);
 });
 
-if (DISCORD_BOT_TOKEN == undefined) {
+if (DISCORD_BOT_TOKEN === undefined) {
   console.log("DISCORD_BOT_TOKENが設定されていません。");
   process.exit(0);
 }

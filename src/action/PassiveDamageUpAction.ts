@@ -59,9 +59,9 @@ export class PassiveDamageUpAction extends ActionParameter {
 
   constructor(skillAction: SkillAction) {
     super(skillAction);
-    this.debuffDamageUpLimitValue = this.actionValue2;
-    this.debuffDamageUpValue = this.actionValue1;
-    this.debuffDamageUpTimer = this.actionValue3;
+    this.debuffDamageUpLimitValue = this.actionValue2.value;
+    this.debuffDamageUpValue = this.actionValue1.value;
+    this.debuffDamageUpTimer = this.actionValue3.value;
     this.countType = eCountType.parse(this.actionDetail1);
     this.effectType = eEffectType.parse(this.actionDetail2);
     this.actionValues.push(
@@ -74,7 +74,7 @@ export class PassiveDamageUpAction extends ActionParameter {
       case eCountType.Debuff:
         return `パッシブ：${this.targetParameter.buildTargetClause()}が与えられるダメージを [1 ${this.effectType.description()} ${
           this.debuffDamageUpValue
-        } * ${this.targetParameter.buildTargetClause()}の${this.countType.description()}数] 倍にする（最大${
+        } \* ${this.targetParameter.buildTargetClause()}の${this.countType.description()}数] 倍にする（最大${
           this.debuffDamageUpLimitValue
         }倍）、効果時間 [${this.buildExpression()}] 秒。`;
       default:

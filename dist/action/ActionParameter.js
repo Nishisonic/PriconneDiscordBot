@@ -1,3 +1,4 @@
+import { PropertyKey } from "./PropertyKey.js";
 import { TargetParameter } from "./TargetParameter.js";
 export class ActionParameter {
     constructor(skillAction) {
@@ -5,21 +6,21 @@ export class ActionParameter {
         this.childrenAction = null;
         this.targetParameter = new TargetParameter(skillAction);
         this.rawActionType = skillAction.action_type;
-        this.actionValue1 = skillAction.action_value_1;
-        this.actionValue2 = skillAction.action_value_2;
-        this.actionValue3 = skillAction.action_value_3;
-        this.actionValue4 = skillAction.action_value_4;
-        this.actionValue5 = skillAction.action_value_5;
-        this.actionValue6 = skillAction.action_value_6;
-        this.actionValue7 = skillAction.action_value_7;
+        this.actionValue1 = new DoubleValue(skillAction.action_value_1, new eActionValue(eActionValue.VALUE1));
+        this.actionValue2 = new DoubleValue(skillAction.action_value_2, new eActionValue(eActionValue.VALUE2));
+        this.actionValue3 = new DoubleValue(skillAction.action_value_3, new eActionValue(eActionValue.VALUE3));
+        this.actionValue4 = new DoubleValue(skillAction.action_value_4, new eActionValue(eActionValue.VALUE4));
+        this.actionValue5 = new DoubleValue(skillAction.action_value_5, new eActionValue(eActionValue.VALUE5));
+        this.actionValue6 = new DoubleValue(skillAction.action_value_6, new eActionValue(eActionValue.VALUE6));
+        this.actionValue7 = new DoubleValue(skillAction.action_value_7, new eActionValue(eActionValue.VALUE7));
         this.rawActionValues = [
-            this.actionValue1,
-            this.actionValue2,
-            this.actionValue3,
-            this.actionValue4,
-            this.actionValue5,
-            this.actionValue6,
-            this.actionValue7,
+            skillAction.action_value_1,
+            skillAction.action_value_2,
+            skillAction.action_value_3,
+            skillAction.action_value_4,
+            skillAction.action_value_5,
+            skillAction.action_value_6,
+            skillAction.action_value_7,
         ].filter((value) => value > 0);
         this.actionDetail1 = skillAction.action_detail_1;
         this.actionDetail2 = skillAction.action_detail_2;
@@ -30,7 +31,7 @@ export class ActionParameter {
             this.actionDetail3,
         ].filter((value) => value > 0);
     }
-    buildExpression(actionValues = this.actionValues) {
+    buildExpression(actionValues = this.actionValues, hasBracesIfNeeded = false) {
         let expression = "";
         for (const value of actionValues) {
             let part = "";
@@ -39,23 +40,23 @@ export class ActionParameter {
                     continue;
                 }
                 else if (value.initial === 0) {
-                    part += `${value.perLevel} * スキルLv`;
+                    part += `__\`${value.perLevelValue.description}\`__${value.perLevel} \* スキルLv`;
                 }
                 else if (value.perLevel === 0) {
-                    part += value.initial;
+                    part += `__\`${value.initialValue.description}\`__${value.initial}`;
                 }
                 else {
-                    part += `${value.initial} + ${value.perLevel} * スキルLv`;
+                    part += `__\`${value.initialValue.description}\`__${value.initial} + __\`${value.perLevelValue.description}\`__${value.perLevel} \* スキルLv`;
                 }
                 if (value.key !== null) {
                     if (value.initial === 0 && value.perLevel === 0) {
                         continue;
                     }
                     else if (value.initial === 0 || value.perLevel === 0) {
-                        part += ` * ${value.key.description()}`;
+                        part += ` \* ${value.key.description()}`;
                     }
                     else {
-                        part = `(${part}) * ${value.key.description()}`;
+                        part = `(${part}) \* ${value.key.description()}`;
                     }
                 }
             }
@@ -66,7 +67,14 @@ export class ActionParameter {
         if (expression.length === 0) {
             return "0";
         }
-        return expression.replace(/ \+ $/, "");
+        expression = expression.replace(/ \+ $/, "");
+        return hasBracesIfNeeded ? this.bracesIfNeeded(expression) : expression;
+    }
+    bracesIfNeeded(content) {
+        if (content.includes("+")) {
+            return `(${content})`;
+        }
+        return content;
     }
     localizedDetail() {
         if (this.rawActionType === 0) {
@@ -76,10 +84,35 @@ export class ActionParameter {
     }
 }
 export class ActionValue {
-    constructor(initial, perLevel, key) {
-        this.initial = initial;
-        this.perLevel = perLevel;
-        this.key = key;
+    constructor(a, b, c, d, e) {
+        if (typeof a === "number" &&
+            typeof b === "number" &&
+            c instanceof eActionValue &&
+            d instanceof eActionValue &&
+            e instanceof PropertyKey) {
+            this.initialValue = new DoubleValue(a, c);
+            this.perLevelValue = new DoubleValue(b, d);
+            this.initial = a;
+            this.perLevel = b;
+            this.key = e;
+        }
+        else if (a instanceof DoubleValue &&
+            b instanceof DoubleValue &&
+            (c instanceof PropertyKey || c === null)) {
+            this.initial = a.value;
+            this.perLevel = b.value;
+            this.key = c;
+            this.initialValue = a;
+            this.perLevelValue = b;
+        }
+        else {
+            // エラーが出るので一応書いてあるがこのコードに到達することはない
+            this.initial = 0;
+            this.perLevel = 0;
+            this.key = null;
+            this.initialValue = new DoubleValue(0, new eActionValue(eActionValue.VALUE1));
+            this.perLevelValue = new DoubleValue(0, new eActionValue(eActionValue.VALUE1));
+        }
     }
 }
 export class CriticalModifier {
@@ -176,3 +209,10 @@ eActionValue.VALUE4 = 3;
 eActionValue.VALUE5 = 4;
 eActionValue.VALUE6 = 5;
 eActionValue.VALUE7 = 6;
+export class DoubleValue {
+    constructor(value, index) {
+        this.value = value;
+        this.index = index;
+        this.description = index.description();
+    }
+}

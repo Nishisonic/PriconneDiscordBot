@@ -27,21 +27,21 @@ export class TriggerAction extends ActionParameter {
     localizedDetail() {
         switch (this.triggerType.value) {
             case TriggerType.hp:
-                return `トリガー：HPが [${this.actionValue3}%] 以下の時発動。`;
+                return `トリガー：HPが [${this.actionValue3.value}%] 以下の時発動。`;
             case TriggerType.limitTime:
-                return `トリガー：戦闘の残り時間は [${this.actionValue3}] 秒以下の時発動。`;
+                return `トリガー：戦闘の残り時間は [${this.actionValue3.value}] 秒以下の時発動。`;
             case TriggerType.damage:
-                return `トリガー：ダメージを受けた時 [${this.actionValue1}%] の確率で発動。`;
+                return `トリガー：ダメージを受けた時 [${this.actionValue1.value}%] の確率で発動。`;
             case TriggerType.dead:
-                return `トリガー：死亡時 [${this.actionValue1}%] の確率で発動。`;
+                return `トリガー：死亡時 [${this.actionValue1.value}%] の確率で発動。`;
             case TriggerType.critical:
-                return `トリガー：クリティカルダメージを受けた時 [${this.actionValue1}%] の確率で発動。`;
+                return `トリガー：クリティカルダメージを受けた時 [${this.actionValue1.value}%] の確率で発動。`;
             case TriggerType.stealthFree:
-                return `トリガー：潜伏時 [${this.actionValue1}%] の確率で発動。`;
+                return `トリガー：潜伏時 [${this.actionValue1.value}%] の確率で発動。`;
             case TriggerType.Break:
-                return `トリガー：Breakされた時 [${this.actionValue1}%] の確率で発動、効果時間 [${this.actionValue3}] 秒。`;
+                return `トリガー：Breakされた時 [${this.actionValue1.value}%] の確率で発動、効果時間 [${this.actionValue3.value}] 秒。`;
             case TriggerType.dot:
-                return `トリガー：継続ダメージを受けた時 [${this.actionValue1}%] の確率で発動。`;
+                return `トリガー：継続ダメージを受けた時 [${this.actionValue1.value}%] の確率で発動。`;
             case TriggerType.allBreak:
                 return "トリガー：すべての部位がBreakされた時発動。";
             default:

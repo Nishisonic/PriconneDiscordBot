@@ -11,7 +11,7 @@ export class DamageChargeAction extends ActionParameter {
 
   localizedDetail() {
     return `[${
-      this.actionValue3
-    }] 秒チャージし、次のアクションの効果を [${this.buildExpression()} * チャージ中受けたダメージ] アップさせる。`;
+      this.actionValue3.value
+    }] 秒チャージし、次のアクションの効果を [${this.buildExpression()} \* チャージ中受けたダメージ] アップさせる。`;
   }
 }

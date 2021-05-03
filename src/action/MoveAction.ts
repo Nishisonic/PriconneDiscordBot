@@ -21,9 +21,9 @@ export class MoveAction extends ActionParameter {
   }
 
   localizedDetail() {
-    const direction = this.actionValue1 > 0 ? "前" : "後ろ";
-    const speed = this.actionValue2;
-    const distance = Math.floor(Math.abs(this.actionValue1));
+    const direction = this.actionValue1.value > 0 ? "前" : "後ろ";
+    const speed = this.actionValue2.value;
+    const distance = Math.floor(Math.abs(this.actionValue1.value));
 
     switch (this.moveType) {
       case MoveType.targetReturn:

@@ -31,12 +31,14 @@ export class ActionByHitCountAction extends ActionParameter {
   }
   localizedDetail() {
     const limitation =
-      this.actionValue5 > 0 ? `（上限は ${this.actionValue5} 回）` : "";
+      this.actionValue5.value > 0
+        ? `（上限は ${this.actionValue5.value} 回）`
+        : "";
 
     switch (this.conditionType.value) {
       case ConditionType.hit:
         return `[${this.buildExpression(this.durationValues)}] 秒内、[${
-          this.actionValue1
+          this.actionValue1.value
         }] Hitするたびに [アクション${
           this.actionDetail2 % 10
         }] ${limitation}を使う。`;

@@ -17,19 +17,19 @@ KnockType.backLimited = 6;
 export class KnockAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);
-        this.knockType = KnockType.parse(skillAction.action_detail_1);
+        this.knockType = KnockType.parse(this.actionDetail1);
     }
     localizedDetail() {
         switch (this.knockType.value) {
             case KnockType.upDown:
-                return `${this.targetParameter.buildTargetClause()}をノックアップする、高度 [${this.actionValue1}]。`;
+                return `${this.targetParameter.buildTargetClause()}をノックアップする、高度 [${this.actionValue1.value}]。`;
             case KnockType.back:
             case KnockType.backLimited:
-                if (this.actionValue1 >= 0) {
-                    return `${this.targetParameter.buildTargetClause()}をノックバックする、距離 [${this.actionValue1}]。`;
+                if (this.actionValue1.value >= 0) {
+                    return `${this.targetParameter.buildTargetClause()}をノックバックする、距離 [${this.actionValue1.value}]。`;
                 }
                 return `${this.targetParameter.buildTargetClause()}を引き寄せる、距離 [${-super
-                    .actionValue1}]。`;
+                    .actionValue1.value}]。`;
             default:
                 return super.localizedDetail();
         }

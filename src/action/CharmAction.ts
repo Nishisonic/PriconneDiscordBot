@@ -1,5 +1,9 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  eActionValue,
+} from "./ActionParameter.js";
 
 class CharmType {
   static readonly unknown = -1;
@@ -30,14 +34,22 @@ export class CharmAction extends ActionParameter {
     switch (this.charmType.value) {
       case CharmType.charm:
         this.chanceValues.push(
-          new ActionValue(this.actionValue3, this.actionValue4 * 100, null)
+          new ActionValue(
+            this.actionValue3.value,
+            this.actionValue4.value * 100,
+            new eActionValue(eActionValue.VALUE3),
+            new eActionValue(eActionValue.VALUE4),
+            null
+          )
         );
         break;
       default:
         this.chanceValues.push(
           new ActionValue(
-            this.actionValue3 * 100,
-            this.actionValue4 * 100,
+            this.actionValue3.value * 100,
+            this.actionValue4.value * 100,
+            new eActionValue(eActionValue.VALUE3),
+            new eActionValue(eActionValue.VALUE4),
             null
           )
         );

@@ -45,13 +45,13 @@ export class SummonAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);
         this.side = Side.parse(this.actionDetail3);
-        this.unitType = UnitType.parse(this.actionValue5);
+        this.unitType = UnitType.parse(this.actionValue5.value);
     }
     localizedDetail() {
-        if (this.actionValue7 > 0) {
-            return `${this.targetParameter.buildTargetClause()}の前方 [${this.actionValue7}] の位置で、召喚物 [ID: ${this.actionDetail2}] を召喚する。`;
+        if (this.actionValue7.value > 0) {
+            return `${this.targetParameter.buildTargetClause()}の前方 [${this.actionValue7.value}] の位置で、召喚物 [ID: ${this.actionDetail2}] を召喚する。`;
         }
-        if (this.actionValue7 < 0) {
+        if (this.actionValue7.value < 0) {
             return `${this.targetParameter.buildTargetClause()}の後方 [${-this
                 .actionValue7}] の位置で、召喚物 [ID: ${this.actionDetail2}] を召喚する。`;
         }

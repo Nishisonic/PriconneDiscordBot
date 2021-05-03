@@ -15,9 +15,9 @@ export class MoveAction extends ActionParameter {
         this.moveType = skillAction.action_detail_1;
     }
     localizedDetail() {
-        const direction = this.actionValue1 > 0 ? "前" : "後ろ";
-        const speed = this.actionValue2;
-        const distance = Math.floor(Math.abs(this.actionValue1));
+        const direction = this.actionValue1.value > 0 ? "前" : "後ろ";
+        const speed = this.actionValue2.value;
+        const distance = Math.floor(Math.abs(this.actionValue1.value));
         switch (this.moveType) {
             case MoveType.targetReturn:
                 return `${this.targetParameter.buildTargetClause()}の位置まで移動し、スキル終了後元の位置に戻る。`;

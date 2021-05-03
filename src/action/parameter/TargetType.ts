@@ -191,7 +191,7 @@ export class TargetType {
     localizedCount: string | null
   ) {
     const localizedModifier =
-      localizedCount == null ? targetCount.description() : localizedCount;
+      localizedCount === null ? targetCount.description() : localizedCount;
     switch (this.value) {
       case TargetType.unknown:
         return `不明種類${localizedModifier}`;
@@ -262,13 +262,13 @@ export class TargetType {
     localizedNumber: string | null
   ) {
     if (
-      targetNumber.value == TargetNumber.second ||
-      targetNumber.value == TargetNumber.third ||
-      targetNumber.value == TargetNumber.fourth ||
-      targetNumber.value == TargetNumber.fifth
+      targetNumber.value === TargetNumber.second ||
+      targetNumber.value === TargetNumber.third ||
+      targetNumber.value === TargetNumber.fourth ||
+      targetNumber.value === TargetNumber.fifth
     ) {
       const localizedModifier =
-        localizedNumber == null ? targetNumber.description() : localizedNumber;
+        localizedNumber === null ? targetNumber.description() : localizedNumber;
       switch (this.value) {
         case TargetType.unknown:
           return `${localizedModifier}不明種類`;

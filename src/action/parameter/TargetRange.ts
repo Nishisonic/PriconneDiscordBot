@@ -8,9 +8,9 @@ export class TargetRange {
   rangeType: number;
 
   private constructor(range: number) {
-    if (range == -1) {
+    if (range === -1) {
       this.rangeType = TargetRange.INFINITE;
-    } else if (range == 0) {
+    } else if (range === 0) {
       this.rangeType = TargetRange.ZERO;
     } else if (range > 0 && range < 2160) {
       this.rangeType = TargetRange.FINITE;

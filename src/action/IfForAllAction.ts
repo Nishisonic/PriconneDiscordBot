@@ -28,17 +28,17 @@ export class IfForAllAction extends ActionParameter {
         this.trueClause = `${this.targetParameter.buildTargetClause()}が${this.ifType.description()}の場合，[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
-      } else if (this.actionDetail1 == 599) {
+      } else if (this.actionDetail1 === 599) {
         this.trueClause = `${this.targetParameter.buildTargetClause()}が継続ダメージデバフを掛けられている場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
       } else if (this.actionDetail1 >= 600 && this.actionDetail1 < 700) {
         this.trueClause = `${this.targetParameter.buildTargetClause()}が持っているマーク [ID: ${
           this.actionDetail1 - 600
-        }] のスタック数が${this.actionValue3}以上の場合、[アクション${
+        }] のスタック数が${this.actionValue3.value}以上の場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
-      } else if (this.actionDetail1 == 700) {
+      } else if (this.actionDetail1 === 700) {
         this.trueClause = `${this.targetParameter.buildTargetClause()}が単独の場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
@@ -46,9 +46,9 @@ export class IfForAllAction extends ActionParameter {
         this.trueClause = `潜伏状態のユニットを除いて、${this.targetParameter.buildTargetClause()}の数が${
           this.actionDetail1 - 700
         }の場合、[アクション${this.actionDetail2 % 10}] を使う。`;
-      } else if (this.actionDetail1 == 720) {
+      } else if (this.actionDetail1 === 720) {
         this.trueClause = `潜伏状態のユニットを除いて、${this.targetParameter.buildTargetClause()}の中ユニット[ID: ${
-          this.actionValue3
+          this.actionValue3.value
         }]が存在する場合、[アクション${this.actionDetail2 % 10}] を使う。`;
       } else if (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) {
         this.trueClause = `${this.targetParameter.buildTargetClause(
@@ -56,11 +56,11 @@ export class IfForAllAction extends ActionParameter {
         )}のHPが [${this.actionDetail1 - 900}%] 以下の場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
-      } else if (this.actionDetail1 == 1000) {
+      } else if (this.actionDetail1 === 1000) {
         this.trueClause = `前のアクションがターゲットを倒した場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
-      } else if (this.actionDetail1 == 1001) {
+      } else if (this.actionDetail1 === 1001) {
         this.trueClause = `このスキルがクリティカルした場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
@@ -90,17 +90,17 @@ export class IfForAllAction extends ActionParameter {
         this.falseClause = `${this.targetParameter.buildTargetClause()}が${this.ifType.description()}でない場合，[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
-      } else if (this.actionDetail1 == 599) {
+      } else if (this.actionDetail1 === 599) {
         this.falseClause = `${this.targetParameter.buildTargetClause()}が継続ダメージデバフを掛けられていない場合、[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
       } else if (this.actionDetail1 >= 600 && this.actionDetail1 < 700) {
         this.falseClause = `${this.targetParameter.buildTargetClause()}が持っているマーク [ID: ${
           this.actionDetail1 - 600
-        }] のスタック数が [${this.actionValue3}] 未満の場合、[アクション${
+        }] のスタック数が [${this.actionValue3.value}] 未満の場合、[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
-      } else if (this.actionDetail1 == 700) {
+      } else if (this.actionDetail1 === 700) {
         this.falseClause = `${this.targetParameter.buildTargetClause()}が単独でない場合、[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
@@ -108,9 +108,9 @@ export class IfForAllAction extends ActionParameter {
         this.falseClause = `潜伏状態のユニットを除いて、${this.targetParameter.buildTargetClause()}の数が [${
           this.actionDetail1 - 700
         }] でない場合、[アクション${this.actionDetail3 % 10}] を使う。`;
-      } else if (this.actionDetail1 == 720) {
+      } else if (this.actionDetail1 === 720) {
         this.falseClause = `潜伏状態のユニットを除いて、${this.targetParameter.buildTargetClause()}の中ユニット[ID: ${
-          this.actionValue3
+          this.actionValue3.value
         }]が存在しない場合、[アクション${this.actionDetail3 % 10}] を使う。`;
       } else if (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) {
         this.falseClause = `${this.targetParameter.buildTargetClause(
@@ -118,11 +118,11 @@ export class IfForAllAction extends ActionParameter {
         )}のHPが [${this.actionDetail1 - 900}%] 以下でない場合、[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
-      } else if (this.actionDetail1 == 1000) {
+      } else if (this.actionDetail1 === 1000) {
         this.falseClause = `前のアクションがターゲットを倒してない場合、[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
-      } else if (this.actionDetail1 == 1001) {
+      } else if (this.actionDetail1 === 1001) {
         this.falseClause = `このスキルがクリティカルしなかった場合、[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
