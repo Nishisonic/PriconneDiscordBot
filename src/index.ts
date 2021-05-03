@@ -44,6 +44,7 @@ import {
   CampaignSchedule,
   CharaFortuneSchedule,
   ClanBattlePeriod,
+  SkillAction,
   SkillData,
   TowerSchedule,
   UnitAttackPattern,
@@ -51,6 +52,7 @@ import {
   UnitProfile,
   UnitSkillData,
 } from "./master";
+import { localizedDetail } from "./description.js";
 const twClient = new twitter(twConfig);
 const URL =
   "https://raw.githubusercontent.com/esterTion/redive_master_db_diff/master";
@@ -65,6 +67,7 @@ const TABLE_LIST = [
   "chara_fortune_schedule",
   "clan_battle_period",
   "tower_schedule",
+  "skill_action",
 ];
 
 const fetchDB = async () => {
@@ -79,7 +82,8 @@ const fetchDB = async () => {
   ).then(() => db);
 };
 
-const fetchVersion = async () => await (await fetch(`${URL}/!TruthVersion.txt`)).text();
+const fetchVersion = async () =>
+  await (await fetch(`${URL}/!TruthVersion.txt`)).text();
 
 let master = await fetchDB();
 let version: string = await fetchVersion();
@@ -664,31 +668,31 @@ async function skill(message: Message) {
       await message.channel.send(
         `${name}\n\n**攻撃パターン**\n${await getAttackPatternStringAsync(
           unit.unit_id
-        )}\n\n${skillFormat(
+        )}\n\n${await skillFormat(
           await findSkillDataAsync(unitSkillData.union_burst),
           "UB"
-        )}${skillFormat(
+        )}${await skillFormat(
           await findSkillDataAsync(unitSkillData.union_burst_evolution),
           "UB+",
           false
-        )}${skillFormat(
+        )}${await skillFormat(
           await findSkillDataAsync(unitSkillData.main_skill_1),
           "スキル1"
-        )}${skillFormat(
+        )}${await skillFormat(
           await findSkillDataAsync(unitSkillData.main_skill_evolution_1),
           "スキル1+",
           false
-        )}${skillFormat(
+        )}${await skillFormat(
           await findSkillDataAsync(unitSkillData.main_skill_2),
           "スキル2"
-        )}${skillFormat(
+        )}${await skillFormat(
           await findSkillDataAsync(unitSkillData.main_skill_evolution_2),
           "スキル2+",
           false
-        )}${skillFormat(
+        )}${await skillFormat(
           await findSkillDataAsync(unitSkillData.ex_skill_1),
           "EXスキル"
-        )}${skillFormat(
+        )}${await skillFormat(
           await findSkillDataAsync(unitSkillData.ex_skill_evolution_1),
           "EXスキル+",
           false
@@ -761,12 +765,47 @@ async function findUnitAttackPatternAsync(unitId: number) {
   `)) as Readonly<UnitAttackPattern>;
 }
 
-function skillFormat(skillData: SkillData | null, kind: string, disp = true) {
+async function skillFormat(
+  skillData: SkillData | null,
+  kind: string,
+  disp = true
+) {
   if (skillData) {
-    return `**[${kind}]** ${skillData.name}\n${skillData.description}\n\n`;
+    const detail = await toDetailSkillDescription(skillData);
+    return `**[${kind}]** ${skillData.name}\n${skillData.description}\n${detail}\n\n`;
   }
   if (!disp) {
     return "";
   }
   return `**[${kind}]** なし\n\n\n`;
+}
+
+async function findSkillActionAsync(actionId: number) {
+  return (await master.getAsync(`
+    SELECT *
+    FROM skill_action
+    WHERE action_id = '${actionId}'
+  `)) as Readonly<SkillAction>;
+}
+
+async function toDetailSkillDescription({
+  action_1,
+  action_2,
+  action_3,
+  action_4,
+  action_5,
+  action_6,
+  action_7,
+}: SkillData) {
+  return (
+    await Promise.all(
+      [action_1, action_2, action_3, action_4, action_5, action_6, action_7]
+        .filter((actionId) => actionId > 0)
+        .map(async (actionId, i) => {
+          const skillAction = await findSkillActionAsync(actionId);
+
+          return `[${i + 1}]${localizedDetail(skillAction)}`;
+        })
+    )
+  ).join("\n");
 }

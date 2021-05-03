@@ -1,0 +1,37 @@
+import { ActionParameter } from "./ActionParameter.js";
+class KnockType {
+    constructor(value) {
+        this.value = value;
+    }
+    static parse(value) {
+        return new this(value);
+    }
+}
+KnockType.unknown = 0;
+KnockType.upDown = 1;
+KnockType.up = 2;
+KnockType.back = 3;
+KnockType.moveTarget = 4;
+KnockType.moveTargetParaboric = 5;
+KnockType.backLimited = 6;
+export class KnockAction extends ActionParameter {
+    constructor(skillAction) {
+        super(skillAction);
+        this.knockType = KnockType.parse(skillAction.action_detail_1);
+    }
+    localizedDetail() {
+        switch (this.knockType.value) {
+            case KnockType.upDown:
+                return `${this.targetParameter.buildTargetClause()}をノックアップする、高度 [${this.actionValue1}]。`;
+            case KnockType.back:
+            case KnockType.backLimited:
+                if (this.actionValue1 >= 0) {
+                    return `${this.targetParameter.buildTargetClause()}をノックバックする、距離 [${this.actionValue1}]。`;
+                }
+                return `${this.targetParameter.buildTargetClause()}を引き寄せる、距離 [${-super
+                    .actionValue1}]。`;
+            default:
+                return super.localizedDetail();
+        }
+    }
+}

@@ -28,6 +28,7 @@ const twConfig = {
     access_token_key: (_f = process.env.ACCESS_TOKEN_KEY) !== null && _f !== void 0 ? _f : "",
     access_token_secret: (_g = process.env.ACCESS_TOKEN_SECRET) !== null && _g !== void 0 ? _g : "",
 };
+import { localizedDetail } from "./description.js";
 const twClient = new twitter(twConfig);
 const URL = "https://raw.githubusercontent.com/esterTion/redive_master_db_diff/master";
 const TABLE_LIST = [
@@ -41,6 +42,7 @@ const TABLE_LIST = [
     "chara_fortune_schedule",
     "clan_battle_period",
     "tower_schedule",
+    "skill_action",
 ];
 const fetchDB = async () => {
     const db = new Database(":memory:", sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE);
@@ -456,7 +458,7 @@ async function skill(message) {
     `));
         if (unit) {
             const unitSkillData = await findUnitSkillDataAsync(unit.unit_id);
-            await message.channel.send(`${name}\n\n**攻撃パターン**\n${await getAttackPatternStringAsync(unit.unit_id)}\n\n${skillFormat(await findSkillDataAsync(unitSkillData.union_burst), "UB")}${skillFormat(await findSkillDataAsync(unitSkillData.union_burst_evolution), "UB+", false)}${skillFormat(await findSkillDataAsync(unitSkillData.main_skill_1), "スキル1")}${skillFormat(await findSkillDataAsync(unitSkillData.main_skill_evolution_1), "スキル1+", false)}${skillFormat(await findSkillDataAsync(unitSkillData.main_skill_2), "スキル2")}${skillFormat(await findSkillDataAsync(unitSkillData.main_skill_evolution_2), "スキル2+", false)}${skillFormat(await findSkillDataAsync(unitSkillData.ex_skill_1), "EXスキル")}${skillFormat(await findSkillDataAsync(unitSkillData.ex_skill_evolution_1), "EXスキル+", false)}`);
+            await message.channel.send(`${name}\n\n**攻撃パターン**\n${await getAttackPatternStringAsync(unit.unit_id)}\n\n${await skillFormat(await findSkillDataAsync(unitSkillData.union_burst), "UB")}${await skillFormat(await findSkillDataAsync(unitSkillData.union_burst_evolution), "UB+", false)}${await skillFormat(await findSkillDataAsync(unitSkillData.main_skill_1), "スキル1")}${await skillFormat(await findSkillDataAsync(unitSkillData.main_skill_evolution_1), "スキル1+", false)}${await skillFormat(await findSkillDataAsync(unitSkillData.main_skill_2), "スキル2")}${await skillFormat(await findSkillDataAsync(unitSkillData.main_skill_evolution_2), "スキル2+", false)}${await skillFormat(await findSkillDataAsync(unitSkillData.ex_skill_1), "EXスキル")}${await skillFormat(await findSkillDataAsync(unitSkillData.ex_skill_evolution_1), "EXスキル+", false)}`);
         }
         else {
             await message.channel.send(`「${name}」のキャラ情報が見つかりませんでした。`);
@@ -515,12 +517,28 @@ async function findUnitAttackPatternAsync(unitId) {
     WHERE unit_id = '${unitId}'
   `));
 }
-function skillFormat(skillData, kind, disp = true) {
+async function skillFormat(skillData, kind, disp = true) {
     if (skillData) {
-        return `**[${kind}]** ${skillData.name}\n${skillData.description}\n\n`;
+        const detail = await toDetailSkillDescription(skillData);
+        return `**[${kind}]** ${skillData.name}\n${skillData.description}\n${detail}\n\n`;
     }
     if (!disp) {
         return "";
     }
     return `**[${kind}]** なし\n\n\n`;
+}
+async function findSkillActionAsync(actionId) {
+    return (await master.getAsync(`
+    SELECT *
+    FROM skill_action
+    WHERE action_id = '${actionId}'
+  `));
+}
+async function toDetailSkillDescription({ action_1, action_2, action_3, action_4, action_5, action_6, action_7, }) {
+    return (await Promise.all([action_1, action_2, action_3, action_4, action_5, action_6, action_7]
+        .filter((actionId) => actionId > 0)
+        .map(async (actionId, i) => {
+        const skillAction = await findSkillActionAsync(actionId);
+        return `[${i + 1}]${localizedDetail(skillAction)}`;
+    }))).join("\n");
 }
