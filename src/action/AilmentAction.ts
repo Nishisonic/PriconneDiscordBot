@@ -1,4 +1,9 @@
-import { ActionDetail, Ailment, AilmentType, DotDetail } from "../data/Ailment.js";
+import {
+  ActionDetail,
+  Ailment,
+  AilmentType,
+  DotDetail,
+} from "../data/Ailment.js";
 import { SkillAction } from "../master.js";
 import { ActionParameter, ActionValue } from "./ActionParameter.js";
 
@@ -34,12 +39,12 @@ export class AilmentAction extends ActionParameter {
     switch (this.ailment.ailmentType.value) {
       case AilmentType.action:
         let str = "";
-        switch (this.ailment.ailmentDetail?.detail) {
+        switch ((this.ailment.ailmentDetail?.detail as ActionDetail).value) {
           case ActionDetail.haste:
           case ActionDetail.slow:
-            str = `${this.targetParameter.buildTargetClause()}の行動速度を本来の [${Math.round(
-              (1 - this.actionValue1) * 100
-            )}%] にする、効果時間 [${this.buildExpression(
+            str = `${this.targetParameter.buildTargetClause()}の行動速度を本来の [${+this.buildExpression(
+              this.actionValues
+            ) * 100}%] にする、効果時間 [${this.buildExpression(
               this.durationValues
             )}] 秒。`;
             break;
@@ -69,7 +74,7 @@ export class AilmentAction extends ActionParameter {
         }
         return str;
       case AilmentType.dot:
-        switch (this.ailment.ailmentDetail?.detail) {
+        switch ((this.ailment.ailmentDetail?.detail as DotDetail).value) {
           case DotDetail.poison:
             return `${this.targetParameter.buildTargetClause()}を毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
               this.durationValues
