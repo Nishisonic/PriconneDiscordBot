@@ -22,6 +22,15 @@ client.on("message", async (message) => {
         await message.channel.send("・。・ｖ");
         return;
     }
+    if (message.content.match(/^.help$/)) {
+        await message.channel.send("```\n" +
+            ".birthday `キャラ名` キャラの誕生日を教えてくれます\n" +
+            ".schedule  　　　　  キャンペーンスケジュールを教えてくれます\n" +
+            ".skill `キャラ名`    キャラのスキルを教えてくれます\n" +
+            ".tl `Youtube URL`   PriLogを用いてTLを教えてくれます\n" +
+            "```");
+        return;
+    }
     await birthday(message);
     await schedule(message);
     await skill(message);
@@ -40,7 +49,7 @@ let lastUpdateTime = Date.now();
 cron.schedule("* * * * *", async () => await Promise.allSettled([
     nishikumaBroadcastTweetProcess(lastUpdateTime),
     priconneTweetProcess(lastUpdateTime),
-    presenceProcess()
+    presenceProcess(),
 ]).then(() => {
     lastUpdateTime = Date.now();
 }));
