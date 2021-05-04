@@ -1,4 +1,5 @@
 import http from "http";
+import cron from "node-cron";
 const server = http.createServer();
 import { schedule } from "./schedule.js";
 import { skill } from "./skill.js";
@@ -7,7 +8,7 @@ import { birthday, birthdayProcess } from "./birthday.js";
 import { arenaRemind } from "./arena.js";
 import { presenceProcess } from "./presence.js";
 import { nishikumaBroadcastTweetProcess, priconneTweetProcess, } from "./twitter.js";
-import cron from "node-cron";
+import { tl } from "./tl.js";
 server.on("request", function (_, res) {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end();
@@ -24,6 +25,7 @@ client.on("message", async (message) => {
     await birthday(message);
     await schedule(message);
     await skill(message);
+    await tl(message);
 });
 // 1日毎
 cron.schedule("0 0 * * *", async () => await birthdayProcess());

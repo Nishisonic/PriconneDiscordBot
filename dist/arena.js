@@ -7,4 +7,3 @@ export async function arenaRemind(minutes = 0) {
         ? `アリーナ締切まで【${minutes}】分前`
         : "-----アリーナ締切-----");
 }
-;

@@ -12,6 +12,7 @@ import {
   nishikumaBroadcastTweetProcess,
   priconneTweetProcess,
 } from "./twitter.js";
+import { tl } from "./tl.js";
 
 server.on("request", function (_, res) {
   res.writeHead(200, { "Content-Type": "text/plain" });
@@ -31,6 +32,7 @@ client.on("message", async (message) => {
   await birthday(message);
   await schedule(message);
   await skill(message);
+  await tl(message);
 });
 
 // 1日毎

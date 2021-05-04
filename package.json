@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.6",
     "date-fns": "^2.16.1",
     "discord.js": "^12.5.1",
     "http": "0.0.1-security",
