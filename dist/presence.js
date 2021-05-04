@@ -5,7 +5,7 @@ export async function presenceProcess() {
     const date = Date.now();
     return (_a = client.user) === null || _a === void 0 ? void 0 : _a.setPresence({
         activity: {
-            name: `${format(date, "HH:mm")} JST`,
+            name: `.help - ${format(date, "HH:mm")} JST`,
             type: "LISTENING",
         },
     });
