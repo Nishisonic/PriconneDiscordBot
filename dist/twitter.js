@@ -1,7 +1,6 @@
 var _a, _b, _c, _d, _e, _f;
 import twitter from "twitter";
 import retryPromise from "ts-retry-promise";
-import cron from "node-cron";
 import client from "./discordClient.js";
 const CHAT = (_a = process.env.CHAT) !== null && _a !== void 0 ? _a : "";
 const OFFICIAL = (_b = process.env.OFFICIAL) !== null && _b !== void 0 ? _b : "";
@@ -18,7 +17,7 @@ const getUserTimelineRetryAsync = async (params, retries = 5) => await retryProm
     retries,
 })();
 const NICO_LEPO = '<a href="http://www.nicovideo.jp/" rel="nofollow">niconico ニコレポ連携</a>';
-const nishikumaBroadcastTweetProcess = async (lastUpdateTime) => {
+export async function nishikumaBroadcastTweetProcess(lastUpdateTime) {
     const params = { screen_name: "nishikkuma" };
     const tweets = (await getUserTimelineRetryAsync(params));
     return Promise.allSettled(tweets
@@ -29,8 +28,8 @@ const nishikumaBroadcastTweetProcess = async (lastUpdateTime) => {
         const channel = (await client.channels.fetch(CHAT));
         return await channel.send(tweet.text.replace(/^【生放送】(.*) を開始しました。.* #(.*)$/, "$1\nhttps://live2.nicovideo.jp/watch/$2"));
     }));
-};
-const priconneTweetProcess = async (lastUpdateTime) => {
+}
+export async function priconneTweetProcess(lastUpdateTime) {
     const params = { screen_name: "priconne_redive" };
     const tweets = (await getUserTimelineRetryAsync(params));
     return Promise.allSettled(tweets
@@ -39,11 +38,4 @@ const priconneTweetProcess = async (lastUpdateTime) => {
         const channel = (await client.channels.fetch(OFFICIAL));
         return await channel.send(`https://twitter.com/${params.screen_name}/status/${tweet.id_str}`);
     }));
-};
-let lastUpdateTime = Date.now();
-cron.schedule("* * * * *", async () => await Promise.allSettled([
-    nishikumaBroadcastTweetProcess(lastUpdateTime),
-    priconneTweetProcess(lastUpdateTime),
-]).then(() => {
-    lastUpdateTime = Date.now();
-}));
+}

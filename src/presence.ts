@@ -1,8 +1,7 @@
 import client from "./discordClient.js";
-import cron from "node-cron";
 import format from "date-fns/format/index.js";
 
-const presenceProcess = async () => {
+export async function presenceProcess() {
   const date = Date.now();
 
   return client.user?.setPresence({
@@ -11,6 +10,4 @@ const presenceProcess = async () => {
       type: "LISTENING",
     },
   });
-};
-
-cron.schedule("* * * * *", async () => await presenceProcess());
+}

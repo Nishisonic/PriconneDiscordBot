@@ -1,6 +1,5 @@
 import getMonth from "date-fns/getMonth/index.js";
 import getDate from "date-fns/getDate/index.js";
-import cron from "node-cron";
 import { TextChannel, DMChannel, NewsChannel } from "discord.js";
 import { Message } from "discord.js";
 import { master } from "./db.js";
@@ -29,7 +28,7 @@ export async function birthday(message: Message) {
   }
 }
 
-const birthdayProcess = async () => {
+export async function birthdayProcess() {
   const date = Date.now();
   const unitNames = (await master.allAsync(`
       SELECT unit_name
@@ -39,7 +38,6 @@ const birthdayProcess = async () => {
       WHERE birth_month = '${getMonth(date) + 1}'
       AND birth_day = '${getDate(date)}'
     `)) as Readonly<UnitProfile[]>;
-  console.log(unitNames);
 
   if (unitNames.length > 0) {
     const channel = (await client.channels.fetch(CHAT)) as
@@ -53,6 +51,5 @@ const birthdayProcess = async () => {
     );
   }
   return null;
-};
+}
 
-cron.schedule("0 0 * * *", async () => await birthdayProcess());

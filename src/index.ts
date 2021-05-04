@@ -1,14 +1,17 @@
 import http from "http";
+import cron from "node-cron";
 const server = http.createServer();
 
 import { schedule } from "./schedule.js";
 import { skill } from "./skill.js";
-import { birthday } from "./birthday.js";
 import client from "./discordClient.js";
-import {} from "./arena.js";
-import {} from "./birthday.js";
-import {} from "./presence.js";
-import {} from "./twitter.js";
+import { birthday, birthdayProcess } from "./birthday.js";
+import { arenaRemind } from "./arena.js";
+import { presenceProcess } from "./presence.js";
+import {
+  nishikumaBroadcastTweetProcess,
+  priconneTweetProcess,
+} from "./twitter.js";
 
 server.on("request", function (_, res) {
   res.writeHead(200, { "Content-Type": "text/plain" });
@@ -29,3 +32,25 @@ client.on("message", async (message) => {
   await schedule(message);
   await skill(message);
 });
+
+// 1日毎
+cron.schedule("0 0 * * *", async () => await birthdayProcess());
+// 14:30
+cron.schedule("30 14 * * *", async () => await arenaRemind(30));
+// 14:55
+cron.schedule("55 14 * * *", async () => await arenaRemind(5));
+// 15:00
+cron.schedule("0 15 * * *", async () => await arenaRemind());
+// 1分毎
+let lastUpdateTime = Date.now();
+cron.schedule(
+  "* * * * *",
+  async () =>
+    await Promise.allSettled([
+      nishikumaBroadcastTweetProcess(lastUpdateTime),
+      priconneTweetProcess(lastUpdateTime),
+      presenceProcess()
+    ]).then(() => {
+      lastUpdateTime = Date.now();
+    })
+);

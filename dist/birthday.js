@@ -1,7 +1,6 @@
 var _a;
 import getMonth from "date-fns/getMonth/index.js";
 import getDate from "date-fns/getDate/index.js";
-import cron from "node-cron";
 import { master } from "./db.js";
 import client from "./discordClient.js";
 const CHAT = (_a = process.env.CHAT) !== null && _a !== void 0 ? _a : "";
@@ -21,7 +20,7 @@ export async function birthday(message) {
         }
     }
 }
-const birthdayProcess = async () => {
+export async function birthdayProcess() {
     const date = Date.now();
     const unitNames = (await master.allAsync(`
       SELECT unit_name
@@ -31,7 +30,6 @@ const birthdayProcess = async () => {
       WHERE birth_month = '${getMonth(date) + 1}'
       AND birth_day = '${getDate(date)}'
     `));
-    console.log(unitNames);
     if (unitNames.length > 0) {
         const channel = (await client.channels.fetch(CHAT));
         return await channel.send(`【Happy Birthday♪】**${unitNames
@@ -39,5 +37,4 @@ const birthdayProcess = async () => {
             .join(", ")}**`);
     }
     return null;
-};
-cron.schedule("0 0 * * *", async () => await birthdayProcess());
+}
