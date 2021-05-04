@@ -70,6 +70,193 @@ import { TriggerAction } from "./action/TriggerAction.js";
 import { UBChangeTimeAction } from "./action/UBChangeTimeAction.js";
 import { UpperLimitAttackAction } from "./action/UpperLimitAttackAction.js";
 import { WaveStartIdleAction } from "./action/WaveStartIdleAction.js";
+import { master } from "./db.js";
+export async function skill(message) {
+    if (message.content.match(/^\.skill .+$/)) {
+        const name = message.content
+            .replace(/^\.skill (.+)$/, "$1")
+            .replace(/\(/g, "（")
+            .replace(/\)/g, "）");
+        const unit = (await master.getAsync(`
+        SELECT *
+        FROM unit_data
+        WHERE unit_name = '${name}'
+      `));
+        if (unit) {
+            const unitSkillData = await findUnitSkillDataAsync(unit.unit_id);
+            const attackPatternMessage = await getAttackPatternStringAsync(unit.unit_id);
+            const skillMessage = (await Promise.all([
+                new SkillDisp(unitSkillData.union_burst, "UB"),
+                new SkillDisp(unitSkillData.union_burst_evolution, "UB+"),
+                new SkillDisp(unitSkillData.main_skill_1, "スキル1"),
+                new SkillDisp(unitSkillData.main_skill_evolution_1, "スキル1+"),
+                new SkillDisp(unitSkillData.main_skill_2, "スキル2"),
+                new SkillDisp(unitSkillData.main_skill_evolution_2, "スキル2+"),
+                new SkillDisp(unitSkillData.main_skill_3, "スキル3"),
+                new SkillDisp(unitSkillData.main_skill_4, "スキル4"),
+                new SkillDisp(unitSkillData.main_skill_5, "スキル5"),
+                new SkillDisp(unitSkillData.main_skill_6, "スキル6"),
+                new SkillDisp(unitSkillData.main_skill_7, "スキル7"),
+                new SkillDisp(unitSkillData.main_skill_8, "スキル8"),
+                new SkillDisp(unitSkillData.main_skill_9, "スキル9"),
+                new SkillDisp(unitSkillData.main_skill_10, "スキル10"),
+                new SkillDisp(unitSkillData.ex_skill_1, "EXスキル1"),
+                new SkillDisp(unitSkillData.ex_skill_evolution_1, "EXスキル1+"),
+                new SkillDisp(unitSkillData.ex_skill_2, "EXスキル2"),
+                new SkillDisp(unitSkillData.ex_skill_evolution_2, "EXスキル2+"),
+                new SkillDisp(unitSkillData.ex_skill_3, "EXスキル3"),
+                new SkillDisp(unitSkillData.ex_skill_evolution_3, "EXスキル3+"),
+                new SkillDisp(unitSkillData.ex_skill_4, "EXスキル4"),
+                new SkillDisp(unitSkillData.ex_skill_evolution_4, "EXスキル4+"),
+                new SkillDisp(unitSkillData.ex_skill_5, "EXスキル5"),
+                new SkillDisp(unitSkillData.ex_skill_evolution_5, "EXスキル5+"),
+                new SkillDisp(unitSkillData.sp_skill_1, "SPスキル1"),
+                new SkillDisp(unitSkillData.sp_skill_evolution_1, "SPスキル1+"),
+                new SkillDisp(unitSkillData.sp_skill_2, "SPスキル2"),
+                new SkillDisp(unitSkillData.sp_skill_evolution_2, "SPスキル2+"),
+                new SkillDisp(unitSkillData.sp_skill_3, "SPスキル3"),
+                new SkillDisp(unitSkillData.sp_skill_4, "SPスキル4"),
+                new SkillDisp(unitSkillData.sp_skill_5, "SPスキル5"),
+            ].map(async ({ skillId, kind }) => await skillFormat(await findSkillDataAsync(skillId), kind)))).join("");
+            await message.channel.send(`${name}\n\n${attackPatternMessage}\n\n${skillMessage}`);
+        }
+        else {
+            await message.channel.send(`「${name}」のキャラ情報が見つかりませんでした。`);
+        }
+    }
+}
+class SkillDisp {
+    constructor(skillId, kind) {
+        this.skillId = skillId;
+        this.kind = kind;
+    }
+}
+async function findUnitSkillDataAsync(unitId) {
+    return (await master.getAsync(`
+      SELECT *
+      FROM unit_skill_data
+      WHERE unit_id = '${unitId}'
+    `));
+}
+async function findSkillDataAsync(skillId) {
+    return (await master.getAsync(`
+      SELECT *
+      FROM skill_data
+      WHERE skill_id = '${skillId}'
+    `));
+}
+async function getAttackPatternStringAsync(unitId) {
+    const patterns = await findUnitAttackPatternAsync(unitId);
+    return (patterns
+        .map((pattern, index) => {
+        const atkPatternList = [
+            pattern.atk_pattern_1,
+            pattern.atk_pattern_2,
+            pattern.atk_pattern_3,
+            pattern.atk_pattern_4,
+            pattern.atk_pattern_5,
+            pattern.atk_pattern_6,
+            pattern.atk_pattern_7,
+            pattern.atk_pattern_8,
+            pattern.atk_pattern_9,
+            pattern.atk_pattern_10,
+            pattern.atk_pattern_11,
+            pattern.atk_pattern_12,
+            pattern.atk_pattern_13,
+            pattern.atk_pattern_14,
+            pattern.atk_pattern_15,
+            pattern.atk_pattern_16,
+            pattern.atk_pattern_17,
+            pattern.atk_pattern_18,
+            pattern.atk_pattern_19,
+            pattern.atk_pattern_20,
+        ].filter((value) => value > 0);
+        const loopStart = pattern.loop_start;
+        const loopEnd = pattern.loop_end;
+        return atkPatternList.reduce((p, pattern, i) => {
+            const attack = `${i + 1 === loopStart ? "[" : ""}${toAttackString(pattern)}${i + 1 === loopEnd ? "]" : ""}`;
+            return i > 0 ? `${p}→${attack}` : `${p}${attack}`;
+        }, `**行動パターン${index + 1}**\n`);
+    })
+        .join("\n") + "\n(SPスキルは絵文字で表示されます)");
+}
+function toAttackString(pattern) {
+    switch (pattern) {
+        case 1:
+            return "通";
+        case 1001:
+            return "１";
+        case 2001:
+            return ":one:";
+        case 1002:
+            return "２";
+        case 2002:
+            return ":two:";
+        case 1003:
+            return "３";
+        case 2003:
+            return ":three:";
+        case 1004:
+            return "４";
+        case 2004:
+            return ":four:";
+        case 1005:
+            return "５";
+        case 2005:
+            return ":five:";
+        case 1006:
+            return "６";
+        case 2006:
+            return ":six:";
+        case 1007:
+            return "７";
+        case 2007:
+            return ":seven:";
+        case 1008:
+            return "８";
+        case 2008:
+            return ":eight:";
+        case 1009:
+            return "９";
+        case 2009:
+            return ":nine:";
+        case 1010:
+            return "10";
+        case 2010:
+            return ":keycap_ten:";
+        default:
+            return "？";
+    }
+}
+async function findUnitAttackPatternAsync(unitId) {
+    return (await master.allAsync(`
+      SELECT *
+      FROM unit_attack_pattern
+      WHERE unit_id = '${unitId}'
+    `));
+}
+async function skillFormat(skillData, kind) {
+    if (skillData) {
+        const detail = await toDetailSkillDescription(skillData);
+        return `**[${kind}]** ${skillData.name}\`\n待機時間：${skillData.skill_cast_time}s\`\n${skillData.description}\n\`スキルアクション\`\n${detail}\n\n`;
+    }
+    return "";
+}
+async function findSkillActionAsync(actionId) {
+    return (await master.getAsync(`
+      SELECT *
+      FROM skill_action
+      WHERE action_id = '${actionId}'
+    `));
+}
+async function toDetailSkillDescription({ action_1, action_2, action_3, action_4, action_5, action_6, action_7, }) {
+    return (await Promise.all([action_1, action_2, action_3, action_4, action_5, action_6, action_7]
+        .filter((actionId) => actionId > 0)
+        .map(async (actionId, i) => {
+        const skillAction = await findSkillActionAsync(actionId);
+        return `[${i + 1}]${localizedDetail(skillAction)}`;
+    }))).join("\n");
+}
 export function localizedDetail(skillAction) {
     return (() => {
         switch (skillAction.action_type) {
