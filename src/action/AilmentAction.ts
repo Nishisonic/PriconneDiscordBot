@@ -34,9 +34,9 @@ export class AilmentAction extends ActionParameter {
         switch ((this.ailment.ailmentDetail?.detail as ActionDetail).value) {
           case ActionDetail.haste:
           case ActionDetail.slow:
-            str = `${this.targetParameter.buildTargetClause()}の行動速度を本来の [${
-              +this.buildExpression(this.actionValues) * 100
-            }%] にする、効果時間 [${this.buildExpression(
+            str = `${this.targetParameter.buildTargetClause()}の行動速度を本来の [${this.buildExpression(
+              this.actionValues
+            )} * 100%] にする、効果時間 [${this.buildExpression(
               this.durationValues
             )}] 秒。`;
             break;
