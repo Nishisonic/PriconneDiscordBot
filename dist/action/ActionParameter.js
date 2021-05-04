@@ -40,13 +40,13 @@ export class ActionParameter {
                     continue;
                 }
                 else if (value.initial === 0) {
-                    part += `__\`${value.perLevelValue.description}\`__${value.perLevel} \* スキルLv`;
+                    part += `\`${value.perLevelValue.description}\`${value.perLevel} \* スキルLv`;
                 }
                 else if (value.perLevel === 0) {
-                    part += `__\`${value.initialValue.description}\`__${value.initial}`;
+                    part += `\`${value.initialValue.description}\`${value.initial}`;
                 }
                 else {
-                    part += `__\`${value.initialValue.description}\`__${value.initial} + __\`${value.perLevelValue.description}\`__${value.perLevel} \* スキルLv`;
+                    part += `\`${value.initialValue.description}\`${value.initial} + \`${value.perLevelValue.description}\`${value.perLevel} \* スキルLv`;
                 }
                 if (value.key !== null) {
                     if (value.initial === 0 && value.perLevel === 0) {
@@ -61,7 +61,7 @@ export class ActionParameter {
                 }
             }
             if (part.length > 0) {
-                expression += `${part} + `;
+                expression += `${part} \+ `;
             }
         }
         if (expression.length === 0) {

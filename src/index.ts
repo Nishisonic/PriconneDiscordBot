@@ -772,7 +772,7 @@ async function skillFormat(
 ) {
   if (skillData) {
     const detail = await toDetailSkillDescription(skillData);
-    return `**[${kind}]** ${skillData.name}\n${skillData.description}\n${detail}\n\n`;
+    return `**[${kind}]** ${skillData.name}\`\n待機時間：${skillData.skill_cast_time}s\`\n${skillData.description}\n\`スキルアクション\`\n${detail}\n\n`;
   }
   if (!disp) {
     return "";
