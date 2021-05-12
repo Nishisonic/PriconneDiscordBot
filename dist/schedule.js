@@ -142,12 +142,12 @@ async function getSessionScheduleMessageAsync() {
         .filter(({ start_time, end_time }) => new Date(end_time).getTime() >= nowTime &&
         nowTime >= new Date(start_time).getTime())
         .map(async ({ event_id }) => {
-        const eventGachaData = (await master.getAsync(`
+        const eventStoryData = (await master.getAsync(`
             SELECT *
-            FROM event_gacha_data
-            WHERE event_id = ${event_id}
+            FROM event_story_data
+            WHERE value = ${event_id}
         `));
-        return `・${eventGachaData.gacha_name}`;
+        return `・${eventStoryData.title}`;
     }));
     const sessionMessage = [
         ...uniqueWrap(schedule
@@ -255,20 +255,20 @@ async function getNextScheduleMessageAsync() {
     const hatsuneScheduleMessages = (await Promise.all(hatsuneSchedule
         .filter(({ start_time }) => new Date(start_time).getTime() >= nowTime)
         .map(async ({ start_time, end_time, event_id }) => {
-        const eventGachaData = (await master.getAsync(`
+        const eventStoryData = (await master.getAsync(`
               SELECT *
-              FROM event_gacha_data
-              WHERE event_id = ${event_id}
+              FROM event_story_data
+              WHERE value = ${event_id}
           `));
         return {
             start_time,
             end_time,
-            gacha_name: eventGachaData.gacha_name,
+            title: eventStoryData.title,
         };
     }))).reduce((p, hatsune) => {
         var _a;
         const dateString = `${format(new Date(hatsune.start_time), "yyyy-MM-dd")} ~ ${format(new Date(hatsune.end_time), "yyyy-MM-dd")}`;
-        p[dateString] = compileMessage((_a = p[dateString]) !== null && _a !== void 0 ? _a : "", hatsune.gacha_name);
+        p[dateString] = compileMessage((_a = p[dateString]) !== null && _a !== void 0 ? _a : "", hatsune.title);
         return p;
     }, {});
     const scheduleMessages = schedule

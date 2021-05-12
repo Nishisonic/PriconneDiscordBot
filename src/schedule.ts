@@ -8,7 +8,7 @@ import {
   ClanBattlePeriod,
   TowerSchedule,
   HatsuneSchedule,
-  EventGachaData,
+  EventStoryData,
 } from "./master";
 
 const CampaignCategory = new Map([
@@ -180,12 +180,12 @@ async function getSessionScheduleMessageAsync() {
           nowTime >= new Date(start_time).getTime()
       )
       .map(async ({ event_id }) => {
-        const eventGachaData = (await master.getAsync(`
+        const eventStoryData = (await master.getAsync(`
             SELECT *
-            FROM event_gacha_data
-            WHERE event_id = ${event_id}
-        `)) as Readonly<EventGachaData>;
-        return `・${eventGachaData.gacha_name}`;
+            FROM event_story_data
+            WHERE value = ${event_id}
+        `)) as Readonly<EventStoryData>;
+        return `・${eventStoryData.title}`;
       })
   );
 
@@ -324,15 +324,15 @@ async function getNextScheduleMessageAsync() {
       hatsuneSchedule
         .filter(({ start_time }) => new Date(start_time).getTime() >= nowTime)
         .map(async ({ start_time, end_time, event_id }) => {
-          const eventGachaData = (await master.getAsync(`
+          const eventStoryData = (await master.getAsync(`
               SELECT *
-              FROM event_gacha_data
-              WHERE event_id = ${event_id}
-          `)) as Readonly<EventGachaData>;
+              FROM event_story_data
+              WHERE value = ${event_id}
+          `)) as Readonly<EventStoryData>;
           return {
             start_time,
             end_time,
-            gacha_name: eventGachaData.gacha_name,
+            title: eventStoryData.title,
           };
         })
     )
@@ -342,7 +342,7 @@ async function getNextScheduleMessageAsync() {
       "yyyy-MM-dd"
     )} ~ ${format(new Date(hatsune.end_time), "yyyy-MM-dd")}`;
 
-    p[dateString] = compileMessage(p[dateString] ?? "", hatsune.gacha_name);
+    p[dateString] = compileMessage(p[dateString] ?? "", hatsune.title);
     return p;
   }, {});
 
@@ -430,9 +430,9 @@ function compileMessage(mes: string, text: string) {
   return result.join("・");
 }
 
-function assign(
-  ...arrays: { [name: string]: string }[]
-): { [name: string]: string } {
+function assign(...arrays: { [name: string]: string }[]): {
+  [name: string]: string;
+} {
   const result: { [name: string]: string } = {};
 
   for (const array of arrays) {

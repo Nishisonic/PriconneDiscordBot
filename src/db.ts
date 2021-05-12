@@ -17,7 +17,7 @@ const TABLE_LIST = [
   "tower_schedule",
   "skill_action",
   "hatsune_schedule",
-  "event_gacha_data",
+  "event_story_data",
   "chara_identity",
 ];
 

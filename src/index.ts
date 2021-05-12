@@ -29,7 +29,7 @@ client.on("message", async (message) => {
     await message.channel.send("・。・ｖ");
     return;
   }
-  if (message.content.match(/^.help$/)) {
+  if (message.content === ".help") {
     await message.channel.send(
       "```\n" +
         ".birthday `キャラ名` キャラの誕生日を教えてくれます\n" +
