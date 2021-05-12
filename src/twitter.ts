@@ -1,10 +1,6 @@
-import { TextChannel, DMChannel, NewsChannel } from "discord.js";
 import twitter, { RequestParams, ResponseData } from "twitter";
 import retryPromise from "ts-retry-promise";
-import client from "./discordClient.js";
-
-const CHAT = process.env.CHAT ?? "";
-const OFFICIAL = process.env.OFFICIAL ?? "";
+import { chatChannel, officialChannel } from "./discordClient.js";
 
 const twConfig = {
   consumer_key: process.env.CONSUMER_KEY ?? "",
@@ -53,11 +49,7 @@ export async function nishikumaBroadcastTweetProcess(lastUpdateTime: number) {
         ({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime
       )
       .map(async (tweet) => {
-        const channel = (await client.channels.fetch(CHAT)) as
-          | TextChannel
-          | DMChannel
-          | NewsChannel;
-        return await channel.send(
+        return await chatChannel.send(
           tweet.text.replace(
             /^【生放送】(.*) を開始しました。.* #(.*)$/,
             "$1\nhttps://live2.nicovideo.jp/watch/$2"
@@ -77,11 +69,7 @@ export async function priconneTweetProcess(lastUpdateTime: number) {
         ({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime
       )
       .map(async (tweet) => {
-        const channel = (await client.channels.fetch(OFFICIAL)) as
-          | TextChannel
-          | DMChannel
-          | NewsChannel;
-        return await channel.send(
+        return await officialChannel.send(
           `https://twitter.com/${params.screen_name}/status/${tweet.id_str}`
         );
       })

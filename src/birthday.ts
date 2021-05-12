@@ -1,12 +1,9 @@
 import getMonth from "date-fns/getMonth/index.js";
 import getDate from "date-fns/getDate/index.js";
-import { TextChannel, DMChannel, NewsChannel } from "discord.js";
 import { Message } from "discord.js";
 import { master } from "./db.js";
 import { UnitProfile } from "./master";
-import client from "./discordClient.js";
-
-const CHAT = process.env.CHAT ?? "";
+import { chatChannel } from "./discordClient.js";
 
 export async function birthday(message: Message) {
   if (message.content.match(/^\.birthday .+$/)) {
@@ -40,11 +37,7 @@ export async function birthdayProcess() {
     `)) as Readonly<UnitProfile[]>;
 
   if (unitNames.length > 0) {
-    const channel = (await client.channels.fetch(CHAT)) as
-      | TextChannel
-      | DMChannel
-      | NewsChannel;
-    return await channel.send(
+    return await chatChannel.send(
       `【Happy Birthday♪】**${unitNames
         .map(({ unit_name }) => unit_name)
         .join(", ")}**`

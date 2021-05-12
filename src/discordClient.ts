@@ -1,5 +1,7 @@
-import discord from "discord.js";
+import discord, { DMChannel, NewsChannel, TextChannel } from "discord.js";
 
+const CHAT = process.env.CHAT ?? "";
+const OFFICIAL = process.env.OFFICIAL ?? "";
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN ?? "";
 const client = new discord.Client();
 
@@ -17,3 +19,13 @@ client.on("ready", async () => {
 await client.login(DISCORD_BOT_TOKEN);
 
 export default client;
+
+export const chatChannel = (await client.channels.fetch(CHAT)) as
+  | TextChannel
+  | DMChannel
+  | NewsChannel;
+
+export const officialChannel = (await client.channels.fetch(OFFICIAL)) as
+  | TextChannel
+  | DMChannel
+  | NewsChannel;

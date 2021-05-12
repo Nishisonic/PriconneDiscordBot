@@ -1,14 +1,12 @@
-var _a, _b, _c, _d, _e, _f;
+var _a, _b, _c, _d;
 import twitter from "twitter";
 import retryPromise from "ts-retry-promise";
-import client from "./discordClient.js";
-const CHAT = (_a = process.env.CHAT) !== null && _a !== void 0 ? _a : "";
-const OFFICIAL = (_b = process.env.OFFICIAL) !== null && _b !== void 0 ? _b : "";
+import { chatChannel, officialChannel } from "./discordClient.js";
 const twConfig = {
-    consumer_key: (_c = process.env.CONSUMER_KEY) !== null && _c !== void 0 ? _c : "",
-    consumer_secret: (_d = process.env.CONSUMER_SECRET) !== null && _d !== void 0 ? _d : "",
-    access_token_key: (_e = process.env.ACCESS_TOKEN_KEY) !== null && _e !== void 0 ? _e : "",
-    access_token_secret: (_f = process.env.ACCESS_TOKEN_SECRET) !== null && _f !== void 0 ? _f : "",
+    consumer_key: (_a = process.env.CONSUMER_KEY) !== null && _a !== void 0 ? _a : "",
+    consumer_secret: (_b = process.env.CONSUMER_SECRET) !== null && _b !== void 0 ? _b : "",
+    access_token_key: (_c = process.env.ACCESS_TOKEN_KEY) !== null && _c !== void 0 ? _c : "",
+    access_token_secret: (_d = process.env.ACCESS_TOKEN_SECRET) !== null && _d !== void 0 ? _d : "",
 };
 const twClient = new twitter(twConfig);
 const getUserTimelineAsync = (params) => new Promise((resolve, reject) => twClient.get("statuses/user_timeline", params, (error, tweets) => error ? reject(error) : resolve(tweets)));
@@ -25,8 +23,7 @@ export async function nishikumaBroadcastTweetProcess(lastUpdateTime) {
         .filter(({ text }) => /^【生放送】.* を開始しました。.*$/.test(text))
         .filter(({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime)
         .map(async (tweet) => {
-        const channel = (await client.channels.fetch(CHAT));
-        return await channel.send(tweet.text.replace(/^【生放送】(.*) を開始しました。.* #(.*)$/, "$1\nhttps://live2.nicovideo.jp/watch/$2"));
+        return await chatChannel.send(tweet.text.replace(/^【生放送】(.*) を開始しました。.* #(.*)$/, "$1\nhttps://live2.nicovideo.jp/watch/$2"));
     }));
 }
 export async function priconneTweetProcess(lastUpdateTime) {
@@ -35,7 +32,6 @@ export async function priconneTweetProcess(lastUpdateTime) {
     return Promise.allSettled(tweets
         .filter(({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime)
         .map(async (tweet) => {
-        const channel = (await client.channels.fetch(OFFICIAL));
-        return await channel.send(`https://twitter.com/${params.screen_name}/status/${tweet.id_str}`);
+        return await officialChannel.send(`https://twitter.com/${params.screen_name}/status/${tweet.id_str}`);
     }));
 }

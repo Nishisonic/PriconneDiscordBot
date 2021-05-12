@@ -1,6 +1,7 @@
 import cron from "node-cron";
 import fetch from "node-fetch";
 import sqlite3 from "sqlite3";
+import { chatChannel } from "./discordClient.js";
 const URL = "https://raw.githubusercontent.com/esterTion/redive_master_db_diff/master";
 const TABLE_LIST = [
     "unit_profile",
@@ -32,12 +33,12 @@ const fetchDB = async () => {
         db.exec(await (await fetch(`${URL}/${table}.sql`)).text());
     })).then(() => db);
 };
-const fetchVersion = async () => await (await fetch(`${URL}/!TruthVersion.txt`)).text();
+const fetchVersion = async () => (await (await fetch(`${URL}/!TruthVersion.txt`)).text()).replace(/\n/, "");
 async function updateMaster() {
     const newVersion = await fetchVersion();
-    console.log(`${version}`);
     if (version !== newVersion) {
-        console.log(`${version} → ${newVersion}`);
+        await chatChannel.send(`マスタDBが更新されました[\`${version}\`->\`${newVersion}\`]`);
+        version = newVersion;
         master = await fetchDB();
     }
     return master;
