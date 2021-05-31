@@ -38,7 +38,7 @@ export class TriggerAction extends ActionParameter {
       case TriggerType.hp:
         return `トリガー：HPが [${this.actionValue3.value}%] 以下の時発動。`;
       case TriggerType.limitTime:
-        return `トリガー：戦闘の残り時間は [${this.actionValue3.value}] 秒以下の時発動。`;
+        return `トリガー：戦闘の残り時間は [${this.actionValue3.value}] 秒の時発動。`;
       case TriggerType.damage:
         return `トリガー：ダメージを受けた時 [${this.actionValue1.value}%] の確率で発動。`;
       case TriggerType.dead:

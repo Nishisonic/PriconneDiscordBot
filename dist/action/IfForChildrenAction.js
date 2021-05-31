@@ -10,6 +10,8 @@ export class IfType {
         switch (this.value) {
             case IfType.controllered:
                 return "行動不能状態中";
+            case IfType.hastened:
+                return "行動速度アップ状態中";
             case IfType.blind:
                 return "物理暗闇状態中";
             case IfType.convert:
@@ -36,6 +38,7 @@ export class IfType {
     }
 }
 IfType.controllered = 100;
+IfType.hastened = 101;
 IfType.blind = 200;
 IfType.convert = 300;
 IfType.decoy = 400;
@@ -97,6 +100,7 @@ export class IfForChildrenAction extends ActionParameter {
     }
     localizedDetail() {
         if (this.actionDetail1 === 100 ||
+            this.actionDetail1 === 101 ||
             this.actionDetail1 === 200 ||
             this.actionDetail1 === 300 ||
             this.actionDetail1 === 500 ||

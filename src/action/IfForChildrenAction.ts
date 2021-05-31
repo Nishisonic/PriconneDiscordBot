@@ -3,6 +3,7 @@ import { ActionParameter } from "./ActionParameter.js";
 
 export class IfType {
   static readonly controllered = 100;
+  static readonly hastened = 101;
   static readonly blind = 200;
   static readonly convert = 300;
   static readonly decoy = 400;
@@ -27,6 +28,8 @@ export class IfType {
     switch (this.value) {
       case IfType.controllered:
         return "行動不能状態中";
+      case IfType.hastened:
+        return "行動速度アップ状態中";
       case IfType.blind:
         return "物理暗闇状態中";
       case IfType.convert:
@@ -142,6 +145,7 @@ export class IfForChildrenAction extends ActionParameter {
   localizedDetail() {
     if (
       this.actionDetail1 === 100 ||
+      this.actionDetail1 === 101 ||
       this.actionDetail1 === 200 ||
       this.actionDetail1 === 300 ||
       this.actionDetail1 === 500 ||

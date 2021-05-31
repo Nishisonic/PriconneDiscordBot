@@ -25,6 +25,7 @@ import { CountBlindAction } from "./action/CountBlindAction.js";
 import { CountDownAction } from "./action/CountDownAction.js";
 import { CureAction } from "./action/CureAction.js";
 import { DamageAction } from "./action/DamageAction.js";
+import { DamageByBehaviourAction } from "./action/DamageByBehaviourAction.js";
 import { DamageChargeAction } from "./action/DamageChargeAction.js";
 import { DecoyAction } from "./action/DecoyAction.js";
 import { DestroyAction } from "./action/DestroyAction.js";
@@ -450,6 +451,8 @@ export function localizedDetail(skillAction: SkillAction) {
         return new PassiveSealAction(skillAction);
       case 78:
         return new PassiveDamageUpAction(skillAction);
+      case 79:
+        return new DamageByBehaviourAction(skillAction);
       case 90:
         return new PassiveAction(skillAction);
       case 91:

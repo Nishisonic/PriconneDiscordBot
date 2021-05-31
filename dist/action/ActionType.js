@@ -78,6 +78,7 @@ ActionType.actionByHitCount = 75;
 ActionType.healDown = 76;
 ActionType.passiveSeal = 77;
 ActionType.passiveDamageUp = 78;
+ActionType.damageByBehaviourAction = 79;
 ActionType.ex = 90;
 ActionType.exPlus = 91;
 ActionType.changeEnergyRecoveryRatioByDamage = 92;

@@ -51,6 +51,7 @@ export class DotDetail {
   static readonly curse = 3;
   static readonly violentPoison = 4;
   static readonly hex = 5;
+  static readonly compensation = 6;
   static readonly unknown = -1;
   value: number;
 
@@ -151,7 +152,10 @@ export class AilmentType {
   static readonly awe = 62;
   static readonly toad = 69;
   static readonly maxHP = 70;
-  static readonly unknown = 71;
+  static readonly hPRegenerationDown = 76;
+  static readonly damageTakenIncreased = 78;
+  static readonly damageByBehaviour = 79;
+  static readonly unknown = 80;
   value: number;
 
   private constructor(value: number) {
@@ -194,6 +198,12 @@ export class AilmentType {
         return "変身";
       case AilmentType.maxHP:
         return "HP変化";
+      case AilmentType.hPRegenerationDown:
+        return "HP回復量減少";
+      case AilmentType.damageTakenIncreased:
+        return "弱体被ダメージ上昇";
+      case AilmentType.damageByBehaviour:
+        return "行動時ダメージ";
       default:
         return "不明な効果";
     }
@@ -212,6 +222,7 @@ export class Ailment {
         this.ailmentDetail.setDetail(ActionDetail.parse(detail));
         break;
       case AilmentType.dot:
+      case AilmentType.damageByBehaviour:
         this.ailmentDetail.setDetail(DotDetail.parse(detail));
         break;
       case AilmentType.charm:
