@@ -1,6 +1,6 @@
-import { Ailment } from "../data/Ailment";
-import { SkillAction } from "../master";
-import { ActionParameter, ActionValue } from "./ActionParameter";
+import { Ailment } from "../data/Ailment.js";
+import { SkillAction } from "../master.js";
+import { ActionParameter, ActionValue } from "./ActionParameter.js";
 
 export class DamageByBehaviourAction extends ActionParameter {
   ailment: Ailment;
