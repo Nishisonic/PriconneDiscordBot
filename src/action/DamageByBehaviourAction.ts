@@ -18,7 +18,7 @@ export class DamageByBehaviourAction extends ActionParameter {
   }
 
   localizedDetail() {
-    return `${this.targetParameter.buildTargetClause()}が行動する度に、${this.ailment.description()}状態にし、行動する度に [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
+    return `${this.targetParameter.buildTargetClause()}が行動する度、[${this.buildExpression()}] の${this.ailment.description()}ダメージを与える、効果時間 [${this.buildExpression(
       this.durationValues
     )}] 秒。`;
   }
