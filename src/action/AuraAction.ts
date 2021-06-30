@@ -130,6 +130,7 @@ export class AuraAction extends ActionParameter {
   auraActionType: AuraActionType;
   auraType: AuraType;
   breakType: BreakType;
+  isConstant = false;
 
   constructor(skillAction: SkillAction) {
     super(skillAction);
@@ -143,6 +144,9 @@ export class AuraAction extends ActionParameter {
     this.auraActionType = AuraActionType.parse(this.actionDetail1);
     if (this.actionDetail1 === 1) {
       this.auraType = AuraType.parse(AuraType.maxHP);
+    } else if (this.actionDetail1 >= 1000) {
+      this.auraType = AuraType.parse(this.actionDetail1 % 1000 / 10);
+      this.isConstant = true;
     } else {
       this.auraType = AuraType.parse(Math.floor(this.actionDetail1 / 10));
     }
@@ -157,7 +161,7 @@ export class AuraAction extends ActionParameter {
     const r = this.buildExpression();
     switch (this.breakType.value) {
       case BreakType.Break:
-        return `Break期間中、${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${r}${this.percentModifier.description()}] ${this.auraActionType.description()}。`;
+        return `Break期間中、${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${r}${this.percentModifier.description()}] ${this.auraActionType.description()}。${this.isConstant ? "この効果は他の値への効果の影響を受けない（ディスペルなど効果解除の影響は受ける）。" : "" }`;
       default: {
         return `${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${r}${this.percentModifier.description()}] ${this.auraActionType.description()}、効果時間 [${this.buildExpression(
           this.durationValues
