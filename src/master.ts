@@ -40,6 +40,12 @@ export interface ArcadeList {
   description: string;
 }
 
+export interface ArcadeStoryList {
+  story_id: number;
+  arcade_id: number;
+  sub_title: string;
+}
+
 export interface ArenaDailyRankReward {
   id: number;
   rank_from: number;
@@ -156,6 +162,20 @@ export interface BirthdayLoginBonusDetail {
   reward_type: number;
   reward_id: number;
   reward_num: number;
+}
+
+export interface BirthdayLoginBonusDramaScript {
+  command_id: number;
+  drama_id: number;
+  command_type: number;
+  param_01: string;
+  param_02: string;
+  param_03: string;
+  param_04: string;
+  param_05: string;
+  param_06: string;
+  param_07: string;
+  param_08: string;
 }
 
 export interface CampaignFreegacha {
@@ -441,6 +461,18 @@ export interface ClanBattle2MapData {
   param_adjust_interval: number;
 }
 
+export interface ClanBattleArchiveClanRank {
+  id: number;
+  rank_from: number;
+  rank_to: number;
+}
+
+export interface ClanBattleArchivePersonRank {
+  id: number;
+  rank_from: number;
+  rank_to: number;
+}
+
 export interface ClanBattleBattleMissionData {
   mission_id: number;
   disp_group: number;
@@ -487,6 +519,15 @@ export interface ClanBattleBossDamageRank {
   reward_num_5: number;
 }
 
+/** @deprecated */
+export interface ClanBattleBossData {
+  boss_id: number;
+  clan_battle_id: number;
+  difficulty: number;
+  order_num: number;
+  boss_thumb_id: number;
+}
+
 export interface ClanBattleBossFixReward {
   fix_reward_id: number;
   reward_type_1: number;
@@ -506,6 +547,46 @@ export interface ClanBattleBossFixReward {
   reward_num_5: number;
 }
 
+/** @deprecated */
+export interface ClanBattleBossGroup {
+  clan_battle_boss_group_id: number;
+  order_num: number;
+  position_x: number;
+  position_y: number;
+  limit_time: number;
+  scale_ratio: number;
+  map_position_x: number;
+  map_position_y: number;
+  cursor_position: number;
+  result_boss_position_y: number;
+  chest_id: number;
+  fix_reward_id: number;
+  damage_rank_id: number;
+  quest_detail_bg_id: number;
+  quest_detail_bg_position: number;
+  quest_detail_monster_size: number;
+  quest_detail_monster_height: number;
+  battle_report_monster_size: number;
+  battle_report_monster_height: number;
+  background: number;
+  wave_group_id: number;
+  reward_gold_coefficient: number;
+  limited_mana: number;
+  wave_bgm: string;
+  quest_detail_rehearsal_label_height: number;
+  last_attack_reward_id: number;
+  score_coefficient: number;
+  min_carry_over_time: number;
+}
+
+/** @deprecated */
+export interface ClanBattleHpResetCost {
+  id: number;
+  reset_count_from: number;
+  reset_count_to: number;
+  cost_num: number;
+}
+
 export interface ClanBattleLastAttackReward {
   last_attack_reward_id: number;
   reward_type_1: number;
@@ -523,6 +604,20 @@ export interface ClanBattleLastAttackReward {
   reward_type_5: number;
   reward_id_5: number;
   reward_num_5: number;
+}
+
+/** @deprecated */
+export interface ClanBattleMapData {
+  id: number;
+  clan_battle_id: number;
+  map_bg: number;
+  difficulty: number;
+  lap_num_from: number;
+  lap_num_to: number;
+  clan_battle_boss_group_id: number;
+  aura_effect: number;
+  rsl_unlock_lap: number;
+  phase: number;
 }
 
 export interface ClanBattleOddsData {
@@ -597,6 +692,28 @@ export interface ClanBattlePeriodLapReward {
   lap_num_from: number;
   lap_num_to: number;
   ranking_bonus_group: number;
+  reward_type_1: number;
+  reward_id_1: number;
+  reward_num_1: number;
+  reward_type_2: number;
+  reward_id_2: number;
+  reward_num_2: number;
+  reward_type_3: number;
+  reward_id_3: number;
+  reward_num_3: number;
+  reward_type_4: number;
+  reward_id_4: number;
+  reward_num_4: number;
+  reward_type_5: number;
+  reward_id_5: number;
+  reward_num_5: number;
+}
+
+/** @deprecated */
+export interface ClanBattlePeriodRankBonus {
+  ranking_bonus_group_id: number;
+  rank_from: number;
+  rank_to: number;
   reward_type_1: number;
   reward_id_1: number;
   reward_num_1: number;
@@ -776,6 +893,46 @@ export interface ClanBattleSchedule {
   resource_id: number;
   start_time: string;
   end_time: string;
+}
+
+/** @deprecated */
+export interface ClanBattleTotalRank {
+  id: number;
+  clan_battle_id: number;
+  rank_from: number;
+  rank_to: number;
+  reward_type_1: number;
+  reward_id_1: number;
+  reward_num_1: number;
+  reward_type_2: number;
+  reward_id_2: number;
+  reward_num_2: number;
+  reward_type_3: number;
+  reward_id_3: number;
+  reward_num_3: number;
+  reward_type_4: number;
+  reward_id_4: number;
+  reward_num_4: number;
+  reward_type_5: number;
+  reward_id_5: number;
+  reward_num_5: number;
+}
+
+export interface ClanBattleTrainingData {
+  id: number;
+  training_id: number;
+  mode: number;
+  phase: number;
+  map_data_id: number;
+}
+
+export interface ClanBattleTrainingSchedule {
+  training_id: number;
+  clan_battle_id: number;
+  battle_start_time: string;
+  battle_end_time: string;
+  interval_start_time: string;
+  interval_end_time: string;
 }
 
 export interface ClanCostGroup {
@@ -1025,6 +1182,11 @@ export interface DefineSpskill {
   skill_category: number;
 }
 
+export interface DodgeTpRecovery {
+  system_id: number;
+  recovery_ratio: number;
+}
+
 export interface DungeonAreaData {
   dungeon_area_id: number;
   dungeon_type: number;
@@ -1075,6 +1237,31 @@ export interface DungeonQuestData {
   dungeon_quest_detail_monster_height: number;
   wave_bgm_sheet_id_1: string;
   wave_bgm_que_id_1: string;
+}
+
+export interface DungeonSkipData {
+  area_id: number;
+  skip_motion_id: number;
+  skip_bg_id: number;
+  skip_position_x: number;
+  skip_position_y: number;
+  skip_scale_x: number;
+  skip_scale_y: number;
+}
+
+export interface E_Reduction {
+  id: number;
+  border: number;
+  threshold_1: number;
+  value_1: number;
+  threshold_2: number;
+  value_2: number;
+  threshold_3: number;
+  value_3: number;
+  threshold_4: number;
+  value_4: number;
+  threshold_5: number;
+  value_5: number;
 }
 
 export interface EmblemData {
@@ -1198,116 +1385,6 @@ export interface EnemyRewardData {
   reward_id_5: number;
   reward_num_5: number;
   odds_5: number;
-}
-
-export interface TowerSchedule {
-  tower_schedule_id: number;
-  max_tower_area_id: number;
-  opening_story_id: number;
-  count_start_time: string;
-  recovery_disable_time: string;
-  start_time: string;
-  end_time: string;
-}
-
-export interface SkillData {
-  skill_id: number;
-  name: string;
-  skill_type: number;
-  skill_area_width: number;
-  skill_cast_time: number;
-  action_1: number;
-  action_2: number;
-  action_3: number;
-  action_4: number;
-  action_5: number;
-  action_6: number;
-  action_7: number;
-  depend_action_1: number;
-  depend_action_2: number;
-  depend_action_3: number;
-  depend_action_4: number;
-  depend_action_5: number;
-  depend_action_6: number;
-  depend_action_7: number;
-  description: string;
-  icon_type: number;
-}
-
-export interface UnitData {
-  unit_id: number;
-  unit_name: string;
-  kana: string;
-  prefab_id: number;
-  is_limited: number;
-  rarity: number;
-  motion_type: number;
-  se_type: number;
-  move_speed: number;
-  search_area_width: number;
-  atk_type: number;
-  normal_atk_cast_time: number;
-  cutin_1: number;
-  cutin_2: number;
-  cutin1_star6: number;
-  cutin2_star6: number;
-  guild_id: number;
-  exskill_display: number;
-  comment: string;
-  only_disp_owned: number;
-  start_time: string;
-  end_time: string;
-}
-
-export interface SkillAction {
-  action_id: number;
-  class_id: number;
-  action_type: number;
-  action_detail_1: number;
-  action_detail_2: number;
-  action_detail_3: number;
-  action_value_1: number;
-  action_value_2: number;
-  action_value_3: number;
-  action_value_4: number;
-  action_value_5: number;
-  action_value_6: number;
-  action_value_7: number;
-  target_assignment: number;
-  target_area: number;
-  target_range: number;
-  target_type: number;
-  target_number: number;
-  target_count: number;
-  description: string;
-  level_up_disp: string;
-}
-
-export interface UnitAttackPattern {
-  pattern_id: number;
-  unit_id: number;
-  loop_start: number;
-  loop_end: number;
-  atk_pattern_1: number;
-  atk_pattern_2: number;
-  atk_pattern_3: number;
-  atk_pattern_4: number;
-  atk_pattern_5: number;
-  atk_pattern_6: number;
-  atk_pattern_7: number;
-  atk_pattern_8: number;
-  atk_pattern_9: number;
-  atk_pattern_10: number;
-  atk_pattern_11: number;
-  atk_pattern_12: number;
-  atk_pattern_13: number;
-  atk_pattern_14: number;
-  atk_pattern_15: number;
-  atk_pattern_16: number;
-  atk_pattern_17: number;
-  atk_pattern_18: number;
-  atk_pattern_19: number;
-  atk_pattern_20: number;
 }
 
 export interface EquipmentCraft {
@@ -1786,6 +1863,10 @@ export interface EventWaveGroupData {
   disp_reward_id_5: number;
   reward_lot_count_5: number;
   reward_odds_5: number;
+}
+
+export interface ExceptEr {
+  category_id: number;
 }
 
 export interface ExperienceTeam {
@@ -2553,7 +2634,7 @@ export interface HatsuneQuest {
   end_time: string;
 }
 
-export interface HatsunequestArea {
+export interface HatsuneQuestArea {
   area_id: number;
   event_id: number;
   area_name: string;
@@ -3417,6 +3498,28 @@ export interface ProfileFrame {
   disp_order: number;
 }
 
+export interface PromotionBonus {
+  unit_id: number;
+  promotion_level: number;
+  hp: number;
+  atk: number;
+  magic_str: number;
+  def: number;
+  magic_def: number;
+  physical_critical: number;
+  magic_critical: number;
+  wave_hp_recovery: number;
+  wave_energy_recovery: number;
+  dodge: number;
+  physical_penetrate: number;
+  magic_penetrate: number;
+  life_steal: number;
+  hp_recovery_rate: number;
+  energy_recovery_rate: number;
+  energy_reduce_rate: number;
+  accuracy: number;
+}
+
 export interface QuestAnnihilation {
   system_id: number;
   quest_id: number;
@@ -4246,7 +4349,7 @@ export interface ShioriQuest {
   quest_detail_bg_position: number;
 }
 
-export interface ShioriQuestData {
+export interface ShioriQuestArea {
   area_id: number;
   event_id: number;
   area_name: string;
@@ -4585,6 +4688,16 @@ export interface SrtTopTalk {
   direction: number;
 }
 
+export interface SspStoryData {
+  sub_story_id: number;
+  original_event_id: number;
+  title: string;
+  contents_type: number;
+  condition_quest_id: number;
+  condition_boss_id: number;
+  read_condition: number;
+}
+
 export interface Stamp {
   stamp_id: number;
   disp_order: number;
@@ -4716,6 +4829,45 @@ export interface StoryQuestData {
   guest_unit_5: number;
 }
 
+export interface SvdDramaScript {
+  command_id: number;
+  drama_id: number;
+  command_type: number;
+  param_01: string;
+  param_02: string;
+  param_03: string;
+  param_04: string;
+  param_05: string;
+  param_06: string;
+  param_07: string;
+  param_08: string;
+}
+
+export interface SvdStoryData {
+  sub_story_id: number;
+  original_event_id: number;
+  title: string;
+  read_condition_time: string;
+  condition_quest_id: number;
+  condition_boss_id: number;
+  read_condition: number;
+}
+
+export interface SvdStoryScript {
+  id: number;
+  story_id: number;
+  seq_num: number;
+  type: number;
+  line_num: number;
+  start_pos: number;
+  end_pos: number;
+  seek_time: number;
+  sheet_name: string;
+  cue_name: string;
+  command: number;
+  command_param: number;
+}
+
 export interface TicketGachaData {
   gacha_id: number;
   gacha_name: string;
@@ -4738,7 +4890,7 @@ export interface Tips {
   title: string;
 }
 
-export interface TmeMapdata {
+export interface TmeMapData {
   tme_object_id: number;
   event_id: number;
   condition_story_id: number;
