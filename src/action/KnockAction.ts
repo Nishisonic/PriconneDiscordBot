@@ -9,6 +9,7 @@ class KnockType {
   static readonly moveTarget = 4;
   static readonly moveTargetParaboric = 5;
   static readonly backLimited = 6;
+  static readonly dragForwardCaster = 8;
   value: number;
 
   private constructor(value: number) {
@@ -43,6 +44,10 @@ export class KnockAction extends ActionParameter {
         }
         return `${this.targetParameter.buildTargetClause()}を引き寄せる、距離 [${-super
           .actionValue1.value}]。`;
+      case KnockType.dragForwardCaster:
+        return `${this.targetParameter.buildTargetClause()}を自分の前 [${Math.floor(
+          this.actionValue1.value
+        )}] の位置に引き寄せる。`;
       default:
         return super.localizedDetail();
     }

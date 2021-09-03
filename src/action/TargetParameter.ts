@@ -165,7 +165,7 @@ export class TargetParameter {
         case TargetAssignment.friendly:
           return "自分を含めて前方すべての味方";
         default:
-          return "前方のターゲットすべて";
+          return "前方の対象すべて";
       }
     }
     if (
@@ -199,7 +199,7 @@ export class TargetParameter {
         case TargetAssignment.friendly:
           return "自分を含めて前方すべての味方";
         default:
-          return "前方のターゲットすべて（自分以外）";
+          return "前方の対象すべて（自分以外）";
       }
     }
     if (

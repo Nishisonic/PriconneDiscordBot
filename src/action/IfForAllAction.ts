@@ -57,7 +57,7 @@ export class IfForAllAction extends ActionParameter {
           this.actionDetail2 % 10
         }] を使う。`;
       } else if (this.actionDetail1 === 1000) {
-        this.trueClause = `前のアクションがターゲットを倒した場合、[アクション${
+        this.trueClause = `前のアクションが対象を倒した場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
       } else if (this.actionDetail1 === 1001) {

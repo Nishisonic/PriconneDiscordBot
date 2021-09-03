@@ -38,10 +38,10 @@ export class AdditiveAction extends ActionParameter {
                 result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${s1} \* 倒した敵の数] アップさせる。`;
                 break;
             case 4:
-                result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(undefined, true)} \* ターゲットの数] アップさせる。`;
+                result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(undefined, true)} \* 対象の数] アップさせる。`;
                 break;
             case 5:
-                result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(undefined, true)} \* ダメージを与えられたターゲットの数] アップさせる。`;
+                result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(undefined, true)} \* ダメージを与えられた対象の数] アップさせる。`;
                 break;
             case 6:
                 result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(undefined, true)} \* ダメージ量] アップさせる。`;
@@ -67,7 +67,7 @@ export class AdditiveAction extends ActionParameter {
                 break;
         }
         if (this.actionValue4.value !== 0 && this.actionValue5.value !== 0) {
-            result += `アップ値の上限は [${this.limitValues}]。`;
+            result += `アップ値の上限は [${this.buildExpression(this.limitValues)}]。`;
         }
         return result;
     }

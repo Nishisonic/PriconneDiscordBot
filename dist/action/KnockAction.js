@@ -14,6 +14,7 @@ KnockType.back = 3;
 KnockType.moveTarget = 4;
 KnockType.moveTargetParaboric = 5;
 KnockType.backLimited = 6;
+KnockType.dragForwardCaster = 8;
 export class KnockAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);
@@ -30,6 +31,8 @@ export class KnockAction extends ActionParameter {
                 }
                 return `${this.targetParameter.buildTargetClause()}を引き寄せる、距離 [${-super
                     .actionValue1.value}]。`;
+            case KnockType.dragForwardCaster:
+                return `${this.targetParameter.buildTargetClause()}を自分の前 [${Math.floor(this.actionValue1.value)}] の位置に引き寄せる。`;
             default:
                 return super.localizedDetail();
         }

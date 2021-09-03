@@ -140,7 +140,7 @@ export class TargetType {
       case TargetType.backward:
         return "一番前の";
       case TargetType.absolute:
-        return "範囲内のターゲット";
+        return "範囲内の対象";
       case TargetType.tpDescending:
       case TargetType.tpDescendingOrNear:
       case TargetType.tpDescendingOrMaxForward:

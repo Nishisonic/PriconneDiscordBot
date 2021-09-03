@@ -22,9 +22,9 @@ export class AweAction extends ActionParameter {
     localizedDetail() {
         switch (this.aweType.value) {
             case AweType.ubAndSkill:
-                return `${this.targetParameter.buildTargetClause()}のユニオンバーストかスキルが任意のターゲットにダメージか直接回復を与えるたび、その値を [${this.buildExpression(this.percentValues)}%] ダウンさせる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                return `${this.targetParameter.buildTargetClause()}のユニオンバーストかスキルが任意の対象にダメージか直接回復を与えるたび、その値を [${this.buildExpression(this.percentValues)}%] ダウンさせる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
             case AweType.ubOnly:
-                return `${this.targetParameter.buildTargetClause()}のユニオンバーストが任意のターゲットにダメージか直接回復を与えるたび、その値を [${this.buildExpression(this.percentValues)}%] ダウンさせる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                return `${this.targetParameter.buildTargetClause()}のユニオンバーストが任意の対象にダメージか直接回復を与えるたび、その値を [${this.buildExpression(this.percentValues)}%] ダウンさせる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
             default:
                 return super.localizedDetail();
         }

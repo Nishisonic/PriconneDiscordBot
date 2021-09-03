@@ -39,9 +39,9 @@ export class PluralModifier {
     description() {
         switch (this.modifier) {
             case PluralModifier.one:
-                return "ターゲット";
+                return "対象";
             default:
-                return "ターゲット";
+                return "対象";
         }
     }
 }

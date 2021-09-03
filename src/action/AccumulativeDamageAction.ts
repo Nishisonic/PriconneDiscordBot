@@ -15,7 +15,7 @@ export class AccumulativeDamageAction extends ActionParameter {
   }
 
   localizedDetail() {
-    return `現在のターゲットに攻撃するたび、ダメージ量が [${this.buildExpression()}] 追加する、この効果は [${this.buildExpression(
+    return `現在の目標に攻撃するたび、ダメージ量が [${this.buildExpression()}] 追加する、この効果は [${this.buildExpression(
       this.stackValues
     )}] 回まで累計する。`;
   }
