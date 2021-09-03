@@ -1,6 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./ActionParameter.js";
-import { TargetType } from "./parameter/TargetType.js";
+import { ActionParameter } from "./actionParameter.js";
+import { TargetType } from "./parameter/targetType.js";
 
 class ReflexiveType {
   static readonly unknown = 0;

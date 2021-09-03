@@ -1,7 +1,7 @@
-import { ActionParameter, ActionValue, ClassModifier, } from "./ActionParameter.js";
-import { FieldType } from "./HealFieldAction.js";
-import { TargetType } from "./parameter/TargetType.js";
-import { PropertyKey } from "./PropertyKey.js";
+import { ActionParameter, ActionValue, ClassModifier, } from "./actionParameter.js";
+import { FieldType } from "./healFieldAction.js";
+import { TargetType } from "./parameter/targetType.js";
+import { PropertyKey } from "./propertyKey.js";
 export class AttackFieldAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);

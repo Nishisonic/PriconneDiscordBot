@@ -1,5 +1,5 @@
-import { ActionParameter } from "./ActionParameter.js";
-import { TargetType } from "./parameter/TargetType.js";
+import { ActionParameter } from "./actionParameter.js";
+import { TargetType } from "./parameter/targetType.js";
 class ReflexiveType {
     constructor(value) {
         this.value = value;

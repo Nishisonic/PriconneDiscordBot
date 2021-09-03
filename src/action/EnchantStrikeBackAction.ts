@@ -1,4 +1,4 @@
-import { BarrierAction, BarrierType } from "./BarrierAction.js";
+import { BarrierAction, BarrierType } from "./barrierAction.js";
 
 export class EnchantStrikeBackAction extends BarrierAction {
   localizedDetail() {

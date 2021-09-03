@@ -1,4 +1,4 @@
-import { ActionParameter } from "./ActionParameter.js";
+import { ActionParameter } from "./actionParameter.js";
 class ModeChangeType {
     constructor(value) {
         this.value = value;

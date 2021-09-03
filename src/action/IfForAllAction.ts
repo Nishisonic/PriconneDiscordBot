@@ -1,6 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./ActionParameter.js";
-import { IfType } from "./IfForChildrenAction.js";
+import { ActionParameter } from "./actionParameter.js";
+import { IfType } from "./ifForChildrenAction.js";
 
 export class IfForAllAction extends ActionParameter {
   trueClause: string | null = null;

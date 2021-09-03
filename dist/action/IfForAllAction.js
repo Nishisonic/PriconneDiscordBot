@@ -1,5 +1,5 @@
-import { ActionParameter } from "./ActionParameter.js";
-import { IfType } from "./IfForChildrenAction.js";
+import { ActionParameter } from "./actionParameter.js";
+import { IfType } from "./ifForChildrenAction.js";
 export class IfForAllAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);

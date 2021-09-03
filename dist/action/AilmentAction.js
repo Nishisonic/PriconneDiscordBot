@@ -1,5 +1,5 @@
-import { ActionDetail, Ailment, AilmentType, DotDetail, } from "../data/Ailment.js";
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
+import { ActionDetail, Ailment, AilmentType, DotDetail, } from "../data/ailment.js";
+import { ActionParameter, ActionValue } from "./actionParameter.js";
 export class AilmentAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);

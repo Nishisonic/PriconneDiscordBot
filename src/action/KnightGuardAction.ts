@@ -1,6 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { PropertyKey } from "./propertyKey.js";
 
 class GuardType {
   static readonly physics = 1;

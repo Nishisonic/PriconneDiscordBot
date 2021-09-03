@@ -1,5 +1,5 @@
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { PropertyKey } from "./propertyKey.js";
 export class EnchantLifeStealAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);

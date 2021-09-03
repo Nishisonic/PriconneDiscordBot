@@ -1,6 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue, ClassModifier } from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+import { ActionParameter, ActionValue, ClassModifier } from "./actionParameter.js";
+import { PropertyKey } from "./propertyKey.js";
 
 class RegenerationType {
   static readonly unknown = -1;

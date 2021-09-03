@@ -1,4 +1,4 @@
-import { ActionParameter } from "./ActionParameter.js";
+import { ActionParameter } from "./actionParameter.js";
 
 export class IgnoreDecoyAction extends ActionParameter {
   localizedDetail() {

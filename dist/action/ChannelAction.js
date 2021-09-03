@@ -1,4 +1,4 @@
-import { AuraAction } from "./AuraAction.js";
+import { AuraAction } from "./auraAction.js";
 class ReleaseType {
     constructor(value) {
         this.value = value;

@@ -1,4 +1,4 @@
-import { ActionParameter } from "./ActionParameter.js";
+import { ActionParameter } from "./actionParameter.js";
 export class ChangePatternAction extends ActionParameter {
     localizedDetail() {
         switch (this.actionDetail1) {

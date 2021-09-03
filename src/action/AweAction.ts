@@ -1,5 +1,5 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
+import { ActionParameter, ActionValue } from "./actionParameter.js";
 
 class AweType {
   static readonly unknown = -1;

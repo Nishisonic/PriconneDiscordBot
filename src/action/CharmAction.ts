@@ -3,7 +3,7 @@ import {
   ActionParameter,
   ActionValue,
   eActionValue,
-} from "./ActionParameter.js";
+} from "./actionParameter.js";
 
 class CharmType {
   static readonly unknown = -1;

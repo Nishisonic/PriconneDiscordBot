@@ -1,5 +1,6 @@
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
+import { PropertyKey } from "./propertyKey.js";
 export class PassiveAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);
@@ -27,5 +28,8 @@ export class PassiveAction extends ActionParameter {
     }
     localizedDetail() {
         return `${this.propertyKey.description()}を [${this.buildExpression()}] アップさせる。`;
+    }
+    propertyItem(level) {
+        return Property.getPropertyWithKeyAndValue(undefined, this.propertyKey, this.actionValue2.value + this.actionValue3.value * level);
     }
 }

@@ -1,5 +1,5 @@
 import { Ailment } from "../data/Ailment.js";
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
+import { ActionParameter, ActionValue } from "./actionParameter.js";
 export class DamageByBehaviourAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);

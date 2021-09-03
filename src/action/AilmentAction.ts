@@ -3,9 +3,9 @@ import {
   Ailment,
   AilmentType,
   DotDetail,
-} from "../data/Ailment.js";
+} from "../data/ailment.js";
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
+import { ActionParameter, ActionValue } from "./actionParameter.js";
 
 export class AilmentAction extends ActionParameter {
   ailment: Ailment;

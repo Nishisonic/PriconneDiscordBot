@@ -1,5 +1,5 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./ActionParameter.js";
+import { ActionParameter } from "./actionParameter.js";
 
 class RevivalType {
   static readonly unknown = 0;

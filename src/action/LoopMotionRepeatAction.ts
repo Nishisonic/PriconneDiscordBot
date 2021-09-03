@@ -1,5 +1,5 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./ActionParameter.js";
+import { ActionParameter } from "./actionParameter.js";
 
 export class LoopMotionRepeatAction extends ActionParameter {
   successClause: string | null = null;

@@ -1,5 +1,5 @@
-import { TargetCount } from "./TargetCount.js";
-import { TargetNumber } from "./TargetNumber.js";
+import { TargetCount } from "./targetCount.js";
+import { TargetNumber } from "./targetNumber.js";
 
 export class TargetType {
   static readonly unknown = -1;

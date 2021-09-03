@@ -1,6 +1,8 @@
 import { SkillAction } from "../master.js";
-import { PropertyKey } from "./PropertyKey.js";
-import { TargetParameter } from "./TargetParameter.js";
+// import { getMaxCharaLevelAsync } from "./parameter/Chara.js";
+// import { Property } from "./parameter/property.js";
+import { PropertyKey } from "./propertyKey.js";
+import { TargetParameter } from "./targetParameter.js";
 
 export class ActionParameter {
   targetParameter: TargetParameter;
@@ -71,9 +73,14 @@ export class ActionParameter {
   }
 
   protected buildExpression(
+    // expressionMode: Expression,
+    // level: number,
+    // roundingMode: RoundingMode,
     actionValues = this.actionValues,
+    // property = new Property(),
     hasBracesIfNeeded = false
   ) {
+    // if (expressionMode === Expression.EXPRESSION) {
     let expression = "";
     for (const value of actionValues) {
       let part = "";
@@ -107,7 +114,37 @@ export class ActionParameter {
     }
     expression = expression.replace(/ \+ $/, "");
     return hasBracesIfNeeded ? this.bracesIfNeeded(expression) : expression;
+    // } else {
+    //   let fixedValue = 0;
+    //   for (const value of actionValues) {
+    //     let part = 0;
+    //     if (value.initial !== null && value.perLevel !== null) {
+    //       const initialValue = value.initial;
+    //       const perLevelValue = value.perLevel;
+    //       part = initialValue + perLevelValue * (await getMaxCharaLevelAsync());
+    //     }
+    //     if (value.key !== null) {
+    //       part = part * property.getItem(value.key as PropertyKey);
+    //     }
+    //     const num = part;
+    //     if (this.approximately(part, num)) {
+    //       part = num;
+    //     }
+    //     fixedValue += part;
+    //   }
+    //   switch (roundingMode) {
+    //     case RoundingMode.UP:
+
+    //     case RoundingMode.DOWN:
+
+    //     case RoundingMode.UNNECESSARY:
+    //   }
+    // }
   }
+
+  // private approximately(a: number, b: number) {
+  //   return Math.abs(a - b) < 1e-9;
+  // }
 
   private bracesIfNeeded(content: string) {
     if (content.includes("+")) {
@@ -125,6 +162,21 @@ export class ActionParameter {
     }]、内容${this.actionDetails.toString()}、係数${this.rawActionValues.toString()}。`;
   }
 }
+
+export const Expression = {
+  EXPRESSION: "EXPRESSION",
+  ORIGINAL: "ORIGINAL",
+} as const;
+
+type Expression = typeof Expression[keyof typeof Expression];
+
+export const RoundingMode = {
+  UP: "UP",
+  DOWN: "DOWN",
+  UNNECESSARY: "UNNECESSARY",
+} as const;
+
+type RoundingMode = typeof RoundingMode[keyof typeof RoundingMode];
 
 export class ActionValue {
   initial: number;

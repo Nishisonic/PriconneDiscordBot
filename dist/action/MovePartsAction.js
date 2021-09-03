@@ -1,4 +1,4 @@
-import { ActionParameter } from "./ActionParameter.js";
+import { ActionParameter } from "./actionParameter.js";
 export class MovePartsAction extends ActionParameter {
     localizedDetail() {
         return `部位${this.actionValue4.value}を前へ [${-this.actionValue1

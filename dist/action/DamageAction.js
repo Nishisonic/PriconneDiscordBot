@@ -1,5 +1,5 @@
-import { ActionParameter, ActionValue, ClassModifier, CriticalModifier, } from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+import { ActionParameter, ActionValue, ClassModifier, CriticalModifier, } from "./actionParameter.js";
+import { PropertyKey } from "./propertyKey.js";
 export class DamageAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);

@@ -1,5 +1,5 @@
 import { SkillAction } from "../master.js";
-import { AuraAction } from "./AuraAction.js";
+import { AuraAction } from "./auraAction.js";
 
 class ReleaseType {
   static readonly damage = 1;

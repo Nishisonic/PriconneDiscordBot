@@ -1,4 +1,4 @@
-import { ActionParameter } from "./ActionParameter.js";
+import { ActionParameter } from "./actionParameter.js";
 const MoveType = {
     unknown: 0,
     targetReturn: 1,

@@ -3,8 +3,8 @@ import {
   ActionParameter,
   ActionValue,
   PercentModifier,
-} from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+} from "./actionParameter.js";
+import { PropertyKey } from "./propertyKey.js";
 
 class AuraType {
   static readonly none = -1;

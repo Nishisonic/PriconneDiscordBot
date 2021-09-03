@@ -3,8 +3,8 @@ import {
   ActionValue,
   ClassModifier,
   CriticalModifier,
-} from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+} from "./actionParameter.js";
+import { PropertyKey } from "./propertyKey.js";
 import { SkillAction } from "../master.js";
 
 export class DamageAction extends ActionParameter {

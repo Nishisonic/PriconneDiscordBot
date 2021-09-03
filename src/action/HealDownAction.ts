@@ -3,7 +3,7 @@ import {
   ActionParameter,
   ActionValue,
   PercentModifier,
-} from "./ActionParameter.js";
+} from "./actionParameter.js";
 
 export class HealDownAction extends ActionParameter {
   percentModifier: PercentModifier;

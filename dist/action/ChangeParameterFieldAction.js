@@ -1,6 +1,6 @@
-import { ActionValue, PercentModifier } from "./ActionParameter.js";
-import { AuraAction } from "./AuraAction.js";
-import { TargetType } from "./parameter/TargetType.js";
+import { ActionValue, PercentModifier } from "./actionParameter.js";
+import { AuraAction } from "./auraAction.js";
+import { TargetType } from "./parameter/targetType.js";
 export class ChangeParameterFieldAction extends AuraAction {
     constructor(skillAction) {
         super(skillAction);

@@ -1,11 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionType } from "./ActionType.js";
-import { DirectionType } from "./parameter/DirectionType.js";
-import { TargetAssignment } from "./parameter/TargetAssignment.js";
-import { PluralModifier, TargetCount } from "./parameter/TargetCount.js";
-import { TargetNumber } from "./parameter/TargetNumber.js";
-import { TargetRange } from "./parameter/TargetRange.js";
-import { ExclusiveAllType, TargetType } from "./parameter/TargetType.js";
+import { ActionType } from "./actionType.js";
+import { DirectionType } from "./parameter/directionType.js";
+import { TargetAssignment } from "./parameter/targetAssignment.js";
+import { PluralModifier, TargetCount } from "./parameter/targetCount.js";
+import { TargetNumber } from "./parameter/targetNumber.js";
+import { TargetRange } from "./parameter/targetRange.js";
+import { ExclusiveAllType, TargetType } from "./parameter/targetType.js";
 
 export class TargetParameter {
   targetAssignment: TargetAssignment;

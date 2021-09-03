@@ -20,6 +20,19 @@ const TABLE_LIST = [
   "hatsune_schedule",
   "event_story_data",
   "chara_identity",
+  "unit_rarity",
+  "chara_story_status",
+  "unit_promotion_status",
+  "promotion_bonus",
+  "unit_unique_equip",
+  "unique_equipment_enhance_data",
+  "unique_equipment_data",
+  "unique_equipment_enhance_rate",
+  "unit_promotion",
+  "equipment_data",
+  "equipment_enhance_rate",
+  "equipment_enhance_data",
+  "experience_team",
 ];
 
 class Database extends sqlite3.Database {

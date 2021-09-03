@@ -1,5 +1,5 @@
-import { ActionParameter, ActionValue, ClassModifier, PercentModifier, } from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+import { ActionParameter, ActionValue, ClassModifier, PercentModifier, } from "./actionParameter.js";
+import { PropertyKey } from "./propertyKey.js";
 export class HealAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);

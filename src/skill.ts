@@ -1,77 +1,77 @@
 import { Message } from "discord.js";
-import { AbnormalStateFieldAction } from "./action/AbnormalStateFieldAction.js";
-import { AccumulativeDamageAction } from "./action/AccumulativeDamageAction.js";
-import { ActionByHitCountAction } from "./action/ActionByHitCountAction.js";
-import { ActionParameter } from "./action/ActionParameter.js";
-import { AdditiveAction } from "./action/AdditiveAction.js";
-import { AilmentAction } from "./action/AilmentAction.js";
-import { AttackFieldAction } from "./action/AttackFieldAction.js";
-import { AttackSealAction } from "./action/AttackSealAction.js";
-import { AuraAction } from "./action/AuraAction.js";
-import { AweAction } from "./action/AweAction.js";
-import { BarrierAction } from "./action/BarrierAction.js";
-import { ChangeBodyWidthAction } from "./action/ChangeBodyWidthAction.js";
-import { ChangeEnergyAction } from "./action/ChangeEnergyAction.js";
-import { ChangeEnergyRecoveryRatioByDamageAction } from "./action/ChangeEnergyRecoveryRatioByDamageAction.js";
-import { ChangeParameterFieldAction } from "./action/ChangeParameterFieldAction.js";
-import { ChangePatternAction } from "./action/ChangePatternAction.js";
-import { ChangeSpeedFieldAction } from "./action/ChangeSpeedFieldAction.js";
-import { ChannelAction } from "./action/ChannelAction.js";
-import { ChargeAction } from "./action/ChargeAction.js";
-import { CharmAction } from "./action/CharmAction.js";
-import { ContinuousAttackAction } from "./action/ContinuousAttackAction.js";
-import { ContinuousAttackNearbyAction } from "./action/ContinuousAttackNearbyAction.js";
-import { CountBlindAction } from "./action/CountBlindAction.js";
-import { CountDownAction } from "./action/CountDownAction.js";
-import { CureAction } from "./action/CureAction.js";
-import { DamageAction } from "./action/DamageAction.js";
-import { DamageByBehaviourAction } from "./action/DamageByBehaviourAction.js";
-import { DamageChargeAction } from "./action/DamageChargeAction.js";
-import { DecoyAction } from "./action/DecoyAction.js";
-import { DestroyAction } from "./action/DestroyAction.js";
-import { DispelAction } from "./action/DispelAction.js";
-import { DivideAction } from "./action/DivideAction.js";
-import { EnchantLifeStealAction } from "./action/EnchantLifeStealAction.js";
-import { EnchantStrikeBackAction } from "./action/EnchantStrikeBackAction.js";
-import { FearAction } from "./action/FearAction.js";
-import { HealAction } from "./action/HealAction.js";
-import { HealDownAction } from "./action/HealDownAction.js";
-import { HealFieldAction } from "./action/HealFieldAction.js";
-import { IFExistsFieldForAllAction } from "./action/IFExistsFieldForAllAction.js";
-import { IfForAllAction } from "./action/IfForAllAction.js";
-import { IfForChildrenAction } from "./action/IfForChildrenAction.js";
-import { IfHasTargetAction } from "./action/IfHasTargetAction.js";
-import { IgnoreDecoyAction } from "./action/IgnoreDecoyAction.js";
-import { InhibitHealAction } from "./action/InhibitHealAction.js";
-import { KnightGuardAction } from "./action/KnightGuardAction.js";
-import { KnockAction } from "./action/KnockAction.js";
-import { LogBarrierAction } from "./action/LogBarrierAction.js";
-import { LoopMotionRepeatAction } from "./action/LoopMotionRepeatAction.js";
-import { LoopTriggerAction } from "./action/LoopTriggerAction.js";
-import { ModeChangeAction } from "./action/ModeChangeAction.js";
-import { MoveAction } from "./action/MoveAction.js";
-import { MovePartsAction } from "./action/MovePartsAction.js";
-import { MultipleAction } from "./action/MultipleAction.js";
-import { NoDamageAction } from "./action/NoDamageAction.js";
-import { PassiveAction } from "./action/PassiveAction.js";
-import { PassiveDamageUpAction } from "./action/PassiveDamageUpAction.js";
-import { PassiveInermittentAction } from "./action/PassiveInermittentAction.js";
-import { PassiveSealAction } from "./action/PassiveSealAction.js";
-import { RatioDamageAction } from "./action/RatioDamageAction.js";
-import { ReflexiveAction } from "./action/ReflexiveAction.js";
-import { RegenerationAction } from "./action/RegenerationAction.js";
-import { RevivalAction } from "./action/RevivalAction.js";
-import { SealAction } from "./action/SealAction.js";
-import { SearchAreaChangeAction } from "./action/SearchAreaChangeAction.js";
-import { SkillExecCountAction } from "./action/SkillExecCountAction.js";
-import { StealthAction } from "./action/StealthAction.js";
-import { StopFieldAction } from "./action/StopFieldAction.js";
-import { SummonAction } from "./action/SummonAction.js";
-import { ToadAction } from "./action/ToadAction.js";
-import { TriggerAction } from "./action/TriggerAction.js";
-import { UBChangeTimeAction } from "./action/UBChangeTimeAction.js";
-import { UpperLimitAttackAction } from "./action/UpperLimitAttackAction.js";
-import { WaveStartIdleAction } from "./action/WaveStartIdleAction.js";
+import { AbnormalStateFieldAction } from "./action/abnormalStateFieldAction.js";
+import { AccumulativeDamageAction } from "./action/accumulativeDamageAction.js";
+import { ActionByHitCountAction } from "./action/actionByHitCountAction.js";
+import { ActionParameter } from "./action/actionParameter.js";
+import { AdditiveAction } from "./action/additiveAction.js";
+import { AilmentAction } from "./action/ailmentAction.js";
+import { AttackFieldAction } from "./action/attackFieldAction.js";
+import { AttackSealAction } from "./action/attackSealAction.js";
+import { AuraAction } from "./action/auraAction.js";
+import { AweAction } from "./action/aweAction.js";
+import { BarrierAction } from "./action/barrierAction.js";
+import { ChangeBodyWidthAction } from "./action/changeBodyWidthAction.js";
+import { ChangeEnergyAction } from "./action/changeEnergyAction.js";
+import { ChangeEnergyRecoveryRatioByDamageAction } from "./action/changeEnergyRecoveryRatioByDamageAction.js";
+import { ChangeParameterFieldAction } from "./action/changeParameterFieldAction.js";
+import { ChangePatternAction } from "./action/changePatternAction.js";
+import { ChangeSpeedFieldAction } from "./action/changeSpeedFieldAction.js";
+import { ChannelAction } from "./action/channelAction.js";
+import { ChargeAction } from "./action/chargeAction.js";
+import { CharmAction } from "./action/charmAction.js";
+import { ContinuousAttackAction } from "./action/continuousAttackAction.js";
+import { ContinuousAttackNearbyAction } from "./action/continuousAttackNearbyAction.js";
+import { CountBlindAction } from "./action/countBlindAction.js";
+import { CountDownAction } from "./action/countDownAction.js";
+import { CureAction } from "./action/cureAction.js";
+import { DamageAction } from "./action/damageAction.js";
+import { DamageByBehaviourAction } from "./action/damageByBehaviourAction.js";
+import { DamageChargeAction } from "./action/damageChargeAction.js";
+import { DecoyAction } from "./action/decoyAction.js";
+import { DestroyAction } from "./action/destroyAction.js";
+import { DispelAction } from "./action/dispelAction.js";
+import { DivideAction } from "./action/divideAction.js";
+import { EnchantLifeStealAction } from "./action/enchantLifeStealAction.js";
+import { EnchantStrikeBackAction } from "./action/enchantStrikeBackAction.js";
+import { FearAction } from "./action/fearAction.js";
+import { HealAction } from "./action/healAction.js";
+import { HealDownAction } from "./action/healDownAction.js";
+import { HealFieldAction } from "./action/healFieldAction.js";
+import { IFExistsFieldForAllAction } from "./action/iFExistsFieldForAllAction.js";
+import { IfForAllAction } from "./action/ifForAllAction.js";
+import { IfForChildrenAction } from "./action/ifForChildrenAction.js";
+import { IfHasTargetAction } from "./action/ifHasTargetAction.js";
+import { IgnoreDecoyAction } from "./action/ignoreDecoyAction.js";
+import { InhibitHealAction } from "./action/inhibitHealAction.js";
+import { KnightGuardAction } from "./action/knightGuardAction.js";
+import { KnockAction } from "./action/knockAction.js";
+import { LogBarrierAction } from "./action/logBarrierAction.js";
+import { LoopMotionRepeatAction } from "./action/loopMotionRepeatAction.js";
+import { LoopTriggerAction } from "./action/loopTriggerAction.js";
+import { ModeChangeAction } from "./action/modeChangeAction.js";
+import { MoveAction } from "./action/moveAction.js";
+import { MovePartsAction } from "./action/movePartsAction.js";
+import { MultipleAction } from "./action/multipleAction.js";
+import { NoDamageAction } from "./action/noDamageAction.js";
+import { PassiveAction } from "./action/passiveAction.js";
+import { PassiveDamageUpAction } from "./action/passiveDamageUpAction.js";
+import { PassiveInermittentAction } from "./action/passiveInermittentAction.js";
+import { PassiveSealAction } from "./action/passiveSealAction.js";
+import { RatioDamageAction } from "./action/ratioDamageAction.js";
+import { ReflexiveAction } from "./action/reflexiveAction.js";
+import { RegenerationAction } from "./action/regenerationAction.js";
+import { RevivalAction } from "./action/revivalAction.js";
+import { SealAction } from "./action/sealAction.js";
+import { SearchAreaChangeAction } from "./action/searchAreaChangeAction.js";
+import { SkillExecCountAction } from "./action/skillExecCountAction.js";
+import { StealthAction } from "./action/stealthAction.js";
+import { StopFieldAction } from "./action/stopFieldAction.js";
+import { SummonAction } from "./action/summonAction.js";
+import { ToadAction } from "./action/toadAction.js";
+import { TriggerAction } from "./action/triggerAction.js";
+import { UBChangeTimeAction } from "./action/ubChangeTimeAction.js";
+import { UpperLimitAttackAction } from "./action/upperLimitAttackAction.js";
+import { WaveStartIdleAction } from "./action/waveStartIdleAction.js";
 import { master } from "./db.js";
 import {
   SkillAction,
@@ -281,14 +281,6 @@ async function skillFormat(skillData: SkillData | null, kind: string) {
   return "";
 }
 
-async function findSkillActionAsync(actionId: number) {
-  return (await master.getAsync(`
-      SELECT *
-      FROM skill_action
-      WHERE action_id = '${actionId}'
-    `)) as Readonly<SkillAction>;
-}
-
 async function toDetailSkillDescription({
   action_1,
   action_2,
@@ -309,6 +301,14 @@ async function toDetailSkillDescription({
         })
     )
   ).join("\n");
+}
+
+export async function findSkillActionAsync(actionId: number) {
+  return (await master.getAsync(`
+      SELECT *
+      FROM skill_action
+      WHERE action_id = '${actionId}'
+    `)) as Readonly<SkillAction>;
 }
 
 export function localizedDetail(skillAction: SkillAction) {

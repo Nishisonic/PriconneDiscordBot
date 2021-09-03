@@ -4,8 +4,8 @@ import {
   ActionValue,
   ClassModifier,
   PercentModifier,
-} from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+} from "./actionParameter.js";
+import { PropertyKey } from "./propertyKey.js";
 
 export class HealAction extends ActionParameter {
   healClass: ClassModifier;

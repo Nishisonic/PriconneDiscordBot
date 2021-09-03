@@ -1,6 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
-import { TargetType } from "./parameter/TargetType.js";
+import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { TargetType } from "./parameter/targetType.js";
 
 export class ChangeEnergyAction extends ActionParameter {
   constructor(skillAction: SkillAction) {

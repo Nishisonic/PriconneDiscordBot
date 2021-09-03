@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue, eActionValue, } from "./ActionParameter.js";
+import { ActionParameter, ActionValue, eActionValue, } from "./actionParameter.js";
 class CharmType {
     constructor(value) {
         this.value = value;

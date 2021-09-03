@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
+import { ActionParameter, ActionValue } from "./actionParameter.js";
 class eCountType {
     constructor(value) {
         this.value = value;

@@ -1,5 +1,5 @@
-import { ActionParameter, ActionValue, ClassModifier } from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+import { ActionParameter, ActionValue, ClassModifier } from "./actionParameter.js";
+import { PropertyKey } from "./propertyKey.js";
 class RegenerationType {
     constructor(value) {
         this.value = value;

@@ -1,5 +1,5 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./ActionParameter.js";
+import { ActionParameter, ActionValue } from "./actionParameter.js";
 
 class BarrierType {
   static readonly physics = 1;

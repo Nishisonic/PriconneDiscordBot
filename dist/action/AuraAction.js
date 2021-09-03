@@ -1,5 +1,5 @@
-import { ActionParameter, ActionValue, PercentModifier, } from "./ActionParameter.js";
-import { PropertyKey } from "./PropertyKey.js";
+import { ActionParameter, ActionValue, PercentModifier, } from "./actionParameter.js";
+import { PropertyKey } from "./propertyKey.js";
 class AuraType {
     constructor(value) {
         this.value = value;
