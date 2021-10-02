@@ -11,7 +11,7 @@ export class AilmentAction extends ActionParameter {
         this.durationValues = this.chanceValues;
     }
     localizedDetail() {
-        var _a, _b;
+        var _a;
         switch (this.ailment.ailmentType.value) {
             case AilmentType.action:
                 let str = "";
@@ -38,14 +38,21 @@ export class AilmentAction extends ActionParameter {
                 }
                 return str;
             case AilmentType.dot:
-                switch (((_b = this.ailment.ailmentDetail) === null || _b === void 0 ? void 0 : _b.detail).value) {
-                    case DotDetail.poison:
-                        return `${this.targetParameter.buildTargetClause()}を毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
-                    case DotDetail.violentPoison:
-                        return `${this.targetParameter.buildTargetClause()}を猛毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
-                    default:
-                        return `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                let r = (() => {
+                    var _a;
+                    switch (((_a = this.ailment.ailmentDetail) === null || _a === void 0 ? void 0 : _a.detail).value) {
+                        case DotDetail.poison:
+                            return `${this.targetParameter.buildTargetClause()}を毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                        case DotDetail.violentPoison:
+                            return `${this.targetParameter.buildTargetClause()}を猛毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                        default:
+                            return `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                    }
+                })();
+                if (this.actionValue5.value > 0) {
+                    r += `さらに、この継続ダメージは毎秒ごとに基礎ダメージの [${this.actionValue5.value}%] 増加する。`;
                 }
+                return r;
             case AilmentType.silence:
                 return `[${this.buildExpression(this.chanceValues)}%] の確率で${this.targetParameter.buildTargetClause()}を沈黙状態にする、効果時間 [${this.buildExpression()}] 秒。`;
             case AilmentType.darken:

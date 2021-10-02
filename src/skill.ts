@@ -87,60 +87,62 @@ export async function skill(message: Message) {
       .replace(/^\.skill (.+)$/, "$1")
       .replace(/\(/g, "（")
       .replace(/\)/g, "）");
-    const unit = (await master.getAsync(`
+    const units = (await master.allAsync(`
         SELECT *
         FROM unit_data
         WHERE unit_name = '${name}'
-      `)) as Readonly<UnitData>;
-    if (unit) {
-      const unitSkillData = await findUnitSkillDataAsync(unit.unit_id);
-      const attackPatternMessage = await getAttackPatternStringAsync(
-        unit.unit_id
-      );
-      const skillMessage = (
-        await Promise.all(
-          [
-            new SkillDisp(unitSkillData.union_burst, "UB"),
-            new SkillDisp(unitSkillData.union_burst_evolution, "UB+"),
-            new SkillDisp(unitSkillData.main_skill_1, "スキル1"),
-            new SkillDisp(unitSkillData.main_skill_evolution_1, "スキル1+"),
-            new SkillDisp(unitSkillData.main_skill_2, "スキル2"),
-            new SkillDisp(unitSkillData.main_skill_evolution_2, "スキル2+"),
-            new SkillDisp(unitSkillData.main_skill_3, "スキル3"),
-            new SkillDisp(unitSkillData.main_skill_4, "スキル4"),
-            new SkillDisp(unitSkillData.main_skill_5, "スキル5"),
-            new SkillDisp(unitSkillData.main_skill_6, "スキル6"),
-            new SkillDisp(unitSkillData.main_skill_7, "スキル7"),
-            new SkillDisp(unitSkillData.main_skill_8, "スキル8"),
-            new SkillDisp(unitSkillData.main_skill_9, "スキル9"),
-            new SkillDisp(unitSkillData.main_skill_10, "スキル10"),
-            new SkillDisp(unitSkillData.ex_skill_1, "EXスキル1"),
-            new SkillDisp(unitSkillData.ex_skill_evolution_1, "EXスキル1+"),
-            new SkillDisp(unitSkillData.ex_skill_2, "EXスキル2"),
-            new SkillDisp(unitSkillData.ex_skill_evolution_2, "EXスキル2+"),
-            new SkillDisp(unitSkillData.ex_skill_3, "EXスキル3"),
-            new SkillDisp(unitSkillData.ex_skill_evolution_3, "EXスキル3+"),
-            new SkillDisp(unitSkillData.ex_skill_4, "EXスキル4"),
-            new SkillDisp(unitSkillData.ex_skill_evolution_4, "EXスキル4+"),
-            new SkillDisp(unitSkillData.ex_skill_5, "EXスキル5"),
-            new SkillDisp(unitSkillData.ex_skill_evolution_5, "EXスキル5+"),
-            new SkillDisp(unitSkillData.sp_skill_1, "SPスキル1"),
-            new SkillDisp(unitSkillData.sp_skill_evolution_1, "SPスキル1+"),
-            new SkillDisp(unitSkillData.sp_skill_2, "SPスキル2"),
-            new SkillDisp(unitSkillData.sp_skill_evolution_2, "SPスキル2+"),
-            new SkillDisp(unitSkillData.sp_skill_3, "SPスキル3"),
-            new SkillDisp(unitSkillData.sp_skill_4, "SPスキル4"),
-            new SkillDisp(unitSkillData.sp_skill_5, "SPスキル5"),
-          ].map(
-            async ({ skillId, kind }) =>
-              await skillFormat(await findSkillDataAsync(skillId), kind)
+      `)) as Readonly<UnitData[]>;
+    if (units.length > 0) {
+      units.forEach(async (unit) => {
+        const unitSkillData = await findUnitSkillDataAsync(unit.unit_id);
+        const attackPatternMessage = await getAttackPatternStringAsync(
+          unit.unit_id
+        );
+        const skillMessage = (
+          await Promise.all(
+            [
+              new SkillInfo(unitSkillData.union_burst, "UB"),
+              new SkillInfo(unitSkillData.union_burst_evolution, "UB+"),
+              new SkillInfo(unitSkillData.main_skill_1, "スキル1"),
+              new SkillInfo(unitSkillData.main_skill_evolution_1, "スキル1+"),
+              new SkillInfo(unitSkillData.main_skill_2, "スキル2"),
+              new SkillInfo(unitSkillData.main_skill_evolution_2, "スキル2+"),
+              new SkillInfo(unitSkillData.main_skill_3, "スキル3"),
+              new SkillInfo(unitSkillData.main_skill_4, "スキル4"),
+              new SkillInfo(unitSkillData.main_skill_5, "スキル5"),
+              new SkillInfo(unitSkillData.main_skill_6, "スキル6"),
+              new SkillInfo(unitSkillData.main_skill_7, "スキル7"),
+              new SkillInfo(unitSkillData.main_skill_8, "スキル8"),
+              new SkillInfo(unitSkillData.main_skill_9, "スキル9"),
+              new SkillInfo(unitSkillData.main_skill_10, "スキル10"),
+              new SkillInfo(unitSkillData.ex_skill_1, "EXスキル1"),
+              new SkillInfo(unitSkillData.ex_skill_evolution_1, "EXスキル1+"),
+              new SkillInfo(unitSkillData.ex_skill_2, "EXスキル2"),
+              new SkillInfo(unitSkillData.ex_skill_evolution_2, "EXスキル2+"),
+              new SkillInfo(unitSkillData.ex_skill_3, "EXスキル3"),
+              new SkillInfo(unitSkillData.ex_skill_evolution_3, "EXスキル3+"),
+              new SkillInfo(unitSkillData.ex_skill_4, "EXスキル4"),
+              new SkillInfo(unitSkillData.ex_skill_evolution_4, "EXスキル4+"),
+              new SkillInfo(unitSkillData.ex_skill_5, "EXスキル5"),
+              new SkillInfo(unitSkillData.ex_skill_evolution_5, "EXスキル5+"),
+              new SkillInfo(unitSkillData.sp_skill_1, "SPスキル1"),
+              new SkillInfo(unitSkillData.sp_skill_evolution_1, "SPスキル1+"),
+              new SkillInfo(unitSkillData.sp_skill_2, "SPスキル2"),
+              new SkillInfo(unitSkillData.sp_skill_evolution_2, "SPスキル2+"),
+              new SkillInfo(unitSkillData.sp_skill_3, "SPスキル3"),
+              new SkillInfo(unitSkillData.sp_skill_4, "SPスキル4"),
+              new SkillInfo(unitSkillData.sp_skill_5, "SPスキル5"),
+            ].map(
+              async ({ skillId, title }) =>
+                await skillFormat(await findSkillDataAsync(skillId), title)
+            )
           )
-        )
-      ).join("");
+        ).join("");
 
-      await message.channel.send(
-        `${name}\n\n${attackPatternMessage}\n\n${skillMessage}`
-      );
+        await message.channel.send(
+          `${name}\n\n${attackPatternMessage}\n\n${skillMessage}`
+        );
+      });
     } else {
       await message.channel.send(
         `「${name}」のキャラ情報が見つかりませんでした。`
@@ -149,13 +151,13 @@ export async function skill(message: Message) {
   }
 }
 
-class SkillDisp {
+class SkillInfo {
   skillId: number;
-  kind: string;
+  title: string;
 
-  constructor(skillId: number, kind: string) {
+  constructor(skillId: number, title: string) {
     this.skillId = skillId;
-    this.kind = kind;
+    this.title = title;
   }
 }
 
@@ -273,10 +275,10 @@ async function findUnitAttackPatternAsync(unitId: number) {
     `)) as Readonly<UnitAttackPattern[]>;
 }
 
-async function skillFormat(skillData: SkillData | null, kind: string) {
+async function skillFormat(skillData: SkillData | null, title: string) {
   if (skillData) {
     const detail = await toDetailSkillDescription(skillData);
-    return `**[${kind}]** ${skillData.name}\`\n待機時間：${skillData.skill_cast_time}s\`\n${skillData.description}\n\`スキルアクション\`\n${detail}\n\n`;
+    return `**[${title}]** ${skillData.name}\`\n待機時間：${skillData.skill_cast_time}s\`\n${skillData.description}\n\`スキルアクション\`\n${detail}\n\n`;
   }
   return "";
 }

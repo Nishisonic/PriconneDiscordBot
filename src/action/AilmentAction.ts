@@ -66,20 +66,26 @@ export class AilmentAction extends ActionParameter {
         }
         return str;
       case AilmentType.dot:
-        switch ((this.ailment.ailmentDetail?.detail as DotDetail).value) {
-          case DotDetail.poison:
-            return `${this.targetParameter.buildTargetClause()}を毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
-              this.durationValues
-            )}] 秒。`;
-          case DotDetail.violentPoison:
-            return `${this.targetParameter.buildTargetClause()}を猛毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
-              this.durationValues
-            )}] 秒。`;
-          default:
-            return `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
-              this.durationValues
-            )}] 秒。`;
+        let r = (() => {
+          switch ((this.ailment.ailmentDetail?.detail as DotDetail).value) {
+            case DotDetail.poison:
+              return `${this.targetParameter.buildTargetClause()}を毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
+                this.durationValues
+              )}] 秒。`;
+            case DotDetail.violentPoison:
+              return `${this.targetParameter.buildTargetClause()}を猛毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
+                this.durationValues
+              )}] 秒。`;
+            default:
+              return `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
+                this.durationValues
+              )}] 秒。`;
+          }
+        })();
+        if (this.actionValue5.value > 0) {
+          r += `さらに、この継続ダメージは毎秒ごとに基礎ダメージの [${this.actionValue5.value}%] 増加する。`;
         }
+        return r;
       case AilmentType.silence:
         return `[${this.buildExpression(
           this.chanceValues
