@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 export class DecoyAction extends ActionParameter {
   constructor(skillAction: SkillAction) {
@@ -9,7 +10,10 @@ export class DecoyAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
-    return `${this.targetParameter.buildTargetClause()}に挑発状態、効果時間 [${this.buildExpression()}] 秒。`;
+  localizedDetail(expressionMode: Expression, property: Property) {
+    return `${this.targetParameter.buildTargetClause()}に挑発状態、効果時間 [${this.buildExpression(
+      expressionMode,
+      property
+    )}] 秒。`;
   }
 }

@@ -1,8 +1,17 @@
 import { Message } from "discord.js";
+import { master } from "./db.js";
+import {
+  SkillAction,
+  SkillData,
+  UnitAttackPattern,
+  UnitData,
+  UnitSkillData,
+} from "./master";
+import { Property } from "./action/parameter/property.js";
 import { AbnormalStateFieldAction } from "./action/abnormalStateFieldAction.js";
 import { AccumulativeDamageAction } from "./action/accumulativeDamageAction.js";
 import { ActionByHitCountAction } from "./action/actionByHitCountAction.js";
-import { ActionParameter } from "./action/actionParameter.js";
+import { Expression, ActionParameter } from "./action/actionParameter.js";
 import { AdditiveAction } from "./action/additiveAction.js";
 import { AilmentAction } from "./action/ailmentAction.js";
 import { AttackFieldAction } from "./action/attackFieldAction.js";
@@ -53,6 +62,7 @@ import { MoveAction } from "./action/moveAction.js";
 import { MovePartsAction } from "./action/movePartsAction.js";
 import { MultipleAction } from "./action/multipleAction.js";
 import { NoDamageAction } from "./action/noDamageAction.js";
+import { getCharaStatus } from "./action/parameter/Chara.js";
 import { PassiveAction } from "./action/passiveAction.js";
 import { PassiveDamageUpAction } from "./action/passiveDamageUpAction.js";
 import { PassiveInermittentAction } from "./action/passiveInermittentAction.js";
@@ -72,27 +82,24 @@ import { TriggerAction } from "./action/triggerAction.js";
 import { UBChangeTimeAction } from "./action/ubChangeTimeAction.js";
 import { UpperLimitAttackAction } from "./action/upperLimitAttackAction.js";
 import { WaveStartIdleAction } from "./action/waveStartIdleAction.js";
-import { master } from "./db.js";
-import {
-  SkillAction,
-  SkillData,
-  UnitAttackPattern,
-  UnitData,
-  UnitSkillData,
-} from "./master";
 
 export async function skill(message: Message) {
-  if (message.content.match(/^\.skill .+$/)) {
+  if (message.content.match(/^\.skill(-p)? .+$/)) {
     const name = message.content
-      .replace(/^\.skill (.+)$/, "$1")
+      .replace(/^\.skill(-p)? (.+)$/, "$2")
       .replace(/\(/g, "（")
       .replace(/\)/g, "）");
     const units = (await master.allAsync(`
         SELECT *
         FROM unit_data
         WHERE unit_name = '${name}'
+        AND unit_id < 400000
       `)) as Readonly<UnitData[]>;
+    const expressionMode = message.content.includes(".skill-p")
+      ? Expression.ORIGINAL
+      : Expression.EXPRESSION;
     if (units.length > 0) {
+      const property = await getCharaStatus(units[units.length - 1].unit_id);
       units.forEach(async (unit) => {
         const unitSkillData = await findUnitSkillDataAsync(unit.unit_id);
         const attackPatternMessage = await getAttackPatternStringAsync(
@@ -134,7 +141,12 @@ export async function skill(message: Message) {
               new SkillInfo(unitSkillData.sp_skill_5, "SPスキル5"),
             ].map(
               async ({ skillId, title }) =>
-                await skillFormat(await findSkillDataAsync(skillId), title)
+                await skillFormat(
+                  await findSkillDataAsync(skillId),
+                  title,
+                  property,
+                  expressionMode
+                )
             )
           )
         ).join("");
@@ -275,23 +287,36 @@ async function findUnitAttackPatternAsync(unitId: number) {
     `)) as Readonly<UnitAttackPattern[]>;
 }
 
-async function skillFormat(skillData: SkillData | null, title: string) {
+async function skillFormat(
+  skillData: SkillData | null,
+  title: string,
+  property: Property,
+  expressionMode: Expression
+) {
   if (skillData) {
-    const detail = await toDetailSkillDescription(skillData);
+    const detail = await toDetailSkillDescription(
+      skillData,
+      property,
+      expressionMode
+    );
     return `**[${title}]** ${skillData.name}\`\n待機時間：${skillData.skill_cast_time}s\`\n${skillData.description}\n\`スキルアクション\`\n${detail}\n\n`;
   }
   return "";
 }
 
-async function toDetailSkillDescription({
-  action_1,
-  action_2,
-  action_3,
-  action_4,
-  action_5,
-  action_6,
-  action_7,
-}: SkillData) {
+async function toDetailSkillDescription(
+  {
+    action_1,
+    action_2,
+    action_3,
+    action_4,
+    action_5,
+    action_6,
+    action_7,
+  }: SkillData,
+  property: Property,
+  expressionMode: Expression
+) {
   return (
     await Promise.all(
       [action_1, action_2, action_3, action_4, action_5, action_6, action_7]
@@ -299,7 +324,11 @@ async function toDetailSkillDescription({
         .map(async (actionId, i) => {
           const skillAction = await findSkillActionAsync(actionId);
 
-          return `[${i + 1}]${localizedDetail(skillAction)}`;
+          return `[${i + 1}]${localizedDetail(
+            skillAction,
+            property,
+            expressionMode
+          )}`;
         })
     )
   ).join("\n");
@@ -313,7 +342,11 @@ export async function findSkillActionAsync(actionId: number) {
     `)) as Readonly<SkillAction>;
 }
 
-export function localizedDetail(skillAction: SkillAction) {
+export function localizedDetail(
+  skillAction: SkillAction,
+  property: Property,
+  expressionMode: Expression
+) {
   return (() => {
     switch (skillAction.action_type) {
       case 1:
@@ -466,5 +499,5 @@ export function localizedDetail(skillAction: SkillAction) {
       default:
         return new ActionParameter(skillAction);
     }
-  })().localizedDetail();
+  })().localizedDetail(expressionMode, property);
 }

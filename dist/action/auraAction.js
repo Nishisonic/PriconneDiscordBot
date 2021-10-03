@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue, PercentModifier, } from "./actionParameter.js";
+import { ActionParameter, ActionValue, PercentModifier, RoundingMode, } from "./actionParameter.js";
 import { PropertyKey } from "./propertyKey.js";
 class AuraType {
     constructor(value) {
@@ -116,7 +116,7 @@ export class AuraAction extends ActionParameter {
             this.auraType = AuraType.parse(AuraType.maxHP);
         }
         else if (this.actionDetail1 >= 1000) {
-            this.auraType = AuraType.parse(this.actionDetail1 % 1000 / 10);
+            this.auraType = AuraType.parse((this.actionDetail1 % 1000) / 10);
             this.isConstant = true;
         }
         else {
@@ -128,13 +128,15 @@ export class AuraAction extends ActionParameter {
             this.percentModifier = PercentModifier.parse(PercentModifier.percent);
         }
     }
-    localizedDetail() {
-        const r = this.buildExpression();
+    localizedDetail(expressionMode, property) {
+        const r = this.buildExpression(expressionMode, RoundingMode.UP, property);
         switch (this.breakType.value) {
             case BreakType.Break:
-                return `Break期間中、${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${r}${this.percentModifier.description()}] ${this.auraActionType.description()}。${this.isConstant ? "この効果は他の値への効果の影響を受けない（ディスペルなど効果解除の影響は受ける）。" : ""}`;
+                return `Break期間中、${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${r}${this.percentModifier.description()}] ${this.auraActionType.description()}。${this.isConstant
+                    ? "この効果は他の値への効果の影響を受けない（ディスペルなど効果解除の影響は受ける）。"
+                    : ""}`;
             default: {
-                return `${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${r}${this.percentModifier.description()}] ${this.auraActionType.description()}、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                return `${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${r}${this.percentModifier.description()}] ${this.auraActionType.description()}、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
             }
         }
     }

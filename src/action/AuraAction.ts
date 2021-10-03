@@ -2,8 +2,11 @@ import { SkillAction } from "../master.js";
 import {
   ActionParameter,
   ActionValue,
+  Expression,
   PercentModifier,
+  RoundingMode,
 } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 import { PropertyKey } from "./propertyKey.js";
 
 class AuraType {
@@ -145,7 +148,7 @@ export class AuraAction extends ActionParameter {
     if (this.actionDetail1 === 1) {
       this.auraType = AuraType.parse(AuraType.maxHP);
     } else if (this.actionDetail1 >= 1000) {
-      this.auraType = AuraType.parse(this.actionDetail1 % 1000 / 10);
+      this.auraType = AuraType.parse((this.actionDetail1 % 1000) / 10);
       this.isConstant = true;
     } else {
       this.auraType = AuraType.parse(Math.floor(this.actionDetail1 / 10));
@@ -157,14 +160,21 @@ export class AuraAction extends ActionParameter {
     }
   }
 
-  localizedDetail() {
-    const r = this.buildExpression();
+  localizedDetail(expressionMode: Expression, property: Property) {
+    const r = this.buildExpression(expressionMode, RoundingMode.UP, property);
     switch (this.breakType.value) {
       case BreakType.Break:
-        return `Break期間中、${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${r}${this.percentModifier.description()}] ${this.auraActionType.description()}。${this.isConstant ? "この効果は他の値への効果の影響を受けない（ディスペルなど効果解除の影響は受ける）。" : "" }`;
+        return `Break期間中、${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${r}${this.percentModifier.description()}] ${this.auraActionType.description()}。${
+          this.isConstant
+            ? "この効果は他の値への効果の影響を受けない（ディスペルなど効果解除の影響は受ける）。"
+            : ""
+        }`;
       default: {
         return `${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${r}${this.percentModifier.description()}] ${this.auraActionType.description()}、効果時間 [${this.buildExpression(
-          this.durationValues
+          expressionMode,
+          this.durationValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}] 秒。`;
       }
     }

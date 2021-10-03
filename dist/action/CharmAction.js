@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue, eActionValue, } from "./actionParameter.js";
+import { ActionParameter, ActionValue, eActionValue, RoundingMode, } from "./actionParameter.js";
 class CharmType {
     constructor(value) {
         this.value = value;
@@ -26,14 +26,14 @@ export class CharmAction extends ActionParameter {
                 break;
         }
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.charmType.value) {
             case CharmType.charm:
-                return `[${this.buildExpression(this.chanceValues)}%] の確率で${this.targetParameter.buildTargetClause()}を魅了状態にする、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                return `[${this.buildExpression(expressionMode, this.chanceValues, RoundingMode.UNNECESSARY, property)}%] の確率で${this.targetParameter.buildTargetClause()}を魅了状態にする、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
             case CharmType.confusion:
-                return `[${this.buildExpression(this.chanceValues)}%] の確率で${this.targetParameter.buildTargetClause()}を混乱状態にする、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                return `[${this.buildExpression(expressionMode, this.chanceValues, RoundingMode.UNNECESSARY, property)}%] の確率で${this.targetParameter.buildTargetClause()}を混乱状態にする、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

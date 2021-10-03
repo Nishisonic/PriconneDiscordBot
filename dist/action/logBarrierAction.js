@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, RoundingMode, } from "./actionParameter.js";
 class BarrierType {
     constructor(value) {
         this.value = value;
@@ -18,7 +18,7 @@ export class LogBarrierAction extends ActionParameter {
         this.actionValues.push(new ActionValue(this.actionValue1, this.actionValue2, null));
         this.durationValues.push(new ActionValue(this.actionValue3, this.actionValue4, null));
     }
-    localizedDetail() {
-        return `${this.targetParameter.buildTargetClause()}にバリアを展開する、一回の行動で受けたダメージが [${this.actionValue5.value}] を超えた場合、ダメージが減衰される、減衰係数 [${this.buildExpression()}]（この値が小さいほど減衰されやすい）、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+    localizedDetail(expressionMode, property) {
+        return `${this.targetParameter.buildTargetClause()}にバリアを展開する、一回の行動で受けたダメージが [${this.actionValue5.value}] を超えた場合、ダメージが減衰される、減衰係数 [${this.buildExpression(expressionMode, RoundingMode.UNNECESSARY, property)}]（この値が小さいほど減衰されやすい）、効果時間 [${this.buildExpression(expressionMode, this.durationValues, null, property)}] 秒。`;
     }
 }

@@ -16,7 +16,7 @@ export class ModeChangeAction extends ActionParameter {
         super(skillAction);
         this.modeChangeType = ModeChangeType.parse(this.actionDetail1);
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.modeChangeType.value) {
             case ModeChangeType.time:
                 return `行動パターンを${this.actionDetail2 % 10}に変化させる、効果時間 [${this.actionValue1.value}] 秒。`;
@@ -25,7 +25,7 @@ export class ModeChangeAction extends ActionParameter {
             case ModeChangeType.release:
                 return `効果終了後、行動パターンを${this.actionDetail2 % 10}に戻させる。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

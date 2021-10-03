@@ -18,14 +18,14 @@ export class DamageAction extends ActionParameter {
             default:
         }
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         let sentence = "";
         switch (this.criticalModifier.value) {
             case CriticalModifier.normal:
-                sentence += `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] の${this.damageClass.description()}ダメージを与える。`;
+                sentence += `${this.targetParameter.buildTargetClause()}に [${this.buildExpression(expressionMode, property)}] の${this.damageClass.description()}ダメージを与える。`;
                 break;
             case CriticalModifier.critical:
-                sentence += `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] の${this.damageClass.description()}ダメージを与える。このアクションの ${this.actionValue5.value}hitは必ずクリティカルする。`;
+                sentence += `${this.targetParameter.buildTargetClause()}に [${this.buildExpression(expressionMode, property)}] の${this.damageClass.description()}ダメージを与える。このアクションの ${this.actionValue5.value}hitは必ずクリティカルする。`;
                 break;
         }
         if (this.actionValue6.value !== 0) {

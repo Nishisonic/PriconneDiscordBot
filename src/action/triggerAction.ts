@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./actionParameter.js";
+import { ActionParameter, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class TriggerType {
   static readonly unknown = 0;
@@ -33,7 +34,7 @@ export class TriggerAction extends ActionParameter {
     this.triggerType = TriggerType.parse(this.actionDetail1);
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.triggerType.value) {
       case TriggerType.hp:
         return `トリガー：HPが [${this.actionValue3.value}%] 以下の時発動。`;
@@ -54,7 +55,7 @@ export class TriggerAction extends ActionParameter {
       case TriggerType.allBreak:
         return "トリガー：すべての部位がBreakされた時発動。";
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

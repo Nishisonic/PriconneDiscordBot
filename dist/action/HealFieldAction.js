@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue, ClassModifier, PercentModifier, } from "./actionParameter.js";
+import { ActionParameter, ActionValue, ClassModifier, PercentModifier, RoundingMode, } from "./actionParameter.js";
 import { TargetType } from "./parameter/targetType.js";
 import { PropertyKey } from "./propertyKey.js";
 export class HealFieldAction extends ActionParameter {
@@ -27,15 +27,15 @@ export class HealFieldAction extends ActionParameter {
         }
         this.durationValues.push(new ActionValue(this.actionValue5, this.actionValue6, null));
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.fieldType.value) {
             case FieldType.repeat:
                 if (this.targetParameter.targetType.value === TargetType.absolute) {
-                    return `半径 [${this.actionValue7.value}] のフィールドを展開し、${this.targetParameter.buildTargetClause()}に毎秒 [${this.buildExpression()}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                    return `半径 [${this.actionValue7.value}] のフィールドを展開し、${this.targetParameter.buildTargetClause()}に毎秒 [${this.buildExpression(expressionMode, property)}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
                 }
-                return `${this.targetParameter.buildTargetClause()}の位置で半径 [${this.actionValue7.value}] のフィールドを展開し、毎秒 [${this.buildExpression()}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                return `${this.targetParameter.buildTargetClause()}の位置で半径 [${this.actionValue7.value}] のフィールドを展開し、毎秒 [${this.buildExpression(expressionMode, property)}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

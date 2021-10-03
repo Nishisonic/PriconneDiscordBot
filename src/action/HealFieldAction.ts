@@ -3,8 +3,11 @@ import {
   ActionParameter,
   ActionValue,
   ClassModifier,
+  Expression,
   PercentModifier,
+  RoundingMode,
 } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 import { TargetType } from "./parameter/targetType.js";
 import { PropertyKey } from "./propertyKey.js";
 
@@ -57,23 +60,35 @@ export class HealFieldAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.fieldType.value) {
       case FieldType.repeat:
         if (this.targetParameter.targetType.value === TargetType.absolute) {
           return `半径 [${
             this.actionValue7.value
-          }] のフィールドを展開し、${this.targetParameter.buildTargetClause()}に毎秒 [${this.buildExpression()}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(
-            this.durationValues
+          }] のフィールドを展開し、${this.targetParameter.buildTargetClause()}に毎秒 [${this.buildExpression(
+            expressionMode,
+            property
+          )}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(
+            expressionMode,
+            this.durationValues,
+            RoundingMode.UNNECESSARY,
+            property
           )}] 秒。`;
         }
         return `${this.targetParameter.buildTargetClause()}の位置で半径 [${
           this.actionValue7.value
-        }] のフィールドを展開し、毎秒 [${this.buildExpression()}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(
-          this.durationValues
+        }] のフィールドを展開し、毎秒 [${this.buildExpression(
+          expressionMode,
+          property
+        )}${this.percentModifier.description()}] のHPを回復させる、効果時間 [${this.buildExpression(
+          expressionMode,
+          this.durationValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}] 秒。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

@@ -27,7 +27,7 @@ export class KnightGuardAction extends ActionParameter {
         }
         this.durationValues.push(new ActionValue(this.actionValue6, this.actionValue7, null));
     }
-    localizedDetail() {
-        return `${this.targetParameter.buildTargetClause()}に「HPが0になる直前、HPを [${this.buildExpression()}] 回復し、このバフを解除する」の効果を付与する、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+    localizedDetail(expressionMode, property) {
+        return `${this.targetParameter.buildTargetClause()}に「HPが0になる直前、HPを [${this.buildExpression(expressionMode, property)}] 回復し、このバフを解除する」の効果を付与する、効果時間 [${this.buildExpression(expressionMode, this.durationValues, null, property)}] 秒。`;
     }
 }

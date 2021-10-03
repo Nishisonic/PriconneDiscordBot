@@ -14,7 +14,7 @@ export class MoveAction extends ActionParameter {
         super(skillAction);
         this.moveType = skillAction.action_detail_1;
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         const direction = this.actionValue1.value > 0 ? "前" : "後ろ";
         const speed = this.actionValue2.value;
         const distance = Math.floor(Math.abs(this.actionValue1.value));
@@ -33,7 +33,7 @@ export class MoveAction extends ActionParameter {
             case MoveType.absoluteByVelocity:
                 return `[${speed}] の速度で${direction}へ [${distance}] 移動する。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

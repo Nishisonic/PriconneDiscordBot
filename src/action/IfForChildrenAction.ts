@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./actionParameter.js";
+import { ActionParameter, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 export class IfType {
   static readonly controllered = 100;
@@ -142,7 +143,7 @@ export class IfForChildrenAction extends ActionParameter {
     }
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     if (
       this.actionDetail1 === 100 ||
       this.actionDetail1 === 101 ||
@@ -186,6 +187,6 @@ export class IfForChildrenAction extends ActionParameter {
         }%] の確率で [アクション${this.actionDetail3 % 10}] を使う。`;
       }
     }
-    return super.localizedDetail();
+    return super.localizedDetail(expressionMode, property);
   }
 }

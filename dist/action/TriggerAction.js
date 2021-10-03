@@ -24,7 +24,7 @@ export class TriggerAction extends ActionParameter {
         super(skillAction);
         this.triggerType = TriggerType.parse(this.actionDetail1);
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.triggerType.value) {
             case TriggerType.hp:
                 return `トリガー：HPが [${this.actionValue3.value}%] 以下の時発動。`;
@@ -45,7 +45,7 @@ export class TriggerAction extends ActionParameter {
             case TriggerType.allBreak:
                 return "トリガー：すべての部位がBreakされた時発動。";
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

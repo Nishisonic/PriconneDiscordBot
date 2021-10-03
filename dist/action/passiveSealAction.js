@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, RoundingMode, } from "./actionParameter.js";
 class ePassiveTiming {
     constructor(value) {
         this.value = value;
@@ -49,7 +49,7 @@ export class PassiveSealAction extends ActionParameter {
         this.passiveTiming = ePassiveTiming.parse(this.actionDetail1);
         this.sealTarget = eSealTarget.parse(this.actionDetail3);
     }
-    localizedDetail() {
-        return `パッシブ：${this.targetParameter.buildTargetClause()}が${this.passiveTiming.description()}を受けるたび、${this.sealTarget.description()}にマーク [ID: ${this.actionValue2.value}] を [${this.actionDetail2}] 追加する、マークの継続時間 [${this.buildExpression(this.sealDuration)}] 秒、最大 [${this.actionValue1.value}] までスタックする。このパッシブ効果は [${this.buildExpression(this.lifeTime)}] 秒継続する。`;
+    localizedDetail(expressionMode, property) {
+        return `パッシブ：${this.targetParameter.buildTargetClause()}が${this.passiveTiming.description()}を受けるたび、${this.sealTarget.description()}にマーク [ID: ${this.actionValue2.value}] を [${this.actionDetail2}] 追加する、マークの継続時間 [${this.buildExpression(expressionMode, this.sealDuration, RoundingMode.UNNECESSARY, property)}] 秒、最大 [${this.actionValue1.value}] までスタックする。このパッシブ効果は [${this.buildExpression(expressionMode, this.lifeTime, RoundingMode.UNNECESSARY, property)}] 秒継続する。`;
     }
 }

@@ -1,6 +1,12 @@
 import { SkillAction } from "../master.js";
-import { ActionValue, PercentModifier } from "./actionParameter.js";
+import {
+  ActionValue,
+  Expression,
+  PercentModifier,
+  RoundingMode,
+} from "./actionParameter.js";
 import { AuraAction } from "./auraAction.js";
+import { Property } from "./parameter/property.js";
 import { TargetType } from "./parameter/targetType.js";
 
 export class ChangeParameterFieldAction extends AuraAction {
@@ -17,18 +23,32 @@ export class ChangeParameterFieldAction extends AuraAction {
     super.percentModifier = PercentModifier.parse(this.actionDetail2);
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     if (this.targetParameter.targetType.value === TargetType.absolute) {
       return `半径 [${
         this.actionValue5.value
-      }] のフィールドを展開し、${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${this.buildExpression()}${this.percentModifier.description()}] ${this.auraActionType.description()}させる、効果時間 [${this.buildExpression(
-        this.durationValues
+      }] のフィールドを展開し、${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${this.buildExpression(
+        expressionMode,
+        RoundingMode.UP,
+        property
+      )}${this.percentModifier.description()}] ${this.auraActionType.description()}させる、効果時間 [${this.buildExpression(
+        expressionMode,
+        this.durationValues,
+        RoundingMode.UNNECESSARY,
+        property
       )}] 秒。`;
     }
     return `${this.targetParameter.buildTargetClause()}の位置で半径 [${
       this.actionValue5.value
-    }] のフィールドを展開し、${this.auraType.description()}を [${this.buildExpression()}${this.percentModifier.description()}] ${this.auraActionType.description()}させる、効果時間 [${this.buildExpression(
-      this.durationValues
+    }] のフィールドを展開し、${this.auraType.description()}を [${this.buildExpression(
+      expressionMode,
+      RoundingMode.UP,
+      property
+    )}${this.percentModifier.description()}] ${this.auraActionType.description()}させる、効果時間 [${this.buildExpression(
+      expressionMode,
+      this.durationValues,
+      RoundingMode.UNNECESSARY,
+      property
     )}] 秒。`;
   }
 }

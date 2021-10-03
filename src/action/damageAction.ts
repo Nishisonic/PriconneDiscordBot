@@ -3,9 +3,11 @@ import {
   ActionValue,
   ClassModifier,
   CriticalModifier,
+  Expression,
 } from "./actionParameter.js";
 import { PropertyKey } from "./propertyKey.js";
 import { SkillAction } from "../master.js";
+import { Property } from "./parameter/property.js";
 
 export class DamageAction extends ActionParameter {
   damageClass: ClassModifier;
@@ -46,15 +48,21 @@ export class DamageAction extends ActionParameter {
     }
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     let sentence = "";
 
     switch (this.criticalModifier.value) {
       case CriticalModifier.normal:
-        sentence += `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] の${this.damageClass.description()}ダメージを与える。`;
+        sentence += `${this.targetParameter.buildTargetClause()}に [${this.buildExpression(
+          expressionMode,
+          property
+        )}] の${this.damageClass.description()}ダメージを与える。`;
         break;
       case CriticalModifier.critical:
-        sentence += `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] の${this.damageClass.description()}ダメージを与える。このアクションの ${
+        sentence += `${this.targetParameter.buildTargetClause()}に [${this.buildExpression(
+          expressionMode,
+          property
+        )}] の${this.damageClass.description()}ダメージを与える。このアクションの ${
           this.actionValue5.value
         }hitは必ずクリティカルする。`;
         break;

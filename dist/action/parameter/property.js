@@ -329,22 +329,22 @@ export class Property {
         return Math.round(this.accuracy);
     }
     toString() {
-        return (`物理攻撃力:${Math.round(this.atk)}(${this.atk})\n` +
-            `魔法攻撃力:${Math.round(this.magicStr)}(${this.magicStr})\n` +
-            `物理防御力:${Math.round(this.def)}(${this.def})\n` +
-            `魔法防御力:${Math.round(this.magicDef)}(${this.magicDef})\n` +
-            `HP:${Math.round(this.hp)}(${this.hp})\n` +
-            `物理クリティカル:${Math.round(this.physicalCritical)}(${this.physicalCritical})\n` +
-            `回避:${Math.round(this.dodge)}(${this.dodge})\n` +
-            `魔法クリティカル:${Math.round(this.magicCritical)}(${this.magicCritical})\n` +
-            `HP自動回復:${Math.round(this.waveHpRecovery)}(${this.waveHpRecovery})\n` +
-            `TP自動回復:${Math.round(this.waveEnergyRecovery)}(${this.waveEnergyRecovery})\n` +
-            `HP吸収:${Math.round(this.lifeSteal)}(${this.lifeSteal})\n` +
-            `回復量上昇:${Math.round(this.hpRecoveryRate)}(${this.hpRecoveryRate})\n` +
-            `TP上昇:${Math.round(this.energyRecoveryRate)}(${this.energyRecoveryRate})\n` +
-            `命中:${Math.round(this.accuracy)}(${this.accuracy})\n` +
-            `TP消費軽減:${Math.round(this.energyReduceRate)}(${this.energyReduceRate})\n` +
-            `物理貫通:${Math.round(this.physicalPenetrate)}(${this.physicalPenetrate})\n` +
-            `魔法貫通:${Math.round(this.magicPenetrate)}(${this.magicPenetrate})`);
+        return (`物理攻撃力：${Math.round(this.atk)}(${this.atk})\n` +
+            `魔法攻撃力：${Math.round(this.magicStr)}(${this.magicStr})\n` +
+            `物理防御力：${Math.round(this.def)}(${this.def})\n` +
+            `魔法防御力：${Math.round(this.magicDef)}(${this.magicDef})\n` +
+            `HP：${Math.round(this.hp)}(${this.hp})\n` +
+            `物理クリティカル：${this.physicalCritical}\n` +
+            `回避：${this.dodge}\n` +
+            `魔法クリティカル：${this.magicCritical}\n` +
+            `HP自動回復：${this.waveHpRecovery}\n` +
+            `TP自動回復：${this.waveEnergyRecovery}\n` +
+            `HP吸収：${this.lifeSteal}\n` +
+            `回復量上昇：${this.hpRecoveryRate}\n` +
+            `TP上昇：${this.energyRecoveryRate}\n` +
+            `命中：${this.accuracy}\n` +
+            `TP消費軽減：${this.energyReduceRate}\n` +
+            `物理貫通：${this.physicalPenetrate}\n` +
+            `魔法貫通：${this.magicPenetrate}`);
     }
 }

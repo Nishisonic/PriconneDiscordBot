@@ -3,7 +3,10 @@ import {
   ActionParameter,
   ActionValue,
   eActionValue,
+  Expression,
+  RoundingMode,
 } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class CharmType {
   static readonly unknown = -1;
@@ -57,22 +60,34 @@ export class CharmAction extends ActionParameter {
     }
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.charmType.value) {
       case CharmType.charm:
         return `[${this.buildExpression(
-          this.chanceValues
+          expressionMode,
+          this.chanceValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}%] の確率で${this.targetParameter.buildTargetClause()}を魅了状態にする、効果時間 [${this.buildExpression(
-          this.durationValues
+          expressionMode,
+          this.durationValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}] 秒。`;
       case CharmType.confusion:
         return `[${this.buildExpression(
-          this.chanceValues
+          expressionMode,
+          this.chanceValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}%] の確率で${this.targetParameter.buildTargetClause()}を混乱状態にする、効果時間 [${this.buildExpression(
-          this.durationValues
+          expressionMode,
+          this.durationValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}] 秒。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

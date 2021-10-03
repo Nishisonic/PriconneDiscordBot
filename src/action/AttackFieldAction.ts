@@ -3,10 +3,13 @@ import {
   ActionParameter,
   ActionValue,
   ClassModifier,
+  Expression,
+  RoundingMode,
 } from "./actionParameter.js";
 import { FieldType } from "./healFieldAction.js";
 import { TargetType } from "./parameter/targetType.js";
 import { PropertyKey } from "./propertyKey.js";
+import { Property } from "./parameter/property.js";
 
 export class AttackFieldAction extends ActionParameter {
   damageClass: ClassModifier;
@@ -55,23 +58,32 @@ export class AttackFieldAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.fieldType.value) {
       case FieldType.repeat:
         if (this.targetParameter.targetType.value === TargetType.absolute) {
           return `半径 [${
             this.actionValue7.value
-          }] のフィールドを展開し、${this.targetParameter.buildTargetClause()}に毎秒 [${this.buildExpression()}] の${this.damageClass.description()}ダメージを与える、効果時間 [${this.buildExpression(
-            this.durationValues
+          }] のフィールドを展開し、${this.targetParameter.buildTargetClause()}に毎秒 [${this.buildExpression(
+            expressionMode,
+            property
+          )}] の${this.damageClass.description()}ダメージを与える、効果時間 [${this.buildExpression(
+            expressionMode,
+            this.durationValues,
+            RoundingMode.UNNECESSARY,
+            property
           )}] 秒。`;
         }
         return `${this.targetParameter.buildTargetClause()}の位置で半径 [${
           this.actionValue7.value
         }] のフィールドを展開し、毎秒 [${this.targetParameter.buildTargetClause()}] の${this.damageClass.description()}ダメージを与える、効果時間 [${this.buildExpression(
-          this.durationValues
+          expressionMode,
+          this.durationValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}] 秒。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

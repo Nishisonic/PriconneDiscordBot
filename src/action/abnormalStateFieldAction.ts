@@ -1,5 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 export class AbnormalStateFieldAction extends ActionParameter {
   durationValues: ActionValue[] = [];
@@ -11,13 +17,16 @@ export class AbnormalStateFieldAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     return `${this.targetParameter.buildTargetClause()}の位置で半径 [${
       this.actionValue3.value
     }] のフィールドを展開し、[アクション${
       this.actionDetail1 % 10
     }] を継続的に放る、効果時間 [${this.buildExpression(
-      this.durationValues
+      expressionMode,
+      this.durationValues,
+      RoundingMode.UNNECESSARY,
+      property
     )}] 秒。`;
   }
 }

@@ -1,5 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class DispelType {
   static readonly unknown = 0;
@@ -42,9 +48,12 @@ export class DispelAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     return `[${this.buildExpression(
-      this.chanceValues
+      expressionMode,
+      this.chanceValues,
+      RoundingMode.UNNECESSARY,
+      property
     )}%] の確率で${this.targetParameter.buildTargetClause()}の${this.dispelType.description()}をすべて解除する。`;
   }
 }

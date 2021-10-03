@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./actionParameter.js";
+import { ActionParameter, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class RevivalType {
   static readonly unknown = 0;
@@ -24,14 +25,14 @@ export class RevivalAction extends ActionParameter {
     this.revivalType = RevivalType.parse(this.actionDetail1);
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.revivalType.value) {
       case RevivalType.normal:
         return `${this.targetParameter.buildTargetClause()}を復活させ、HPを [${Math.round(
           this.actionValue2.value * 100
         )}%] 回復させる。（この値はキャラの回復量上昇値に影響される）`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./actionParameter.js";
+import { ActionParameter, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class ModeChangeType {
   static readonly unknown = 0;
@@ -25,7 +26,7 @@ export class ModeChangeAction extends ActionParameter {
     this.modeChangeType = ModeChangeType.parse(this.actionDetail1);
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.modeChangeType.value) {
       case ModeChangeType.time:
         return `行動パターンを${
@@ -40,7 +41,7 @@ export class ModeChangeAction extends ActionParameter {
           this.actionDetail2 % 10
         }に戻させる。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

@@ -98,7 +98,7 @@ export class IfForChildrenAction extends ActionParameter {
             }
         }
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         if (this.actionDetail1 === 100 ||
             this.actionDetail1 === 101 ||
             this.actionDetail1 === 200 ||
@@ -133,6 +133,6 @@ export class IfForChildrenAction extends ActionParameter {
                 return `ランダム事件：[${100 - this.actionDetail1}%] の確率で [アクション${this.actionDetail3 % 10}] を使う。`;
             }
         }
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
 }

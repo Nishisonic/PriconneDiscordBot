@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, RoundingMode, } from "./actionParameter.js";
 class ConditionType {
     constructor(value) {
         this.value = value;
@@ -19,15 +19,15 @@ export class ActionByHitCountAction extends ActionParameter {
         this.conditionType = ConditionType.parse(this.actionDetail1);
         this.durationValues.push(new ActionValue(this.actionValue3, this.actionValue4, null));
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         const limitation = this.actionValue5.value > 0
             ? `（上限は ${this.actionValue5.value} 回）`
             : "";
         switch (this.conditionType.value) {
             case ConditionType.hit:
-                return `[${this.buildExpression(this.durationValues)}] 秒内、[${this.actionValue1.value}] Hitするたびに [アクション${this.actionDetail2 % 10}] ${limitation}を使う。`;
+                return `[${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒内、[${this.actionValue1.value}] Hitするたびに [アクション${this.actionDetail2 % 10}] ${limitation}を使う。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

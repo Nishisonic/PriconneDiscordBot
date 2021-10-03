@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, RoundingMode, } from "./actionParameter.js";
 class AweType {
     constructor(value) {
         this.value = value;
@@ -19,14 +19,14 @@ export class AweAction extends ActionParameter {
         this.percentValues.push(new ActionValue(this.actionValue1, this.actionValue2, null));
         this.aweType = AweType.parse(this.actionDetail1);
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.aweType.value) {
             case AweType.ubAndSkill:
-                return `${this.targetParameter.buildTargetClause()}のユニオンバーストかスキルが任意の対象にダメージか直接回復を与えるたび、その値を [${this.buildExpression(this.percentValues)}%] ダウンさせる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                return `${this.targetParameter.buildTargetClause()}のユニオンバーストかスキルが任意の対象にダメージか直接回復を与えるたび、その値を [${this.buildExpression(expressionMode, this.percentValues, RoundingMode.UNNECESSARY, property)}%] ダウンさせる、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
             case AweType.ubOnly:
-                return `${this.targetParameter.buildTargetClause()}のユニオンバーストが任意の対象にダメージか直接回復を与えるたび、その値を [${this.buildExpression(this.percentValues)}%] ダウンさせる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                return `${this.targetParameter.buildTargetClause()}のユニオンバーストが任意の対象にダメージか直接回復を与えるたび、その値を [${this.buildExpression(expressionMode, this.percentValues, RoundingMode.UNNECESSARY, property)}%] ダウンさせる、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

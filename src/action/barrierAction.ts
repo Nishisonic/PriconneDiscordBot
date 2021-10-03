@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 export class BarrierType {
   static readonly unknown = 0;
@@ -31,34 +32,52 @@ export class BarrierAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.barrierType.value) {
       case BarrierType.physicalGuard:
-        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] ダメージ分の物理無効バリアを展開する、効果時間 [${
+        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression(
+          expressionMode,
+          property
+        )}] ダメージ分の物理無効バリアを展開する、効果時間 [${
           this.actionValue3.value
         }] 秒。`;
       case BarrierType.magicalGuard:
-        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] ダメージ分の魔法無効バリアを展開する、効果時間 [${
+        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression(
+          expressionMode,
+          property
+        )}] ダメージ分の魔法無効バリアを展開する、効果時間 [${
           this.actionValue3.value
         }] 秒。`;
       case BarrierType.physicalDrain:
-        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] ダメージ分の物理吸収バリアを展開する、効果時間 [${
+        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression(
+          expressionMode,
+          property
+        )}] ダメージ分の物理吸収バリアを展開する、効果時間 [${
           this.actionValue3.value
         }] 秒。`;
       case BarrierType.magicalDrain:
-        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] ダメージ分の魔法吸収バリアを展開する、効果時間 [${
+        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression(
+          expressionMode,
+          property
+        )}] ダメージ分の魔法吸収バリアを展開する、効果時間 [${
           this.actionValue3.value
         }] 秒。`;
       case BarrierType.bothDrain:
-        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] ダメージ分の物理&魔法吸収バリアを展開する、効果時間 [${
+        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression(
+          expressionMode,
+          property
+        )}] ダメージ分の物理&魔法吸収バリアを展開する、効果時間 [${
           this.actionValue3.value
         }] 秒。`;
       case BarrierType.bothGuard:
-        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression()}] ダメージ分の物理&魔法無効バリアを展開する、効果時間 [${
+        return `${this.targetParameter.buildTargetClause()}に [${this.buildExpression(
+          expressionMode,
+          property
+        )}] ダメージ分の物理&魔法無効バリアを展開する、効果時間 [${
           this.actionValue3.value
         }] 秒。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

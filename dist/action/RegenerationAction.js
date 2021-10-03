@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue, ClassModifier } from "./actionParameter.js";
+import { ActionParameter, ActionValue, ClassModifier, RoundingMode, } from "./actionParameter.js";
 import { PropertyKey } from "./propertyKey.js";
 class RegenerationType {
     constructor(value) {
@@ -39,7 +39,7 @@ export class RegenerationAction extends ActionParameter {
                 break;
         }
     }
-    localizedDetail() {
-        return `${this.targetParameter.buildTargetClause()}の${this.regenerationType.description()}を毎秒 [${this.buildExpression()}] 回復させる、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+    localizedDetail(expressionMode, property) {
+        return `${this.targetParameter.buildTargetClause()}の${this.regenerationType.description()}を毎秒 [${this.buildExpression(expressionMode, property)}] 回復させる、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
     }
 }

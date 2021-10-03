@@ -1,5 +1,5 @@
 import { ActionDetail, Ailment, AilmentType, DotDetail, } from "../data/ailment.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, RoundingMode, } from "./actionParameter.js";
 export class AilmentAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);
@@ -10,7 +10,7 @@ export class AilmentAction extends ActionParameter {
         this.chanceValues.push(new ActionValue(this.actionValue3, this.actionValue4, null));
         this.durationValues = this.chanceValues;
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         var _a;
         switch (this.ailment.ailmentType.value) {
             case AilmentType.action:
@@ -18,19 +18,19 @@ export class AilmentAction extends ActionParameter {
                 switch (((_a = this.ailment.ailmentDetail) === null || _a === void 0 ? void 0 : _a.detail).value) {
                     case ActionDetail.haste:
                     case ActionDetail.slow:
-                        str = `${this.targetParameter.buildTargetClause()}の行動速度を本来の [${this.buildExpression(this.actionValues)} * 100%] にする、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                        str = `${this.targetParameter.buildTargetClause()}の行動速度を本来の [${this.buildExpression(expressionMode, this.actionValues, RoundingMode.UNNECESSARY, property)} * 100%] にする、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
                         break;
                     case ActionDetail.sleep:
-                        str = `${this.targetParameter.buildTargetClause()}を睡眠状態にする、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                        str = `${this.targetParameter.buildTargetClause()}を睡眠状態にする、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
                         break;
                     case ActionDetail.faint:
-                        str = `${this.targetParameter.buildTargetClause()}を気絶状態にする、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                        str = `${this.targetParameter.buildTargetClause()}を気絶状態にする、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
                         break;
                     case ActionDetail.timeStop:
-                        str = `${this.targetParameter.buildTargetClause()}を時間停止状態にする、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                        str = `${this.targetParameter.buildTargetClause()}を時間停止状態にする、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
                         break;
                     default:
-                        str = `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                        str = `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒。`;
                         break;
                 }
                 if (this.actionDetail2 === 1) {
@@ -42,11 +42,11 @@ export class AilmentAction extends ActionParameter {
                     var _a;
                     switch (((_a = this.ailment.ailmentDetail) === null || _a === void 0 ? void 0 : _a.detail).value) {
                         case DotDetail.poison:
-                            return `${this.targetParameter.buildTargetClause()}を毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                            return `${this.targetParameter.buildTargetClause()}を毒状態にし、毎秒 [${this.buildExpression(expressionMode, property)}] のダメージを与える、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.HALF_UP, property)}] 秒。`;
                         case DotDetail.violentPoison:
-                            return `${this.targetParameter.buildTargetClause()}を猛毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                            return `${this.targetParameter.buildTargetClause()}を猛毒状態にし、毎秒 [${this.buildExpression(expressionMode, property)}] のダメージを与える、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.HALF_UP, property)}] 秒。`;
                         default:
-                            return `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(this.durationValues)}] 秒。`;
+                            return `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、毎秒 [${this.buildExpression(expressionMode, property)}] のダメージを与える、効果時間 [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.HALF_UP, property)}] 秒。`;
                     }
                 })();
                 if (this.actionValue5.value > 0) {
@@ -54,11 +54,11 @@ export class AilmentAction extends ActionParameter {
                 }
                 return r;
             case AilmentType.silence:
-                return `[${this.buildExpression(this.chanceValues)}%] の確率で${this.targetParameter.buildTargetClause()}を沈黙状態にする、効果時間 [${this.buildExpression()}] 秒。`;
+                return `[${this.buildExpression(expressionMode, this.chanceValues, RoundingMode.UNNECESSARY, property)}%] の確率で${this.targetParameter.buildTargetClause()}を沈黙状態にする、効果時間 [${this.buildExpression(expressionMode, property)}] 秒。`;
             case AilmentType.darken:
-                return `[${this.buildExpression(this.chanceValues)}%] の確率で${this.targetParameter.buildTargetClause()}を物理暗闇状態にする、効果時間 [${this.buildExpression()}] 秒。物理攻撃は [${100 - this.actionDetail1}%] の確率でミスする。`;
+                return `[${this.buildExpression(expressionMode, this.chanceValues, RoundingMode.UNNECESSARY, property)}%] の確率で${this.targetParameter.buildTargetClause()}を物理暗闇状態にする、効果時間 [${this.buildExpression(expressionMode, RoundingMode.UNNECESSARY, property)}] 秒。物理攻撃は [${100 - this.actionDetail1}%] の確率でミスする。`;
             default:
-                return this.buildExpression();
+                return this.buildExpression(expressionMode, property);
         }
     }
 }

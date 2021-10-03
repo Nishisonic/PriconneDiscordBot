@@ -1,7 +1,8 @@
 import { master } from "../../../db.js";
-import { UnitSkillData, SkillData } from "../../../master";
+import { UnitSkillData, SkillData, SkillAction } from "../../../master";
 import { findSkillActionAsync } from "../../../skill.js";
-import { PassiveAction } from "../../passiveAction.js";
+import { PropertyKey } from "../../propertyKey.js";
+import { Property } from "../property.js";
 
 export async function getPassiveSkillPropertyAsync(
   unitId: number,
@@ -20,5 +21,29 @@ export async function getPassiveSkillPropertyAsync(
   `)) as Readonly<SkillData>;
   const skillAction = await findSkillActionAsync(action_1);
 
-  return new PassiveAction(skillAction).propertyItem(level);
+  return toProperty(skillAction, level);
+}
+
+function toProperty(skillAction: SkillAction, level: number) {
+  const propertyKey = (() => {
+    switch (skillAction.action_detail_1) {
+      case 1:
+        return PropertyKey.parse(PropertyKey.hp);
+      case 2:
+        return PropertyKey.parse(PropertyKey.atk);
+      case 3:
+        return PropertyKey.parse(PropertyKey.def);
+      case 4:
+        return PropertyKey.parse(PropertyKey.magicStr);
+      case 5:
+        return PropertyKey.parse(PropertyKey.magicDef);
+      default:
+        return PropertyKey.parse(PropertyKey.unknown);
+    }
+  })();
+  return Property.getPropertyWithKeyAndValue(
+    undefined,
+    propertyKey,
+    skillAction.action_value_2 + skillAction.action_value_3 * level
+  );
 }

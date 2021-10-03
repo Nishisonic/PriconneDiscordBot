@@ -1,3 +1,4 @@
+import { RoundingMode } from "./actionParameter.js";
 import { AuraAction } from "./auraAction.js";
 class ReleaseType {
     constructor(value) {
@@ -14,12 +15,12 @@ export class ChannelAction extends AuraAction {
         super(skillAction);
         this.releaseType = ReleaseType.parse(this.actionDetail2);
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.releaseType.value) {
             case ReleaseType.damage:
-                return `${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${this.buildExpression()}${this.percentModifier.description()}] ${this.auraActionType.description()}させる、このアクションは [${this.buildExpression(this.durationValues)}] 秒継続し、ダメージを [${this.actionDetail3}] 回受けた時中断される。`;
+                return `${this.targetParameter.buildTargetClause()}の${this.auraType.description()}を [${this.buildExpression(expressionMode, RoundingMode.UP, property)}${this.percentModifier.description()}] ${this.auraActionType.description()}させる、このアクションは [${this.buildExpression(expressionMode, this.durationValues, RoundingMode.UNNECESSARY, property)}] 秒継続し、ダメージを [${this.actionDetail3}] 回受けた時中断される。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

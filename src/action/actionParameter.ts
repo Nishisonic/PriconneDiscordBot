@@ -1,6 +1,6 @@
 import { SkillAction } from "../master.js";
-// import { getMaxCharaLevelAsync } from "./parameter/Chara.js";
-// import { Property } from "./parameter/property.js";
+import { maxCharaLevel } from "./parameter/chara.js";
+import { Property } from "./parameter/property.js";
 import { PropertyKey } from "./propertyKey.js";
 import { TargetParameter } from "./targetParameter.js";
 
@@ -72,79 +72,130 @@ export class ActionParameter {
     ].filter((value) => value > 0);
   }
 
+  protected buildExpression(expressionMode: Expression): string;
   protected buildExpression(
-    // expressionMode: Expression,
-    // level: number,
-    // roundingMode: RoundingMode,
-    actionValues = this.actionValues,
-    // property = new Property(),
-    hasBracesIfNeeded = false
-  ) {
-    // if (expressionMode === Expression.EXPRESSION) {
-    let expression = "";
-    for (const value of actionValues) {
-      let part = "";
-
-      if (value.initial !== null && value.perLevel !== null) {
-        if (value.initial === 0 && value.perLevel === 0) {
-          continue;
-        } else if (value.initial === 0) {
-          part += `\`${value.perLevelValue.description}\`${value.perLevel} \* スキルLv`;
-        } else if (value.perLevel === 0) {
-          part += `\`${value.initialValue.description}\`${value.initial}`;
-        } else {
-          part += `\`${value.initialValue.description}\`${value.initial} + \`${value.perLevelValue.description}\`${value.perLevel} \* スキルLv`;
+    expressionMode: Expression,
+    property: Property
+  ): string;
+  protected buildExpression(
+    expressionMode: Expression,
+    roundingMode: RoundingMode,
+    property: Property
+  ): string;
+  protected buildExpression(
+    expressionMode: Expression,
+    actionValues: ActionValue[] | null,
+    roundingMode: RoundingMode | null,
+    property: Property
+  ): string;
+  protected buildExpression(
+    expressionMode: Expression,
+    actionValues: ActionValue[] | null,
+    roundingMode: RoundingMode | null,
+    property: Property,
+    hasBracesIfNeeded: boolean
+  ): string;
+  protected buildExpression(expressionMode: Expression, ...a: any[]): string {
+    const { actionValues, roundingMode, property, hasBracesIfNeeded } =
+      (function (actionValues, roundingMode, property, hasBracesIfNeeded) {
+        switch (a.length) {
+          case 0:
+            return { actionValues, roundingMode, property, hasBracesIfNeeded };
+          case 1:
+            return {
+              actionValues,
+              roundingMode,
+              property: a[0] as Property,
+              hasBracesIfNeeded,
+            };
+          case 2:
+            return {
+              actionValues,
+              roundingMode: (a[0] ?? roundingMode) as RoundingMode,
+              property: a[1] as Property,
+              hasBracesIfNeeded,
+            };
+          case 3:
+            return {
+              actionValues: (a[0] ?? actionValues) as ActionValue[],
+              roundingMode: (a[1] ?? roundingMode) as RoundingMode,
+              property: a[2] as Property,
+              hasBracesIfNeeded,
+            };
+          case 4:
+            return {
+              actionValues: (a[0] ?? actionValues) as ActionValue[],
+              roundingMode: (a[1] ?? roundingMode) as RoundingMode,
+              property: a[2] as Property,
+              hasBracesIfNeeded: a[3] as boolean,
+            };
+          default:
+            return { actionValues, roundingMode, property, hasBracesIfNeeded };
         }
-        if (value.key !== null) {
+      })(this.actionValues, RoundingMode.DOWN, new Property(), false);
+
+    if (expressionMode === Expression.EXPRESSION) {
+      let expression = "";
+      for (const value of actionValues) {
+        let part = "";
+
+        if (value.initial !== null && value.perLevel !== null) {
           if (value.initial === 0 && value.perLevel === 0) {
             continue;
-          } else if (value.initial === 0 || value.perLevel === 0) {
-            part += ` \* ${value.key.description()}`;
+          } else if (value.initial === 0) {
+            part += `\`${value.perLevelValue.description}\`${value.perLevel} \* スキルLv`;
+          } else if (value.perLevel === 0) {
+            if (
+              value.key === null &&
+              roundingMode !== RoundingMode.UNNECESSARY
+            ) {
+              const initial = this.round(value.initial, 0, roundingMode);
+              part += `\`${value.initialValue.description}\`${initial}`;
+            } else {
+              part += `\`${value.initialValue.description}\`${value.initial}`;
+            }
           } else {
-            part = `(${part}) \* ${value.key.description()}`;
+            part += `\`${value.initialValue.description}\`${value.initial} + \`${value.perLevelValue.description}\`${value.perLevel} \* スキルLv`;
+          }
+          if (value.key !== null) {
+            if (value.initial === 0 && value.perLevel === 0) {
+              continue;
+            } else if (value.initial === 0 || value.perLevel === 0) {
+              part += ` \* ${value.key.description()}`;
+            } else {
+              part = `(${part}) \* ${value.key.description()}`;
+            }
           }
         }
+        if (part.length > 0) {
+          expression += `${part} \+ `;
+        }
       }
-      if (part.length > 0) {
-        expression += `${part} \+ `;
+      if (expression.length === 0) {
+        return "0";
       }
+      expression = expression.replace(/ \+ $/, "");
+      return hasBracesIfNeeded ? this.bracesIfNeeded(expression) : expression;
+    } else {
+      let fixedValue = 0;
+      for (const value of actionValues) {
+        let part = 0;
+        if (value.initial !== null && value.perLevel !== null) {
+          const initialValue = value.initial;
+          const perLevelValue = value.perLevel;
+          part = initialValue + perLevelValue * maxCharaLevel;
+        }
+        if (value.key !== null) {
+          part = part * property.getItem(value.key as PropertyKey);
+        }
+        fixedValue += part;
+      }
+      if (roundingMode === RoundingMode.UNNECESSARY) {
+        return String(fixedValue);
+      }
+      return String(this.round(fixedValue, 0, roundingMode));
     }
-    if (expression.length === 0) {
-      return "0";
-    }
-    expression = expression.replace(/ \+ $/, "");
-    return hasBracesIfNeeded ? this.bracesIfNeeded(expression) : expression;
-    // } else {
-    //   let fixedValue = 0;
-    //   for (const value of actionValues) {
-    //     let part = 0;
-    //     if (value.initial !== null && value.perLevel !== null) {
-    //       const initialValue = value.initial;
-    //       const perLevelValue = value.perLevel;
-    //       part = initialValue + perLevelValue * (await getMaxCharaLevelAsync());
-    //     }
-    //     if (value.key !== null) {
-    //       part = part * property.getItem(value.key as PropertyKey);
-    //     }
-    //     const num = part;
-    //     if (this.approximately(part, num)) {
-    //       part = num;
-    //     }
-    //     fixedValue += part;
-    //   }
-    //   switch (roundingMode) {
-    //     case RoundingMode.UP:
-
-    //     case RoundingMode.DOWN:
-
-    //     case RoundingMode.UNNECESSARY:
-    //   }
-    // }
   }
-
-  // private approximately(a: number, b: number) {
-  //   return Math.abs(a - b) < 1e-9;
-  // }
 
   private bracesIfNeeded(content: string) {
     if (content.includes("+")) {
@@ -153,7 +204,28 @@ export class ActionParameter {
     return content;
   }
 
-  localizedDetail() {
+  private round(value: number, scale: number, roundingMode: RoundingMode) {
+    const _scale = 10 ** scale;
+    const code = value > 0 ? 1 : -1;
+    switch (roundingMode) {
+      case RoundingMode.CEILING:
+        return Math.ceil(value * _scale) / _scale;
+      case RoundingMode.UP:
+        return (code * Math.ceil(Math.abs(value) * _scale)) / _scale;
+      case RoundingMode.DOWN:
+        return Math.trunc(value * _scale) / _scale;
+      case RoundingMode.FLOOR:
+        return Math.floor(value * _scale) / _scale;
+      case RoundingMode.HALF_DOWN:
+        return (code * Math.round(Math.abs(value) * _scale - 0.5)) / _scale;
+      case RoundingMode.HALF_UP:
+        return (code * Math.round(Math.abs(value) * _scale + 0.5)) / _scale;
+      default:
+        return value;
+    }
+  }
+
+  localizedDetail(_: Expression, __: Property) {
     if (this.rawActionType === 0) {
       return "効果なし。";
     }
@@ -168,15 +240,19 @@ export const Expression = {
   ORIGINAL: "ORIGINAL",
 } as const;
 
-type Expression = typeof Expression[keyof typeof Expression];
+export type Expression = typeof Expression[keyof typeof Expression];
 
 export const RoundingMode = {
   UP: "UP",
   DOWN: "DOWN",
   UNNECESSARY: "UNNECESSARY",
+  FLOOR: "FLOOR",
+  HALF_UP: "HALF_UP",
+  HALF_DOWN: "HALF_DOWN",
+  CEILING: "CEILING",
 } as const;
 
-type RoundingMode = typeof RoundingMode[keyof typeof RoundingMode];
+export type RoundingMode = typeof RoundingMode[keyof typeof RoundingMode];
 
 export class ActionValue {
   initial: number;

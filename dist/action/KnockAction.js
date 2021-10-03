@@ -20,7 +20,7 @@ export class KnockAction extends ActionParameter {
         super(skillAction);
         this.knockType = KnockType.parse(this.actionDetail1);
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.knockType.value) {
             case KnockType.upDown:
                 return `${this.targetParameter.buildTargetClause()}をノックアップする、高度 [${this.actionValue1.value}]。`;
@@ -34,7 +34,7 @@ export class KnockAction extends ActionParameter {
             case KnockType.dragForwardCaster:
                 return `${this.targetParameter.buildTargetClause()}を自分の前 [${Math.floor(this.actionValue1.value)}] の位置に引き寄せる。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

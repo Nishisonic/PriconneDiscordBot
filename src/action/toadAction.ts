@@ -1,5 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 export class ToadAction extends ActionParameter {
   durationValues: ActionValue[] = [];
@@ -11,9 +17,12 @@ export class ToadAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     return `${this.targetParameter.buildTargetClause()}を [${this.buildExpression(
-      this.durationValues
+      expressionMode,
+      this.durationValues,
+      RoundingMode.UNNECESSARY,
+      property
     )}] 秒変身させる。`;
   }
 }

@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class TriggerType {
   static readonly unknown = 0;
@@ -31,16 +32,17 @@ export class LoopTriggerAction extends ActionParameter {
     this.triggerType = TriggerType.parse(this.actionDetail1);
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.triggerType.value) {
       case TriggerType.damaged:
         return `条件分岐：[${
           this.actionValue4.value
-        }] 秒内ダメージを受けた場合、[${this.buildExpression()}%] の確率で [アクション${
-          this.actionDetail2 % 10
-        }] を使う。`;
+        }] 秒内ダメージを受けた場合、[${this.buildExpression(
+          expressionMode,
+          property
+        )}%] の確率で [アクション${this.actionDetail2 % 10}] を使う。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

@@ -1,5 +1,5 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, Expression } from "./actionParameter.js";
 import { Property } from "./parameter/property.js";
 import { PropertyKey } from "./propertyKey.js";
 
@@ -33,8 +33,11 @@ export class PassiveAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
-    return `${this.propertyKey.description()}を [${this.buildExpression()}] アップさせる。`;
+  localizedDetail(expressionMode: Expression, property: Property) {
+    return `${this.propertyKey.description()}を [${this.buildExpression(
+      expressionMode,
+      property
+    )}] アップさせる。`;
   }
 
   propertyItem(level: number) {

@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 import { PropertyKey } from "./propertyKey.js";
 
 class GuardType {
@@ -54,9 +55,15 @@ export class KnightGuardAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
-    return `${this.targetParameter.buildTargetClause()}に「HPが0になる直前、HPを [${this.buildExpression()}] 回復し、このバフを解除する」の効果を付与する、効果時間 [${this.buildExpression(
-      this.durationValues
+  localizedDetail(expressionMode: Expression, property: Property) {
+    return `${this.targetParameter.buildTargetClause()}に「HPが0になる直前、HPを [${this.buildExpression(
+      expressionMode,
+      property
+    )}] 回復し、このバフを解除する」の効果を付与する、効果時間 [${this.buildExpression(
+      expressionMode,
+      this.durationValues,
+      null,
+      property
     )}] 秒。`;
   }
 }

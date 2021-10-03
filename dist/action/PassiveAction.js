@@ -26,8 +26,8 @@ export class PassiveAction extends ActionParameter {
         }
         this.actionValues.push(new ActionValue(this.actionValue2, this.actionValue3, null));
     }
-    localizedDetail() {
-        return `${this.propertyKey.description()}を [${this.buildExpression()}] アップさせる。`;
+    localizedDetail(expressionMode, property) {
+        return `${this.propertyKey.description()}を [${this.buildExpression(expressionMode, property)}] アップさせる。`;
     }
     propertyItem(level) {
         return Property.getPropertyWithKeyAndValue(undefined, this.propertyKey, this.actionValue2.value + this.actionValue3.value * level);

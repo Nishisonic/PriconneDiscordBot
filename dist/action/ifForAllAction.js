@@ -87,7 +87,7 @@ export class IfForAllAction extends ActionParameter {
             }
         }
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         if (this.trueClause != null && this.falseClause != null) {
             return `全体的条件分岐：${this.trueClause + this.falseClause}`;
         }
@@ -97,6 +97,6 @@ export class IfForAllAction extends ActionParameter {
         if (this.falseClause != null) {
             return `全体的条件分岐：${this.falseClause}`;
         }
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
 }

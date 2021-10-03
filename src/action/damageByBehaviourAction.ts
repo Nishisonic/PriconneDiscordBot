@@ -1,6 +1,12 @@
-import { Ailment } from "../data/Ailment.js";
+import { Ailment } from "../data/ailment.js";
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 export class DamageByBehaviourAction extends ActionParameter {
   ailment: Ailment;
@@ -17,9 +23,15 @@ export class DamageByBehaviourAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
-    return `${this.targetParameter.buildTargetClause()}が行動する度、[${this.buildExpression()}] の${this.ailment.description()}ダメージを与える、効果時間 [${this.buildExpression(
-      this.durationValues
+  localizedDetail(expressionMode: Expression, property: Property) {
+    return `${this.targetParameter.buildTargetClause()}が行動する度、[${this.buildExpression(
+      expressionMode,
+      property
+    )}] の${this.ailment.description()}ダメージを与える、効果時間 [${this.buildExpression(
+      expressionMode,
+      this.durationValues,
+      RoundingMode.HALF_UP,
+      property
     )}] 秒。`;
   }
 }

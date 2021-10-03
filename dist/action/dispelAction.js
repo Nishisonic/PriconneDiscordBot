@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, RoundingMode, } from "./actionParameter.js";
 class DispelType {
     constructor(value) {
         this.value = value;
@@ -30,7 +30,7 @@ export class DispelAction extends ActionParameter {
         this.dispelType = DispelType.parse(this.actionDetail1);
         this.chanceValues.push(new ActionValue(this.actionValue1, this.actionValue2, null));
     }
-    localizedDetail() {
-        return `[${this.buildExpression(this.chanceValues)}%] の確率で${this.targetParameter.buildTargetClause()}の${this.dispelType.description()}をすべて解除する。`;
+    localizedDetail(expressionMode, property) {
+        return `[${this.buildExpression(expressionMode, this.chanceValues, RoundingMode.UNNECESSARY, property)}%] の確率で${this.targetParameter.buildTargetClause()}の${this.dispelType.description()}をすべて解除する。`;
     }
 }

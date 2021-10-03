@@ -1,5 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class Condition {
   static readonly unknown = -1;
@@ -47,12 +53,15 @@ export class AttackSealAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     if (this.condition.value === Condition.hit) {
       return `自分がHitするたび、${this.targetParameter.buildTargetClause()}にマーク [ID: ${
         this.actionValue2.value
       }] を1スタック増やせる、効果時間 [${this.buildExpression(
-        this.durationValues
+        expressionMode,
+        this.durationValues,
+        RoundingMode.UNNECESSARY,
+        property
       )}] 秒。この効果は最大 [${this.actionValue1.value}] までスタックする。`;
     }
     if (
@@ -62,7 +71,10 @@ export class AttackSealAction extends ActionParameter {
       return `${this.targetParameter.buildTargetClause()}がダメージを与えるたび、マーク [ID: ${
         this.actionValue2.value
       }] を1スタック増やせる、効果時間 [${this.buildExpression(
-        this.durationValues
+        expressionMode,
+        this.durationValues,
+        RoundingMode.UNNECESSARY,
+        property
       )}] 秒、この効果は最大 [${this.actionValue1.value}] までスタックする。`;
     }
     if (
@@ -72,9 +84,12 @@ export class AttackSealAction extends ActionParameter {
       return `${this.targetParameter.buildTargetClause()}がクリティカルダメージを与えるたび、マーク [ID: ${
         this.actionValue2.value
       }] を1スタック増やせる、効果時間 [${this.buildExpression(
-        this.durationValues
+        expressionMode,
+        this.durationValues,
+        RoundingMode.UNNECESSARY,
+        property
       )}] 秒。この効果は最大 [${this.actionValue1.value}] までスタックする。`;
     }
-    return super.localizedDetail();
+    return super.localizedDetail(expressionMode, property);
   }
 }

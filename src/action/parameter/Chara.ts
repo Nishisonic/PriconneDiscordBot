@@ -1,18 +1,18 @@
-import { getPassiveSkillPropertyAsync } from "./chara/passiveSkill.js";
-import { getUniqueEquipmentPropertyAsync } from "./chara/uniqueEquipment.js";
-import { getPromotionBonusPropertyAsync } from "./chara/PromotionBonus.js";
-import { getUnitPromotionStatusPropertyAsync } from "./chara/unitPromotionStatus.js";
-import { getCharaStoryStatusPropertyAsync } from "./chara/charaStoryStatus.js";
-import { getUnitRarityPropertyAsync } from "./chara/unitRarity.js";
 import { Property } from "./property.js";
 import { master } from "../../db.js";
 import {
+  ExperienceTeam,
   UniqueEquipmentEnhanceData,
   UnitPromotionStatus,
   UnitRarity,
 } from "../../master";
+import { getCharaStoryStatusPropertyAsync } from "./chara/charaStoryStatus.js";
 import { getAllEquipmentPropertyAsync } from "./chara/equipment.js";
-import { ExperienceTeam } from "../../master";
+import { getPassiveSkillPropertyAsync } from "./chara/passiveSkill.js";
+import { getPromotionBonusPropertyAsync } from "./chara/promotionBonus.js";
+import { getUniqueEquipmentPropertyAsync } from "./chara/uniqueEquipment.js";
+import { getUnitPromotionStatusPropertyAsync } from "./chara/unitPromotionStatus.js";
+import { getUnitRarityPropertyAsync } from "./chara/unitRarity.js";
 
 export async function getCharaStatus(unitId: number) {
   const rarity = await getMaxCharaRarityAsync(unitId);
@@ -52,6 +52,8 @@ export async function getMaxCharaLevelAsync() {
 
   return team_level - 1;
 }
+
+export const maxCharaLevel = await getMaxCharaLevelAsync();
 
 async function getMaxCharaRarityAsync(unitId: number) {
   const { rarity } = (await master.getAsync(`

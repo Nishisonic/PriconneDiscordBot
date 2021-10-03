@@ -9,6 +9,7 @@ import { arenaRemind } from "./arena.js";
 import { presenceProcess } from "./presence.js";
 import { nishikumaBroadcastTweetProcess, priconneTweetProcess, } from "./twitter.js";
 import { tl } from "./tl.js";
+import { status } from "./status.js";
 server.on("request", function (_, res) {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end();
@@ -23,11 +24,13 @@ client.on("message", async (message) => {
         return;
     }
     if (message.content === ".help") {
-        await message.channel.send("```\n" +
+        await message.channel.send("```" +
             ".birthday `キャラ名` キャラの誕生日を教えてくれます\n" +
             ".schedule  　　　　  キャンペーンスケジュールを教えてくれます\n" +
-            ".skill `キャラ名`    キャラのスキルを教えてくれます\n" +
-            ".tl `Youtube URL`   PriLogを用いてTLを教えてくれます\n" +
+            ".skill `キャラ名`    キャラのスキルを式で教えてくれます\n" +
+            ".skill-p `キャラ名`  キャラのスキルを数値で教えてくれます\n" +
+            ".status `キャラ名`   キャラのステータスを教えてくれます\n" +
+            ".tl `Youtube URL`   PriLogを用いてTLを教えてくれます" +
             "```");
         return;
     }
@@ -35,6 +38,7 @@ client.on("message", async (message) => {
     await schedule(message);
     await skill(message);
     await tl(message);
+    await status(message);
 });
 // 1日毎
 cron.schedule("0 0 * * *", async () => await birthdayProcess());

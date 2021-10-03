@@ -1,4 +1,4 @@
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, RoundingMode, } from "./actionParameter.js";
 class NoDamageType {
     constructor(value) {
         this.value = value;
@@ -20,16 +20,16 @@ export class NoDamageAction extends ActionParameter {
         this.noDamageType = NoDamageType.parse(this.actionDetail1);
         this.actionValues.push(new ActionValue(this.actionValue1, this.actionValue2, null));
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.noDamageType.value) {
             case NoDamageType.noDamage:
-                return `${this.targetParameter.buildTargetClause()}に無敵状態、効果時間 [${this.buildExpression()}] 秒。`;
+                return `${this.targetParameter.buildTargetClause()}に無敵状態、効果時間 [${this.buildExpression(expressionMode, RoundingMode.UNNECESSARY, property)}] 秒。`;
             case NoDamageType.dodgePhysics:
-                return `${this.targetParameter.buildTargetClause()}に物理攻撃無効状態、効果時間 [${this.buildExpression()}] 秒。`;
+                return `${this.targetParameter.buildTargetClause()}に物理攻撃無効状態、効果時間 [${this.buildExpression(expressionMode, RoundingMode.UNNECESSARY, property)}] 秒。`;
             case NoDamageType.Break:
-                return `${this.targetParameter.buildTargetClause()}にBreak免疫状態、効果時間 [${this.buildExpression()}] 秒。`;
+                return `${this.targetParameter.buildTargetClause()}にBreak免疫状態、効果時間 [${this.buildExpression(expressionMode, RoundingMode.UNNECESSARY, property)}] 秒。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

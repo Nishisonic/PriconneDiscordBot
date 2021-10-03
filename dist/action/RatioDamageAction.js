@@ -1,4 +1,4 @@
-import { ActionParameter } from "./actionParameter.js";
+import { ActionParameter, RoundingMode, } from "./actionParameter.js";
 class HPtype {
     constructor(value) {
         this.value = value;
@@ -16,16 +16,17 @@ export class RatioDamageAction extends ActionParameter {
         super(skillAction);
         this.hptype = HPtype.parse(this.actionDetail1);
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
+        const r = this.buildExpression(expressionMode, RoundingMode.UNNECESSARY, property);
         switch (this.hptype.value) {
             case HPtype.max:
-                return `${this.targetParameter.buildTargetClause()}に最大HP [${this.buildExpression()}%] 分のダメージを与える。`;
+                return `${this.targetParameter.buildTargetClause()}に最大HP [${r}%] 分のダメージを与える。`;
             case HPtype.current:
-                return `${this.targetParameter.buildTargetClause()}に残りHP [${this.buildExpression()}%] 分のダメージを与える。`;
+                return `${this.targetParameter.buildTargetClause()}に残りHP [${r}%] 分のダメージを与える。`;
             case HPtype.originalMax:
-                return `${this.targetParameter.buildTargetClause()}に本来の最大HP [${this.buildExpression()}%] 分のダメージを与える。`;
+                return `${this.targetParameter.buildTargetClause()}に本来の最大HP [${r}%] 分のダメージを与える。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

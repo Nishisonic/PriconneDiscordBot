@@ -1,5 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 export class FearAction extends ActionParameter {
   durationValues: ActionValue[] = [];
@@ -15,11 +21,17 @@ export class FearAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     return `[${this.buildExpression(
-      this.chanceValues
+      expressionMode,
+      this.chanceValues,
+      RoundingMode.UNNECESSARY,
+      property
     )}%] の確率で${this.targetParameter.buildTargetClause()}を恐慌状態にする、効果時間 [${this.buildExpression(
-      this.durationValues
+      expressionMode,
+      this.durationValues,
+      RoundingMode.UNNECESSARY,
+      property
     )}] 秒。`;
   }
 }

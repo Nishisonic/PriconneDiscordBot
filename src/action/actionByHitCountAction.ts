@@ -1,5 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class ConditionType {
   static readonly unknown = 0;
@@ -29,7 +35,7 @@ export class ActionByHitCountAction extends ActionParameter {
       new ActionValue(this.actionValue3, this.actionValue4, null)
     );
   }
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     const limitation =
       this.actionValue5.value > 0
         ? `（上限は ${this.actionValue5.value} 回）`
@@ -37,13 +43,16 @@ export class ActionByHitCountAction extends ActionParameter {
 
     switch (this.conditionType.value) {
       case ConditionType.hit:
-        return `[${this.buildExpression(this.durationValues)}] 秒内、[${
-          this.actionValue1.value
-        }] Hitするたびに [アクション${
+        return `[${this.buildExpression(
+          expressionMode,
+          this.durationValues,
+          RoundingMode.UNNECESSARY,
+          property
+        )}] 秒内、[${this.actionValue1.value}] Hitするたびに [アクション${
           this.actionDetail2 % 10
         }] ${limitation}を使う。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

@@ -1,5 +1,12 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue, ClassModifier } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  ClassModifier,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 import { PropertyKey } from "./propertyKey.js";
 
 class RegenerationType {
@@ -68,9 +75,15 @@ export class RegenerationAction extends ActionParameter {
     }
   }
 
-  localizedDetail() {
-    return `${this.targetParameter.buildTargetClause()}の${this.regenerationType.description()}を毎秒 [${this.buildExpression()}] 回復させる、効果時間 [${this.buildExpression(
-      this.durationValues
+  localizedDetail(expressionMode: Expression, property: Property) {
+    return `${this.targetParameter.buildTargetClause()}の${this.regenerationType.description()}を毎秒 [${this.buildExpression(
+      expressionMode,
+      property
+    )}] 回復させる、効果時間 [${this.buildExpression(
+      expressionMode,
+      this.durationValues,
+      RoundingMode.UNNECESSARY,
+      property
     )}] 秒。`;
   }
 }

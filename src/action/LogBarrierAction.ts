@@ -1,5 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class BarrierType {
   static readonly physics = 1;
@@ -31,11 +37,18 @@ export class LogBarrierAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     return `${this.targetParameter.buildTargetClause()}にバリアを展開する、一回の行動で受けたダメージが [${
       this.actionValue5.value
-    }] を超えた場合、ダメージが減衰される、減衰係数 [${this.buildExpression()}]（この値が小さいほど減衰されやすい）、効果時間 [${this.buildExpression(
-      this.durationValues
+    }] を超えた場合、ダメージが減衰される、減衰係数 [${this.buildExpression(
+      expressionMode,
+      RoundingMode.UNNECESSARY,
+      property
+    )}]（この値が小さいほど減衰されやすい）、効果時間 [${this.buildExpression(
+      expressionMode,
+      this.durationValues,
+      null,
+      property
     )}] 秒。`;
   }
 }

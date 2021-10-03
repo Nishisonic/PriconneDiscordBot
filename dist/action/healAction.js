@@ -16,7 +16,7 @@ export class HealAction extends ActionParameter {
                 break;
         }
     }
-    localizedDetail() {
-        return `${this.targetParameter.buildTargetClause()}のHPを [${this.buildExpression()}${this.percentModifier.description()}] 回復させる。（この値はキャラの回復量上昇値に影響される）`;
+    localizedDetail(expressionMode, property) {
+        return `${this.targetParameter.buildTargetClause()}のHPを [${this.buildExpression(expressionMode, property)}${this.percentModifier.description()}] 回復させる。（この値はキャラの回復量上昇値に影響される）`;
     }
 }

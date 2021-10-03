@@ -48,12 +48,12 @@ export class PassiveDamageUpAction extends ActionParameter {
         this.effectType = eEffectType.parse(this.actionDetail2);
         this.actionValues.push(new ActionValue(this.actionValue3, this.actionValue4, null));
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.countType.value) {
             case eCountType.Debuff:
-                return `パッシブ：${this.targetParameter.buildTargetClause()}が与えられるダメージを [1 ${this.effectType.description()} ${this.debuffDamageUpValue} \* ${this.targetParameter.buildTargetClause()}の${this.countType.description()}数] 倍にする（最大${this.debuffDamageUpLimitValue}倍）、効果時間 [${this.buildExpression()}] 秒。`;
+                return `パッシブ：${this.targetParameter.buildTargetClause()}が与えられるダメージを [1 ${this.effectType.description()} ${this.debuffDamageUpValue} \* ${this.targetParameter.buildTargetClause()}の${this.countType.description()}数] 倍にする（最大${this.debuffDamageUpLimitValue}倍）、効果時間 [${this.buildExpression(expressionMode, property)}] 秒。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

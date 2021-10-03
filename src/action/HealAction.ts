@@ -3,8 +3,10 @@ import {
   ActionParameter,
   ActionValue,
   ClassModifier,
+  Expression,
   PercentModifier,
 } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 import { PropertyKey } from "./propertyKey.js";
 
 export class HealAction extends ActionParameter {
@@ -45,7 +47,10 @@ export class HealAction extends ActionParameter {
     }
   }
 
-  localizedDetail() {
-    return `${this.targetParameter.buildTargetClause()}のHPを [${this.buildExpression()}${this.percentModifier.description()}] 回復させる。（この値はキャラの回復量上昇値に影響される）`;
+  localizedDetail(expressionMode: Expression, property: Property) {
+    return `${this.targetParameter.buildTargetClause()}のHPを [${this.buildExpression(
+      expressionMode,
+      property
+    )}${this.percentModifier.description()}] 回復させる。（この値はキャラの回復量上昇値に影響される）`;
   }
 }

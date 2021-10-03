@@ -1,5 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 import { PropertyKey } from "./propertyKey.js";
 
 export class EnchantLifeStealAction extends ActionParameter {
@@ -15,10 +21,16 @@ export class EnchantLifeStealAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     return `${this.targetParameter.buildTargetClause()}の次の [${this.buildExpression(
-      this.stackValues
-    )}] 回攻撃に [${this.buildExpression()}] %${PropertyKey.parse(
+      expressionMode,
+      this.stackValues,
+      RoundingMode.FLOOR,
+      property
+    )}] 回攻撃に [${this.buildExpression(
+      expressionMode,
+      property
+    )}] %${PropertyKey.parse(
       PropertyKey.lifeSteal
     ).description()}効果を付与する。`;
   }

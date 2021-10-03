@@ -1,6 +1,6 @@
 import { ActionParameter } from "./actionParameter.js";
 export class ChangePatternAction extends ActionParameter {
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.actionDetail1) {
             case 1:
                 if (this.actionValue1.value > 0) {
@@ -10,7 +10,7 @@ export class ChangePatternAction extends ActionParameter {
             case 2:
                 return `スキルのビジュアルを変化させる、効果時間 [${this.actionValue1.value}] 秒。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

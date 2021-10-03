@@ -20,12 +20,12 @@ export class LoopTriggerAction extends ActionParameter {
         this.actionValues.push(new ActionValue(this.actionValue1, this.actionValue2, null));
         this.triggerType = TriggerType.parse(this.actionDetail1);
     }
-    localizedDetail() {
+    localizedDetail(expressionMode, property) {
         switch (this.triggerType.value) {
             case TriggerType.damaged:
-                return `条件分岐：[${this.actionValue4.value}] 秒内ダメージを受けた場合、[${this.buildExpression()}%] の確率で [アクション${this.actionDetail2 % 10}] を使う。`;
+                return `条件分岐：[${this.actionValue4.value}] 秒内ダメージを受けた場合、[${this.buildExpression(expressionMode, property)}%] の確率で [アクション${this.actionDetail2 % 10}] を使う。`;
             default:
-                return super.localizedDetail();
+                return super.localizedDetail(expressionMode, property);
         }
     }
 }

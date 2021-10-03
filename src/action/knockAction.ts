@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./actionParameter.js";
+import { ActionParameter, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class KnockType {
   static readonly unknown = 0;
@@ -29,7 +30,7 @@ export class KnockAction extends ActionParameter {
     this.knockType = KnockType.parse(this.actionDetail1);
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.knockType.value) {
       case KnockType.upDown:
         return `${this.targetParameter.buildTargetClause()}をノックアップする、高度 [${
@@ -49,7 +50,7 @@ export class KnockAction extends ActionParameter {
           this.actionValue1.value
         )}] の位置に引き寄せる。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

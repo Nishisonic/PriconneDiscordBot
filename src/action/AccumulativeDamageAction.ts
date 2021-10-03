@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, Expression, RoundingMode } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 export class AccumulativeDamageAction extends ActionParameter {
   stackValues: ActionValue[] = [];
@@ -14,9 +15,15 @@ export class AccumulativeDamageAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
-    return `現在の目標に攻撃するたび、ダメージ量が [${this.buildExpression()}] 追加する、この効果は [${this.buildExpression(
-      this.stackValues
+  localizedDetail(expressionMode: Expression, property: Property) {
+    return `現在の目標に攻撃するたび、ダメージ量が [${this.buildExpression(
+      expressionMode,
+      property
+    )}] 追加する、この効果は [${this.buildExpression(
+      expressionMode,
+      this.stackValues,
+      RoundingMode.FLOOR,
+      property
     )}] 回まで累計する。`;
   }
 }

@@ -5,7 +5,13 @@ import {
   DotDetail,
 } from "../data/ailment.js";
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 export class AilmentAction extends ActionParameter {
   ailment: Ailment;
@@ -27,7 +33,7 @@ export class AilmentAction extends ActionParameter {
     this.durationValues = this.chanceValues;
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.ailment.ailmentType.value) {
       case AilmentType.action:
         let str = "";
@@ -35,29 +41,47 @@ export class AilmentAction extends ActionParameter {
           case ActionDetail.haste:
           case ActionDetail.slow:
             str = `${this.targetParameter.buildTargetClause()}の行動速度を本来の [${this.buildExpression(
-              this.actionValues
+              expressionMode,
+              this.actionValues,
+              RoundingMode.UNNECESSARY,
+              property
             )} * 100%] にする、効果時間 [${this.buildExpression(
-              this.durationValues
+              expressionMode,
+              this.durationValues,
+              RoundingMode.UNNECESSARY,
+              property
             )}] 秒。`;
             break;
           case ActionDetail.sleep:
             str = `${this.targetParameter.buildTargetClause()}を睡眠状態にする、効果時間 [${this.buildExpression(
-              this.durationValues
+              expressionMode,
+              this.durationValues,
+              RoundingMode.UNNECESSARY,
+              property
             )}] 秒。`;
             break;
           case ActionDetail.faint:
             str = `${this.targetParameter.buildTargetClause()}を気絶状態にする、効果時間 [${this.buildExpression(
-              this.durationValues
+              expressionMode,
+              this.durationValues,
+              RoundingMode.UNNECESSARY,
+              property
             )}] 秒。`;
             break;
           case ActionDetail.timeStop:
             str = `${this.targetParameter.buildTargetClause()}を時間停止状態にする、効果時間 [${this.buildExpression(
-              this.durationValues
+              expressionMode,
+              this.durationValues,
+              RoundingMode.UNNECESSARY,
+              property
             )}] 秒。`;
             break;
           default:
             str = `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、効果時間 [${this.buildExpression(
-              this.durationValues
+              expressionMode,
+              this.durationValues,
+              RoundingMode.UNNECESSARY,
+              property
             )}] 秒。`;
             break;
         }
@@ -69,16 +93,34 @@ export class AilmentAction extends ActionParameter {
         let r = (() => {
           switch ((this.ailment.ailmentDetail?.detail as DotDetail).value) {
             case DotDetail.poison:
-              return `${this.targetParameter.buildTargetClause()}を毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
-                this.durationValues
+              return `${this.targetParameter.buildTargetClause()}を毒状態にし、毎秒 [${this.buildExpression(
+                expressionMode,
+                property
+              )}] のダメージを与える、効果時間 [${this.buildExpression(
+                expressionMode,
+                this.durationValues,
+                RoundingMode.HALF_UP,
+                property
               )}] 秒。`;
             case DotDetail.violentPoison:
-              return `${this.targetParameter.buildTargetClause()}を猛毒状態にし、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
-                this.durationValues
+              return `${this.targetParameter.buildTargetClause()}を猛毒状態にし、毎秒 [${this.buildExpression(
+                expressionMode,
+                property
+              )}] のダメージを与える、効果時間 [${this.buildExpression(
+                expressionMode,
+                this.durationValues,
+                RoundingMode.HALF_UP,
+                property
               )}] 秒。`;
             default:
-              return `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、毎秒 [${this.buildExpression()}] のダメージを与える、効果時間 [${this.buildExpression(
-                this.durationValues
+              return `${this.targetParameter.buildTargetClause()}に${this.ailment.description()}、毎秒 [${this.buildExpression(
+                expressionMode,
+                property
+              )}] のダメージを与える、効果時間 [${this.buildExpression(
+                expressionMode,
+                this.durationValues,
+                RoundingMode.HALF_UP,
+                property
               )}] 秒。`;
           }
         })();
@@ -88,16 +130,27 @@ export class AilmentAction extends ActionParameter {
         return r;
       case AilmentType.silence:
         return `[${this.buildExpression(
-          this.chanceValues
-        )}%] の確率で${this.targetParameter.buildTargetClause()}を沈黙状態にする、効果時間 [${this.buildExpression()}] 秒。`;
+          expressionMode,
+          this.chanceValues,
+          RoundingMode.UNNECESSARY,
+          property
+        )}%] の確率で${this.targetParameter.buildTargetClause()}を沈黙状態にする、効果時間 [${this.buildExpression(
+          expressionMode,
+          property
+        )}] 秒。`;
       case AilmentType.darken:
         return `[${this.buildExpression(
-          this.chanceValues
-        )}%] の確率で${this.targetParameter.buildTargetClause()}を物理暗闇状態にする、効果時間 [${this.buildExpression()}] 秒。物理攻撃は [${
-          100 - this.actionDetail1
-        }%] の確率でミスする。`;
+          expressionMode,
+          this.chanceValues,
+          RoundingMode.UNNECESSARY,
+          property
+        )}%] の確率で${this.targetParameter.buildTargetClause()}を物理暗闇状態にする、効果時間 [${this.buildExpression(
+          expressionMode,
+          RoundingMode.UNNECESSARY,
+          property
+        )}] 秒。物理攻撃は [${100 - this.actionDetail1}%] の確率でミスする。`;
       default:
-        return this.buildExpression();
+        return this.buildExpression(expressionMode, property);
     }
   }
 }

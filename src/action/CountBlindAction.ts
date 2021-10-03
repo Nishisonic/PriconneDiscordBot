@@ -1,5 +1,10 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./actionParameter.js";
+import {
+  ActionParameter,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class CountType {
   static readonly unknown = -1;
@@ -24,14 +29,21 @@ export class CountBlindAction extends ActionParameter {
     this.countType = CountType.parse(this.actionValue1.value);
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.countType.value) {
       case CountType.time:
-        return `${this.targetParameter.buildTargetClause()}の物理攻撃を必ずミスさせる、効果時間 [${this.buildExpression()}] 秒。`;
+        return `${this.targetParameter.buildTargetClause()}の物理攻撃を必ずミスさせる、効果時間 [${this.buildExpression(
+          expressionMode,
+          RoundingMode.UNNECESSARY,
+          property
+        )}] 秒。`;
       case CountType.count:
-        return `${this.targetParameter.buildTargetClause()}の次の [${this.buildExpression()}] 回物理攻撃を必ずミスさせる。`;
+        return `${this.targetParameter.buildTargetClause()}の次の [${this.buildExpression(
+          expressionMode,
+          property
+        )}] 回物理攻撃を必ずミスさせる。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

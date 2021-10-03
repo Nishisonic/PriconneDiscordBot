@@ -1,5 +1,6 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import { ActionParameter, ActionValue, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class eCountType {
   static readonly Unknown = -1;
@@ -69,16 +70,19 @@ export class PassiveDamageUpAction extends ActionParameter {
     );
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.countType.value) {
       case eCountType.Debuff:
         return `パッシブ：${this.targetParameter.buildTargetClause()}が与えられるダメージを [1 ${this.effectType.description()} ${
           this.debuffDamageUpValue
         } \* ${this.targetParameter.buildTargetClause()}の${this.countType.description()}数] 倍にする（最大${
           this.debuffDamageUpLimitValue
-        }倍）、効果時間 [${this.buildExpression()}] 秒。`;
+        }倍）、効果時間 [${this.buildExpression(
+          expressionMode,
+          property
+        )}] 秒。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

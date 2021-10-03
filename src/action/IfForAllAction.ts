@@ -1,6 +1,7 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter } from "./actionParameter.js";
+import { ActionParameter, Expression } from "./actionParameter.js";
 import { IfType } from "./ifForChildrenAction.js";
+import { Property } from "./parameter/property.js";
 
 export class IfForAllAction extends ActionParameter {
   trueClause: string | null = null;
@@ -135,7 +136,7 @@ export class IfForAllAction extends ActionParameter {
       }
     }
   }
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     if (this.trueClause != null && this.falseClause != null) {
       return `全体的条件分岐：${this.trueClause + this.falseClause}`;
     }
@@ -145,6 +146,6 @@ export class IfForAllAction extends ActionParameter {
     if (this.falseClause != null) {
       return `全体的条件分岐：${this.falseClause}`;
     }
-    return super.localizedDetail();
+    return super.localizedDetail(expressionMode, property);
   }
 }

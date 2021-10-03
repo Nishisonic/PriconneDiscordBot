@@ -1,7 +1,8 @@
-import { ActionParameter } from "./actionParameter.js";
+import { ActionParameter, Expression } from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 export class IFExistsFieldForAllAction extends ActionParameter {
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     if (this.actionDetail2 !== 0 && this.actionDetail3 !== 0) {
       return `条件分岐：特定なフィールド効果が存在する場合 [アクション${
         this.actionDetail2 % 10
@@ -14,6 +15,6 @@ export class IFExistsFieldForAllAction extends ActionParameter {
         this.actionDetail2 % 10
       }] を使う。`;
     }
-    return super.localizedDetail();
+    return super.localizedDetail(expressionMode, property);
   }
 }

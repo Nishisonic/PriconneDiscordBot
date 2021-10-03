@@ -1,5 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class AweType {
   static readonly unknown = -1;
@@ -32,22 +38,34 @@ export class AweAction extends ActionParameter {
     this.aweType = AweType.parse(this.actionDetail1);
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     switch (this.aweType.value) {
       case AweType.ubAndSkill:
         return `${this.targetParameter.buildTargetClause()}のユニオンバーストかスキルが任意の対象にダメージか直接回復を与えるたび、その値を [${this.buildExpression(
-          this.percentValues
+          expressionMode,
+          this.percentValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}%] ダウンさせる、効果時間 [${this.buildExpression(
-          this.durationValues
+          expressionMode,
+          this.durationValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}] 秒。`;
       case AweType.ubOnly:
         return `${this.targetParameter.buildTargetClause()}のユニオンバーストが任意の対象にダメージか直接回復を与えるたび、その値を [${this.buildExpression(
-          this.percentValues
+          expressionMode,
+          this.percentValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}%] ダウンさせる、効果時間 [${this.buildExpression(
-          this.durationValues
+          expressionMode,
+          this.durationValues,
+          RoundingMode.UNNECESSARY,
+          property
         )}] 秒。`;
       default:
-        return super.localizedDetail();
+        return super.localizedDetail(expressionMode, property);
     }
   }
 }

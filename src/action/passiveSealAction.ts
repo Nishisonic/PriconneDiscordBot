@@ -1,5 +1,11 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, ActionValue } from "./actionParameter.js";
+import {
+  ActionParameter,
+  ActionValue,
+  Expression,
+  RoundingMode,
+} from "./actionParameter.js";
+import { Property } from "./parameter/property.js";
 
 class ePassiveTiming {
   static readonly Unknown = -1;
@@ -70,17 +76,23 @@ export class PassiveSealAction extends ActionParameter {
     this.sealTarget = eSealTarget.parse(this.actionDetail3);
   }
 
-  localizedDetail() {
+  localizedDetail(expressionMode: Expression, property: Property) {
     return `パッシブ：${this.targetParameter.buildTargetClause()}が${this.passiveTiming.description()}を受けるたび、${this.sealTarget.description()}にマーク [ID: ${
       this.actionValue2.value
     }] を [${
       this.actionDetail2
     }] 追加する、マークの継続時間 [${this.buildExpression(
-      this.sealDuration
+      expressionMode,
+      this.sealDuration,
+      RoundingMode.UNNECESSARY,
+      property
     )}] 秒、最大 [${
       this.actionValue1.value
     }] までスタックする。このパッシブ効果は [${this.buildExpression(
-      this.lifeTime
+      expressionMode,
+      this.lifeTime,
+      RoundingMode.UNNECESSARY,
+      property
     )}] 秒継続する。`;
   }
 }
