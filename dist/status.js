@@ -1,5 +1,5 @@
 import { master } from "./db.js";
-import { getCharaStatus } from "./action/parameter/Chara.js";
+import { getCharaStatus } from "./action/parameter/chara.js";
 const SUPPLEMENT = "*上記のステータスは☆max、装備&専用装備フル強化、ストーリーステータス&Exスキル&Rank Bonusを含めての値になります。";
 export async function status(message) {
     if (message.content.match(/^\.status .+$/)) {
