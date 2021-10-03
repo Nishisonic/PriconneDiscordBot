@@ -1,6 +1,6 @@
 import twitter, { RequestParams, ResponseData } from "twitter";
 import retryPromise from "ts-retry-promise";
-import { chatChannel, officialChannel } from "./discordClient.js";
+import { billingCampaignChannel, chatChannel, officialChannel } from "./discordClient.js";
 
 const twConfig = {
   consumer_key: process.env.CONSUMER_KEY ?? "",
@@ -70,6 +70,40 @@ export async function priconneTweetProcess(lastUpdateTime: number) {
       )
       .map(async (tweet) => {
         return await officialChannel.send(
+          `https://twitter.com/${params.screen_name}/status/${tweet.id_str}`
+        );
+      })
+  );
+}
+
+export async function iosCampaignTweetProcess(lastUpdateTime: number) {
+  const params: RequestParams = { screen_name: "itc_check" };
+  const tweets = (await getUserTimelineRetryAsync(params)) as Tweet[];
+
+  return Promise.allSettled(
+    tweets
+      .filter(
+        ({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime
+      )
+      .map(async (tweet) => {
+        return await billingCampaignChannel.send(
+          `https://twitter.com/${params.screen_name}/status/${tweet.id_str}`
+        );
+      })
+  );
+}
+
+export async function androidCampaignTweetProcess(lastUpdateTime: number) {
+  const params: RequestParams = { screen_name: "gpc_check" };
+  const tweets = (await getUserTimelineRetryAsync(params)) as Tweet[];
+
+  return Promise.allSettled(
+    tweets
+      .filter(
+        ({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime
+      )
+      .map(async (tweet) => {
+        return await billingCampaignChannel.send(
           `https://twitter.com/${params.screen_name}/status/${tweet.id_str}`
         );
       })

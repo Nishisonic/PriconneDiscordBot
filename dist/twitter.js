@@ -1,7 +1,7 @@
 var _a, _b, _c, _d;
 import twitter from "twitter";
 import retryPromise from "ts-retry-promise";
-import { chatChannel, officialChannel } from "./discordClient.js";
+import { billingCampaignChannel, chatChannel, officialChannel } from "./discordClient.js";
 const twConfig = {
     consumer_key: (_a = process.env.CONSUMER_KEY) !== null && _a !== void 0 ? _a : "",
     consumer_secret: (_b = process.env.CONSUMER_SECRET) !== null && _b !== void 0 ? _b : "",
@@ -33,5 +33,23 @@ export async function priconneTweetProcess(lastUpdateTime) {
         .filter(({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime)
         .map(async (tweet) => {
         return await officialChannel.send(`https://twitter.com/${params.screen_name}/status/${tweet.id_str}`);
+    }));
+}
+export async function iosCampaignTweetProcess(lastUpdateTime) {
+    const params = { screen_name: "itc_check" };
+    const tweets = (await getUserTimelineRetryAsync(params));
+    return Promise.allSettled(tweets
+        .filter(({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime)
+        .map(async (tweet) => {
+        return await billingCampaignChannel.send(`https://twitter.com/${params.screen_name}/status/${tweet.id_str}`);
+    }));
+}
+export async function androidCampaignTweetProcess(lastUpdateTime) {
+    const params = { screen_name: "gpc_check" };
+    const tweets = (await getUserTimelineRetryAsync(params));
+    return Promise.allSettled(tweets
+        .filter(({ created_at }) => new Date(created_at).getTime() >= lastUpdateTime)
+        .map(async (tweet) => {
+        return await billingCampaignChannel.send(`https://twitter.com/${params.screen_name}/status/${tweet.id_str}`);
     }));
 }

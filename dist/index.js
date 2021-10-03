@@ -7,7 +7,7 @@ import client from "./discordClient.js";
 import { birthday, birthdayProcess } from "./birthday.js";
 import { arenaRemind } from "./arena.js";
 import { presenceProcess } from "./presence.js";
-import { nishikumaBroadcastTweetProcess, priconneTweetProcess, } from "./twitter.js";
+import { androidCampaignTweetProcess, iosCampaignTweetProcess, nishikumaBroadcastTweetProcess, priconneTweetProcess, } from "./twitter.js";
 import { tl } from "./tl.js";
 import { status } from "./status.js";
 server.on("request", function (_, res) {
@@ -53,6 +53,8 @@ let lastUpdateTime = Date.now();
 cron.schedule("* * * * *", async () => await Promise.allSettled([
     nishikumaBroadcastTweetProcess(lastUpdateTime),
     priconneTweetProcess(lastUpdateTime),
+    iosCampaignTweetProcess(lastUpdateTime),
+    androidCampaignTweetProcess(lastUpdateTime),
     presenceProcess(),
 ]).then(() => {
     lastUpdateTime = Date.now();

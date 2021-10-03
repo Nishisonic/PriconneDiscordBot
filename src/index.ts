@@ -9,6 +9,8 @@ import { birthday, birthdayProcess } from "./birthday.js";
 import { arenaRemind } from "./arena.js";
 import { presenceProcess } from "./presence.js";
 import {
+  androidCampaignTweetProcess,
+  iosCampaignTweetProcess,
   nishikumaBroadcastTweetProcess,
   priconneTweetProcess,
 } from "./twitter.js";
@@ -66,6 +68,8 @@ cron.schedule(
     await Promise.allSettled([
       nishikumaBroadcastTweetProcess(lastUpdateTime),
       priconneTweetProcess(lastUpdateTime),
+      iosCampaignTweetProcess(lastUpdateTime),
+      androidCampaignTweetProcess(lastUpdateTime),
       presenceProcess(),
     ]).then(() => {
       lastUpdateTime = Date.now();
