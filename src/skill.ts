@@ -62,7 +62,7 @@ import { MoveAction } from "./action/moveAction.js";
 import { MovePartsAction } from "./action/movePartsAction.js";
 import { MultipleAction } from "./action/multipleAction.js";
 import { NoDamageAction } from "./action/noDamageAction.js";
-import { getCharaStatus } from "./action/parameter/Chara.js";
+import { getCharaStatus } from "./action/parameter/chara.js";
 import { PassiveAction } from "./action/passiveAction.js";
 import { PassiveDamageUpAction } from "./action/passiveDamageUpAction.js";
 import { PassiveInermittentAction } from "./action/passiveInermittentAction.js";
