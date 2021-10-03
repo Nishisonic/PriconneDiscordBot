@@ -10,6 +10,8 @@ import { presenceProcess } from "./presence.js";
 import { androidCampaignTweetProcess, iosCampaignTweetProcess, nishikumaBroadcastTweetProcess, priconneTweetProcess, } from "./twitter.js";
 import { tl } from "./tl.js";
 import { status } from "./status.js";
+import { dmmCreditCardCampaignRemind } from "./dmm.js";
+import { clanBattleRemind, endClanBattleRemind } from "./clanbattle.js";
 server.on("request", function (_, res) {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end();
@@ -42,6 +44,9 @@ client.on("message", async (message) => {
 });
 // 1日毎
 cron.schedule("0 0 * * *", async () => await birthdayProcess());
+cron.schedule("0 0 1-3 * *", async () => await dmmCreditCardCampaignRemind());
+cron.schedule("0 0 28-31 * *", async () => await endClanBattleRemind());
+cron.schedule("0 5 23-30 * *", async () => await clanBattleRemind());
 // 14:30
 cron.schedule("30 14 * * *", async () => await arenaRemind(30));
 // 14:55
