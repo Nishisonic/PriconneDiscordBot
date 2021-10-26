@@ -16,8 +16,8 @@
   },
   "devDependencies": {
     "@types/node": "^14.14.14",
-    "@types/node-fetch": "^2.5.10",
     "@types/node-cron": "^3.0.0",
+    "@types/node-fetch": "^2.5.10",
     "@types/sqlite3": "^3.1.7",
     "@types/twitter": "^1.7.1",
     "@types/ws": "^8.2.0",
