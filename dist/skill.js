@@ -73,6 +73,7 @@ import { TriggerAction } from "./action/triggerAction.js";
 import { UBChangeTimeAction } from "./action/ubChangeTimeAction.js";
 import { UpperLimitAttackAction } from "./action/upperLimitAttackAction.js";
 import { WaveStartIdleAction } from "./action/waveStartIdleAction.js";
+import { ChangeSpeedOverlapAction } from './action/changeSpeedOverlapAction.js';
 export async function skill(message) {
     if (message.content.match(/^\.skill(-p)? .+$/)) {
         const name = message.content
@@ -84,12 +85,13 @@ export async function skill(message) {
         FROM unit_data
         WHERE unit_name = '${name}'
         AND unit_id < 400000
+        ORDER BY unit_id
       `));
         const expressionMode = message.content.includes(".skill-p")
             ? Expression.ORIGINAL
             : Expression.EXPRESSION;
         if (units.length > 0) {
-            const property = await getCharaStatus(units[units.length - 1].unit_id);
+            const property = await getCharaStatus(units[0].unit_id);
             units.forEach(async (unit) => {
                 const unitSkillData = await findUnitSkillDataAsync(unit.unit_id);
                 const attackPatternMessage = await getAttackPatternStringAsync(unit.unit_id);
@@ -408,6 +410,8 @@ export function localizedDetail(skillAction, property, expressionMode) {
                 return new PassiveDamageUpAction(skillAction);
             case 79:
                 return new DamageByBehaviourAction(skillAction);
+            case 83:
+                return new ChangeSpeedOverlapAction(skillAction);
             case 90:
                 return new PassiveAction(skillAction);
             case 91:

@@ -51,6 +51,12 @@ export class IfForAllAction extends ActionParameter {
         this.trueClause = `潜伏状態のユニットを除いて、${this.targetParameter.buildTargetClause()}の中ユニット[ID: ${
           this.actionValue3.value
         }]が存在する場合、[アクション${this.actionDetail2 % 10}] を使う。`;
+      } else if (this.actionDetail1 === 721) {
+        this.falseClause = `${this.targetParameter.buildTargetClause(
+          true
+        )}がマーク [ID: ${Math.floor(
+          this.actionValue3.value
+        )}] を持っている場合、[アクション${this.actionDetail2 % 10}] を使う。`;
       } else if (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) {
         this.trueClause = `${this.targetParameter.buildTargetClause(
           true
@@ -72,6 +78,8 @@ export class IfForAllAction extends ActionParameter {
           this.actionDetail2 % 10
         }] を使う。`;
       }
+    } else if (this.actionDetail3 == 0) {
+      this.trueClause = "効果なし。";
     }
 
     if (this.actionDetail3 !== 0) {
@@ -113,6 +121,14 @@ export class IfForAllAction extends ActionParameter {
         this.falseClause = `潜伏状態のユニットを除いて、${this.targetParameter.buildTargetClause()}の中ユニット[ID: ${
           this.actionValue3.value
         }]が存在しない場合、[アクション${this.actionDetail3 % 10}] を使う。`;
+      } else if (this.actionDetail1 === 721) {
+        this.falseClause = `${this.targetParameter.buildTargetClause(
+          true
+        )}がマーク [ID: ${Math.floor(
+          this.actionValue3.value
+        )}] を持っていない場合、[アクション${
+          this.actionDetail3 % 10
+        }] を使う。`;
       } else if (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) {
         this.falseClause = `${this.targetParameter.buildTargetClause(
           true
@@ -134,6 +150,8 @@ export class IfForAllAction extends ActionParameter {
           this.actionDetail3 % 10
         }] を使う。`;
       }
+    } else if (this.actionDetail2 == 0) {
+      this.falseClause = "効果なし。";
     }
   }
   localizedDetail(expressionMode: Expression, property: Property) {

@@ -39,6 +39,12 @@ class AuraType {
                 return "受けるクリティカルダメージ";
             case AuraType.maxHP:
                 return "最大HP";
+            case AuraType.receivedDamage:
+                return "受けるダメージ";
+            case AuraType.receivedPhysicalDamage:
+                return "受ける物理ダメージ";
+            case AuraType.receivedMagicalDamage:
+                return "受ける魔法ダメージ";
             default:
                 return "";
         }
@@ -59,6 +65,9 @@ AuraType.physicalCriticalDamage = 11;
 AuraType.magicalCriticalDamage = 12;
 AuraType.accuracy = 13;
 AuraType.receivedCriticalDamage = 14;
+AuraType.receivedDamage = 15;
+AuraType.receivedPhysicalDamage = 16;
+AuraType.receivedMagicalDamage = 17;
 AuraType.maxHP = 100;
 class AuraActionType {
     constructor(value) {
@@ -123,7 +132,12 @@ export class AuraAction extends ActionParameter {
             this.auraType = AuraType.parse(Math.floor(this.actionDetail1 / 10));
         }
         this.breakType = BreakType.parse(this.actionDetail2);
-        if (this.auraType.value === AuraType.receivedCriticalDamage) {
+        if ([
+            AuraType.receivedCriticalDamage,
+            AuraType.receivedMagicalDamage,
+            AuraType.receivedPhysicalDamage,
+            AuraType.receivedDamage,
+        ].includes(this.auraType.value)) {
             this.auraActionType = this.auraActionType.toggle();
             this.percentModifier = PercentModifier.parse(PercentModifier.percent);
         }

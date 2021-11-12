@@ -33,6 +33,9 @@ export class IfForAllAction extends ActionParameter {
             else if (this.actionDetail1 === 720) {
                 this.trueClause = `潜伏状態のユニットを除いて、${this.targetParameter.buildTargetClause()}の中ユニット[ID: ${this.actionValue3.value}]が存在する場合、[アクション${this.actionDetail2 % 10}] を使う。`;
             }
+            else if (this.actionDetail1 === 721) {
+                this.falseClause = `${this.targetParameter.buildTargetClause(true)}がマーク [ID: ${Math.floor(this.actionValue3.value)}] を持っている場合、[アクション${this.actionDetail2 % 10}] を使う。`;
+            }
             else if (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) {
                 this.trueClause = `${this.targetParameter.buildTargetClause(true)}のHPが [${this.actionDetail1 - 900}%] 以下の場合、[アクション${this.actionDetail2 % 10}] を使う。`;
             }
@@ -45,6 +48,9 @@ export class IfForAllAction extends ActionParameter {
             else if (this.actionDetail1 >= 1200 && this.actionDetail1 < 1300) {
                 this.trueClause = `[カウンター${(this.actionDetail1 % 100) / 10}] の数が [${this.actionDetail1 % 10}] 以上の場合、[アクション${this.actionDetail2 % 10}] を使う。`;
             }
+        }
+        else if (this.actionDetail3 == 0) {
+            this.trueClause = "効果なし。";
         }
         if (this.actionDetail3 !== 0) {
             if (this.actionDetail1 === 710) {
@@ -73,6 +79,9 @@ export class IfForAllAction extends ActionParameter {
             else if (this.actionDetail1 === 720) {
                 this.falseClause = `潜伏状態のユニットを除いて、${this.targetParameter.buildTargetClause()}の中ユニット[ID: ${this.actionValue3.value}]が存在しない場合、[アクション${this.actionDetail3 % 10}] を使う。`;
             }
+            else if (this.actionDetail1 === 721) {
+                this.falseClause = `${this.targetParameter.buildTargetClause(true)}がマーク [ID: ${Math.floor(this.actionValue3.value)}] を持っていない場合、[アクション${this.actionDetail3 % 10}] を使う。`;
+            }
             else if (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) {
                 this.falseClause = `${this.targetParameter.buildTargetClause(true)}のHPが [${this.actionDetail1 - 900}%] 以下でない場合、[アクション${this.actionDetail3 % 10}] を使う。`;
             }
@@ -85,6 +94,9 @@ export class IfForAllAction extends ActionParameter {
             else if (this.actionDetail1 >= 1200 && this.actionDetail1 < 1300) {
                 this.falseClause = `[カウンター${(this.actionDetail1 % 100) / 10}] の数が [${this.actionDetail1 % 10}] 未満の場合、[アクション${this.actionDetail3 % 10}] を使う。`;
             }
+        }
+        else if (this.actionDetail2 == 0) {
+            this.falseClause = "効果なし。";
         }
     }
     localizedDetail(expressionMode, property) {

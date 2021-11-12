@@ -98,6 +98,12 @@ export class IfForChildrenAction extends ActionParameter {
           )}が魔法攻撃を行う対象の場合、[アクション${
             this.actionDetail2 % 10
           }] を使う。`;
+        } else if (this.actionDetail1 >= 6000 && this.actionDetail1 <= 7000) {
+          this.trueClause = `${this.targetParameter.buildTargetClause(
+            true
+          )}がマーク [ID: ${
+            this.actionDetail1 - 6000
+          }] を持っている場合、[アクション${this.actionDetail2 % 10}] を使う。`;
         }
       }
     }
@@ -138,6 +144,14 @@ export class IfForChildrenAction extends ActionParameter {
           )}が魔法攻撃を行う対象でない場合、[アクション${
             this.actionDetail3 % 10
           }] を使う。`;
+        } else if (this.actionDetail1 >= 6000 && this.actionDetail1 <= 7000) {
+          this.falseClause = `${this.targetParameter.buildTargetClause(
+            true
+          )}がマーク [ID: ${
+            this.actionDetail1 - 6000
+          }] を持っていない場合、[アクション${
+            this.actionDetail3 % 10
+          }] を使う。`;
         }
       }
     }
@@ -157,7 +171,8 @@ export class IfForChildrenAction extends ActionParameter {
       (this.actionDetail1 >= 600 && this.actionDetail1 < 900) ||
       (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) ||
       this.actionDetail1 === 1300 ||
-      this.actionDetail1 === 1400
+      this.actionDetail1 === 1400 ||
+      (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000)
     ) {
       if (this.trueClause !== null && this.falseClause !== null) {
         return `条件分岐：${this.trueClause + this.falseClause}`;

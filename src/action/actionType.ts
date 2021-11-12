@@ -72,6 +72,7 @@ export class ActionType {
   static readonly passiveSeal = 77;
   static readonly passiveDamageUp = 78;
   static readonly damageByBehaviourAction = 79;
+  static readonly changeSpeedOverlapAction = 83;
   static readonly ex = 90;
   static readonly exPlus = 91;
   static readonly changeEnergyRecoveryRatioByDamage = 92;

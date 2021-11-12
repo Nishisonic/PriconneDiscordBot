@@ -49,6 +49,9 @@ export class AdditiveAction extends ActionParameter {
             case 12:
                 result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(expressionMode, null, RoundingMode.UNNECESSARY, property, true)} \* 後ろの${this.targetParameter.buildTargetClause()}の数] アップさせる。`;
                 break;
+            case 13:
+                result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(expressionMode, null, RoundingMode.UNNECESSARY, property, true)} * (${this.targetParameter.buildTargetClause()}が損失したHP / 最大HP)] アップさせる。`;
+                break;
             case 102:
                 result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(expressionMode, null, RoundingMode.UNNECESSARY, property, true)} \* オメメちゃんの数] アップさせる。`;
                 break;

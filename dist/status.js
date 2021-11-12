@@ -12,9 +12,10 @@ export async function status(message) {
         FROM unit_data
         WHERE unit_name = '${name}'
         AND unit_id < 400000
+        ORDER BY unit_id
       `));
         if (units.length > 0) {
-            const unit = units[units.length - 1];
+            const unit = units[0];
             const property = await getCharaStatus(unit.unit_id);
             await message.channel.send(`${name}\n\n**立ち位置**\n${await toSearchAreaWidthString(unit)}\n\n**ステータス**\n${property.toString()}\n\`${SUPPLEMENT}\``);
         }
