@@ -3,6 +3,7 @@ import { ActionParameter, Expression } from "./actionParameter.js";
 import { Property } from "./parameter/property.js";
 
 export class IfType {
+  static readonly unknown = -1;
   static readonly controllered = 100;
   static readonly hastened = 101;
   static readonly blind = 200;
@@ -17,6 +18,8 @@ export class IfType {
   static readonly poisonOrVenom = 512;
   static readonly Break = 710;
   static readonly polymorph = 1400;
+  static readonly fear = 1600;
+  static readonly magicDefDecreased = 1700;
   value: number;
 
   private constructor(value: number) {
@@ -57,8 +60,12 @@ export class IfType {
         return "呪詛状態中";
       case IfType.curseOrHex:
         return "呪い或いは呪詛状態中";
+      case IfType.fear:
+        return "恐慌状態中";
+      case IfType.magicDefDecreased:
+        return "魔法防御力ダウン状態中";
       default:
-        return "";
+        return "不明";
     }
   }
 }
@@ -180,6 +187,7 @@ export class IfForChildrenAction extends ActionParameter {
       (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) ||
       this.actionDetail1 === 1300 ||
       this.actionDetail1 === 1400 ||
+      this.actionDetail1 === 1600 ||
       (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000)
     ) {
       if (this.trueClause !== null && this.falseClause !== null) {

@@ -13,7 +13,7 @@ export class IfForAllAction extends ActionParameter {
     this.ifType = IfType.parse(this.actionDetail1);
 
     if (this.actionDetail2 !== 0) {
-      if (this.actionDetail1 === 710 || this.actionDetail1 === 100) {
+      if (this.actionDetail1 === 710 || this.actionDetail1 === 100 || this.actionDetail1 === 1700) {
         if (this.ifType !== null) {
           this.trueClause = `${this.targetParameter.buildTargetClause(
             true
@@ -91,7 +91,7 @@ export class IfForAllAction extends ActionParameter {
     }
 
     if (this.actionDetail3 !== 0) {
-      if (this.actionDetail1 === 710) {
+      if (this.actionDetail1 === 710 || this.actionDetail1 === 100 || this.actionDetail1 === 1700) {
         if (this.ifType !== null) {
           this.falseClause = `${this.targetParameter.buildTargetClause(
             true

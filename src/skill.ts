@@ -83,6 +83,7 @@ import { UBChangeTimeAction } from "./action/ubChangeTimeAction.js";
 import { UpperLimitAttackAction } from "./action/upperLimitAttackAction.js";
 import { WaveStartIdleAction } from "./action/waveStartIdleAction.js";
 import { ChangeSpeedOverlapAction } from './action/changeSpeedOverlapAction.js';
+import { EffectAction } from "./action/effectAction.js";
 
 export async function skill(message: Message) {
   if (message.content.match(/^\.skill(-p)? .+$/)) {
