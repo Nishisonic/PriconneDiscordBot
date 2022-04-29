@@ -77,6 +77,12 @@ export class IfForAllAction extends ActionParameter {
         }] の数が [${this.actionDetail1 % 10}] 以上の場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
+      } else if (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000) {
+        this.trueClause = `${this.targetParameter.buildTargetClause(
+          true
+        )}がマーク [ID: ${
+          this.actionDetail1 - 6000
+        }] を持っている場合、[アクション${this.actionDetail2 % 10}] を使う。`;
       }
     } else if (this.actionDetail3 == 0) {
       this.trueClause = "効果なし。";
@@ -149,6 +155,12 @@ export class IfForAllAction extends ActionParameter {
         }] の数が [${this.actionDetail1 % 10}] 未満の場合、[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
+      } else if (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000) {
+        this.falseClause = `${this.targetParameter.buildTargetClause(
+          true
+        )}がマーク [ID: ${
+          this.actionDetail1 - 6000
+        }] を持っている場合、[アクション${this.actionDetail3 % 10}] を使う。`;
       }
     } else if (this.actionDetail2 == 0) {
       this.falseClause = "効果なし。";

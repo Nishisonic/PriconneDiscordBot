@@ -1,5 +1,5 @@
 import { SkillAction } from "../master.js";
-import { ActionParameter, Expression } from "./actionParameter.js";
+import { ActionParameter, ActionValue, Expression } from "./actionParameter.js";
 import { Property } from "./parameter/property.js";
 
 class KnockType {
@@ -11,6 +11,7 @@ class KnockType {
   static readonly moveTargetParaboric = 5;
   static readonly backLimited = 6;
   static readonly dragForwardCaster = 8;
+  static readonly knockBackGiveValue = 9;
   value: number;
 
   private constructor(value: number) {
@@ -28,6 +29,9 @@ export class KnockAction extends ActionParameter {
   constructor(skillAction: SkillAction) {
     super(skillAction);
     this.knockType = KnockType.parse(this.actionDetail1);
+    this.actionValues.push(
+      new ActionValue(this.actionValue1, this.actionValue2, null)
+    );
   }
 
   localizedDetail(expressionMode: Expression, property: Property) {
@@ -49,6 +53,11 @@ export class KnockAction extends ActionParameter {
         return `${this.targetParameter.buildTargetClause()}を自分の前 [${Math.floor(
           this.actionValue1.value
         )}] の位置に引き寄せる。`;
+      case KnockType.knockBackGiveValue:
+        return `${this.targetParameter.buildTargetClause()}をノックバックする、距離 [${this.buildExpression(
+          expressionMode,
+          property
+        )}]。`;
       default:
         return super.localizedDetail(expressionMode, property);
     }

@@ -26,8 +26,7 @@ export class DivideAction extends ActionParameter {
         property,
         true
       )} \* HP / MaxHP] を乗じる。`;
-    }
-    if (this.actionValue1.value === 1) {
+    } else if (this.actionValue1.value === 1) {
       return `[アクション${this.actionDetail1 % 10}] の係数${
         this.actionDetail2
       }に [${this.buildExpression(
@@ -37,8 +36,7 @@ export class DivideAction extends ActionParameter {
         property,
         true
       )} \* 損失したHP / MaxHP] を乗じる。`;
-    }
-    if (this.actionValue1.value === 2) {
+    } else if (this.actionValue1.value === 2) {
       return `[アクション${this.actionDetail1 % 10}] の係数${
         this.actionDetail2
       }に [${this.buildExpression(
@@ -48,8 +46,20 @@ export class DivideAction extends ActionParameter {
         property,
         true
       )} \* 倒した敵の数] を乗じる。`;
-    }
-    if (this.actionValue1.value >= 200 && this.actionValue1.value < 300) {
+    } else if (this.actionValue1.value === 4) {
+      return `[アクション${this.actionDetail1 % 10}] の係数${
+        this.actionDetail2
+      }に [${this.buildExpression(
+        expressionMode,
+        null,
+        RoundingMode.UNNECESSARY,
+        property,
+        true
+      )} \* 対象の数] を乗じる。`;
+    } else if (
+      this.actionValue1.value >= 200 &&
+      this.actionValue1.value < 300
+    ) {
       return `[アクション${this.actionDetail1 % 10}] の係数${
         this.actionDetail2
       }に [${this.buildExpression(
@@ -62,6 +72,7 @@ export class DivideAction extends ActionParameter {
         this.actionValue1.value % 200
       }] のスタック数] を乗じる。`;
     }
+
     return super.localizedDetail(expressionMode, property);
   }
 }

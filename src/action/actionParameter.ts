@@ -403,6 +403,7 @@ export class eActionValue {
   static readonly VALUE5 = 4;
   static readonly VALUE6 = 5;
   static readonly VALUE7 = 6;
+  static readonly VALUE_NULL = null;
   value: number;
 
   constructor(value: number) {
@@ -426,7 +427,7 @@ export class eActionValue {
       case eActionValue.VALUE7:
         return "係数7";
       default:
-        return "";
+        return "NULL";
     }
   }
 }
