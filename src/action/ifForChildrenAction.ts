@@ -19,6 +19,7 @@ export class IfType {
   static readonly Break = 710;
   static readonly polymorph = 1400;
   static readonly fear = 1600;
+  static readonly spy = 1601;
   static readonly magicDefDecreased = 1700;
   value: number;
 
@@ -62,6 +63,8 @@ export class IfType {
         return "呪い或いは呪詛状態中";
       case IfType.fear:
         return "恐慌状態中";
+      case IfType.spy:
+        return "隠密状態中";
       case IfType.magicDefDecreased:
         return "魔法防御力ダウン状態中";
       default:
@@ -79,7 +82,7 @@ export class IfForChildrenAction extends ActionParameter {
     super(skillAction);
     if (this.actionDetail2 !== 0) {
       this.ifType = IfType.parse(this.actionDetail1);
-      if (this.ifType !== null) {
+      if (this.ifType !== IfType.parse(IfType.unknown)) {
         this.trueClause = `${this.targetParameter.buildTargetClause(
           true
         )}が${this.ifType.description()}の場合、[アクション${
@@ -123,7 +126,7 @@ export class IfForChildrenAction extends ActionParameter {
 
     if (this.actionDetail3 !== 0) {
       this.ifType = IfType.parse(this.actionDetail1);
-      if (this.ifType !== null) {
+      if (this.ifType !== IfType.parse(IfType.unknown)) {
         this.falseClause = `${this.targetParameter.buildTargetClause(
           true
         )}が${this.ifType.description()}でない場合、[アクション${

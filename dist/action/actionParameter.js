@@ -298,7 +298,7 @@ export class eActionValue {
             case eActionValue.VALUE7:
                 return "係数7";
             default:
-                return "";
+                return "NULL";
         }
     }
 }
@@ -309,6 +309,7 @@ eActionValue.VALUE4 = 3;
 eActionValue.VALUE5 = 4;
 eActionValue.VALUE6 = 5;
 eActionValue.VALUE7 = 6;
+eActionValue.VALUE_NULL = null;
 export class DoubleValue {
     constructor(value, index) {
         this.value = value;

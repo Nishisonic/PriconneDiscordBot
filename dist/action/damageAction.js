@@ -1,10 +1,21 @@
 import { ActionParameter, ActionValue, ClassModifier, CriticalModifier, } from "./actionParameter.js";
 import { PropertyKey } from "./propertyKey.js";
+class DecideTargetAtkType {
+    constructor(value) {
+        this.value = value;
+    }
+    static parse(value) {
+        return new this(value);
+    }
+}
+DecideTargetAtkType.bySource = 0;
+DecideTargetAtkType.lowerDef = 1;
 export class DamageAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);
         this.damageClass = ClassModifier.parse(skillAction.action_detail_1);
         this.criticalModifier = CriticalModifier.parse(skillAction.action_value_5);
+        this.decideTargetAtkType = DecideTargetAtkType.parse(this.actionDetail2);
         switch (skillAction.action_detail_1) {
             case ClassModifier.magical:
                 this.actionValues.push(new ActionValue(this.actionValue1, this.actionValue2, null));
@@ -30,6 +41,9 @@ export class DamageAction extends ActionParameter {
         }
         if (this.actionValue6.value !== 0) {
             sentence += `クリティカルした場合、ダメージ倍率が [${2 * this.actionValue6.value}] 倍になる。`;
+        }
+        if (this.decideTargetAtkType === DecideTargetAtkType.parse(DecideTargetAtkType.lowerDef)) {
+            sentence += `このスキルのダメージタイプは目標の低いほうの防御タイプによって決められる。`;
         }
         return sentence;
     }

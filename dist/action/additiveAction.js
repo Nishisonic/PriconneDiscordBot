@@ -57,7 +57,11 @@ export class AdditiveAction extends ActionParameter {
                 break;
             default:
                 if (this.actionValue1.value >= 200 && this.actionValue1.value < 300) {
-                    result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(expressionMode, null, RoundingMode.UNNECESSARY, property, true)} \* マーク [ID: ${this.actionValue1.value % 200}] のスタック数] アップさせる。`;
+                    result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(expressionMode, null, RoundingMode.UNNECESSARY, property, true)} * マーク [ID: ${this.actionValue1.value % 2000}] のスタック数] アップさせる。`;
+                }
+                else if (this.actionValue1.value >= 2000 &&
+                    this.actionValue1.value < 3000) {
+                    result = `[アクション${this.actionDetail1 % 10}] の係数${this.actionDetail2}を [${this.buildExpression(expressionMode, null, RoundingMode.UNNECESSARY, property, true)} * マーク [ID: ${this.actionValue1.value % 2000}] のスタック数] アップさせる。`;
                 }
                 else if (this.actionValue1.value >= 7 &&
                     this.actionValue1.value <= 10) {

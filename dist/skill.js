@@ -73,7 +73,10 @@ import { TriggerAction } from "./action/triggerAction.js";
 import { UBChangeTimeAction } from "./action/ubChangeTimeAction.js";
 import { UpperLimitAttackAction } from "./action/upperLimitAttackAction.js";
 import { WaveStartIdleAction } from "./action/waveStartIdleAction.js";
-import { ChangeSpeedOverlapAction } from './action/changeSpeedOverlapAction.js';
+import { ChangeSpeedOverlapAction } from "./action/changeSpeedOverlapAction.js";
+import { EffectAction } from "./action/effectAction.js";
+import { DamageCutAction } from "./action/damageCutAction.js";
+import { SpyAction } from "./action/spyAction.js";
 export async function skill(message) {
     if (message.content.match(/^\.skill(-p)? .+$/)) {
         const name = message.content
@@ -396,6 +399,8 @@ export function localizedDetail(skillAction, property, expressionMode) {
                 return new ToadAction(skillAction);
             case 71:
                 return new KnightGuardAction(skillAction);
+            case 72:
+                return new DamageCutAction(skillAction);
             case 73:
                 return new LogBarrierAction(skillAction);
             case 74:
@@ -420,6 +425,10 @@ export function localizedDetail(skillAction, property, expressionMode) {
                 return new ChangeEnergyRecoveryRatioByDamageAction(skillAction);
             case 93:
                 return new IgnoreDecoyAction(skillAction);
+            case 94:
+                return new EffectAction(skillAction);
+            case 95:
+                return new SpyAction(skillAction);
             default:
                 return new ActionParameter(skillAction);
         }

@@ -65,6 +65,7 @@ export class ActionType {
   static readonly loop = 63;
   static readonly toad = 69;
   static readonly knightGuard = 71;
+  static readonly damageCut = 72;
   static readonly logBarrier = 73;
   static readonly divide = 74;
   static readonly actionByHitCount = 75;
@@ -78,6 +79,7 @@ export class ActionType {
   static readonly changeEnergyRecoveryRatioByDamage = 92;
   static readonly ignoreDecoyAction = 93;
   static readonly effectAction = 94;
+  static readonly spyAction = 95;
   value: number;
 
   private constructor(value: number) {

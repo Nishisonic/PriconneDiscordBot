@@ -32,11 +32,22 @@ export class IfType {
                 return "Break状態中";
             case IfType.polymorph:
                 return "変身状態中";
+            case IfType.hex:
+                return "呪詛状態中";
+            case IfType.curseOrHex:
+                return "呪い或いは呪詛状態中";
+            case IfType.fear:
+                return "恐慌状態中";
+            case IfType.spy:
+                return "隠密状態中";
+            case IfType.magicDefDecreased:
+                return "魔法防御力ダウン状態中";
             default:
-                return "";
+                return "不明";
         }
     }
 }
+IfType.unknown = -1;
 IfType.controllered = 100;
 IfType.hastened = 101;
 IfType.blind = 200;
@@ -46,9 +57,14 @@ IfType.burn = 500;
 IfType.curse = 501;
 IfType.poison = 502;
 IfType.venom = 503;
+IfType.hex = 504;
+IfType.curseOrHex = 511;
 IfType.poisonOrVenom = 512;
 IfType.Break = 710;
 IfType.polymorph = 1400;
+IfType.fear = 1600;
+IfType.spy = 1601;
+IfType.magicDefDecreased = 1700;
 export class IfForChildrenAction extends ActionParameter {
     constructor(skillAction) {
         super(skillAction);
@@ -57,7 +73,7 @@ export class IfForChildrenAction extends ActionParameter {
         this.ifType = null;
         if (this.actionDetail2 !== 0) {
             this.ifType = IfType.parse(this.actionDetail1);
-            if (this.ifType !== null) {
+            if (this.ifType !== IfType.parse(IfType.unknown)) {
                 this.trueClause = `${this.targetParameter.buildTargetClause(true)}が${this.ifType.description()}の場合、[アクション${this.actionDetail2 % 100}] を使う。`;
             }
             else {
@@ -81,7 +97,7 @@ export class IfForChildrenAction extends ActionParameter {
         }
         if (this.actionDetail3 !== 0) {
             this.ifType = IfType.parse(this.actionDetail1);
-            if (this.ifType !== null) {
+            if (this.ifType !== IfType.parse(IfType.unknown)) {
                 this.falseClause = `${this.targetParameter.buildTargetClause(true)}が${this.ifType.description()}でない場合、[アクション${this.actionDetail3 % 100}] を使う。`;
             }
             else {
@@ -113,11 +129,14 @@ export class IfForChildrenAction extends ActionParameter {
             this.actionDetail1 === 501 ||
             this.actionDetail1 === 502 ||
             this.actionDetail1 === 503 ||
+            this.actionDetail1 === 504 ||
+            this.actionDetail1 === 511 ||
             this.actionDetail1 === 512 ||
             (this.actionDetail1 >= 600 && this.actionDetail1 < 900) ||
             (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) ||
             this.actionDetail1 === 1300 ||
             this.actionDetail1 === 1400 ||
+            this.actionDetail1 === 1600 ||
             (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000)) {
             if (this.trueClause !== null && this.falseClause !== null) {
                 return `条件分岐：${this.trueClause + this.falseClause}`;
