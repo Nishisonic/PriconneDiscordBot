@@ -500,6 +500,8 @@ export function localizedDetail(
         return new ChangeEnergyRecoveryRatioByDamageAction(skillAction);
       case 93:
         return new IgnoreDecoyAction(skillAction);
+      case 94:
+        return new EffectAction(skillAction);
       default:
         return new ActionParameter(skillAction);
     }

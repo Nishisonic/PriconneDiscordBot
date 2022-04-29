@@ -12,6 +12,8 @@ export class IfType {
   static readonly curse = 501;
   static readonly poison = 502;
   static readonly venom = 503;
+  static readonly hex = 504;
+  static readonly curseOrHex = 511;
   static readonly poisonOrVenom = 512;
   static readonly Break = 710;
   static readonly polymorph = 1400;
@@ -51,6 +53,10 @@ export class IfType {
         return "Break状態中";
       case IfType.polymorph:
         return "変身状態中";
+      case IfType.hex:
+        return "呪詛状態中";
+      case IfType.curseOrHex:
+        return "呪い或いは呪詛状態中";
       default:
         return "";
     }
@@ -167,6 +173,8 @@ export class IfForChildrenAction extends ActionParameter {
       this.actionDetail1 === 501 ||
       this.actionDetail1 === 502 ||
       this.actionDetail1 === 503 ||
+      this.actionDetail1 === 504 ||
+      this.actionDetail1 === 511 ||
       this.actionDetail1 === 512 ||
       (this.actionDetail1 >= 600 && this.actionDetail1 < 900) ||
       (this.actionDetail1 >= 901 && this.actionDetail1 < 1000) ||

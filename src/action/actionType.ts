@@ -77,6 +77,7 @@ export class ActionType {
   static readonly exPlus = 91;
   static readonly changeEnergyRecoveryRatioByDamage = 92;
   static readonly ignoreDecoyAction = 93;
+  static readonly effectAction = 94;
   value: number;
 
   private constructor(value: number) {

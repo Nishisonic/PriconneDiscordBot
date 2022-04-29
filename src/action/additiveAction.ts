@@ -152,8 +152,23 @@ export class AdditiveAction extends ActionParameter {
             RoundingMode.UNNECESSARY,
             property,
             true
-          )} \* マーク [ID: ${
-            this.actionValue1.value % 200
+          )} * マーク [ID: ${
+            this.actionValue1.value % 2000
+          }] のスタック数] アップさせる。`;
+        } else if (
+          this.actionValue1.value >= 2000 &&
+          this.actionValue1.value < 3000
+        ) {
+          result = `[アクション${this.actionDetail1 % 10}] の係数${
+            this.actionDetail2
+          }を [${this.buildExpression(
+            expressionMode,
+            null,
+            RoundingMode.UNNECESSARY,
+            property,
+            true
+          )} * マーク [ID: ${
+            this.actionValue1.value % 2000
           }] のスタック数] アップさせる。`;
         } else if (
           this.actionValue1.value >= 7 &&

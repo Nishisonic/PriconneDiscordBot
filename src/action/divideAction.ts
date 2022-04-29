@@ -16,8 +16,9 @@ export class DivideAction extends ActionParameter {
   }
 
   localizedDetail(expressionMode: Expression, property: Property) {
+    let result = super.localizedDetail(expressionMode, property);
     if (this.actionValue1.value === 0) {
-      return `[アクション${this.actionDetail1 % 10}] の係数${
+      result = `[アクション${this.actionDetail1 % 10}] の係数${
         this.actionDetail2
       }に [${this.buildExpression(
         expressionMode,
@@ -27,7 +28,7 @@ export class DivideAction extends ActionParameter {
         true
       )} \* HP / MaxHP] を乗じる。`;
     } else if (this.actionValue1.value === 1) {
-      return `[アクション${this.actionDetail1 % 10}] の係数${
+      result = `[アクション${this.actionDetail1 % 10}] の係数${
         this.actionDetail2
       }に [${this.buildExpression(
         expressionMode,
@@ -37,7 +38,7 @@ export class DivideAction extends ActionParameter {
         true
       )} \* 損失したHP / MaxHP] を乗じる。`;
     } else if (this.actionValue1.value === 2) {
-      return `[アクション${this.actionDetail1 % 10}] の係数${
+      result = `[アクション${this.actionDetail1 % 10}] の係数${
         this.actionDetail2
       }に [${this.buildExpression(
         expressionMode,
@@ -47,7 +48,7 @@ export class DivideAction extends ActionParameter {
         true
       )} \* 倒した敵の数] を乗じる。`;
     } else if (this.actionValue1.value === 4) {
-      return `[アクション${this.actionDetail1 % 10}] の係数${
+      result = `[アクション${this.actionDetail1 % 10}] の係数${
         this.actionDetail2
       }に [${this.buildExpression(
         expressionMode,
@@ -60,7 +61,7 @@ export class DivideAction extends ActionParameter {
       this.actionValue1.value >= 200 &&
       this.actionValue1.value < 300
     ) {
-      return `[アクション${this.actionDetail1 % 10}] の係数${
+      result = `[アクション${this.actionDetail1 % 10}] の係数${
         this.actionDetail2
       }に [${this.buildExpression(
         expressionMode,
@@ -73,6 +74,6 @@ export class DivideAction extends ActionParameter {
       }] のスタック数] を乗じる。`;
     }
 
-    return super.localizedDetail(expressionMode, property);
+    return result;
   }
 }

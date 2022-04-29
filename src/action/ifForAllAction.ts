@@ -34,13 +34,13 @@ export class IfForAllAction extends ActionParameter {
           this.actionDetail2 % 10
         }] を使う。`;
       } else if (this.actionDetail1 >= 600 && this.actionDetail1 < 700) {
-        this.trueClause = `${this.targetParameter.buildTargetClause()}が持っているマーク [ID: ${
+        this.trueClause = `${this.targetParameter.buildTargetClause(true)}が持っているマーク [ID: ${
           this.actionDetail1 - 600
         }] のスタック数が${this.actionValue3.value}以上の場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
       } else if (this.actionDetail1 === 700) {
-        this.trueClause = `${this.targetParameter.buildTargetClause()}が単独の場合、[アクション${
+        this.trueClause = `${this.targetParameter.buildTargetClause(true)}が単独の場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
       } else if (this.actionDetail1 >= 701 && this.actionDetail1 < 710) {
@@ -77,12 +77,14 @@ export class IfForAllAction extends ActionParameter {
         }] の数が [${this.actionDetail1 % 10}] 以上の場合、[アクション${
           this.actionDetail2 % 10
         }] を使う。`;
-      } else if (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000) {
+      } else if (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000 && this.actionValue3.value === 0) {
         this.trueClause = `${this.targetParameter.buildTargetClause(
           true
         )}がマーク [ID: ${
           this.actionDetail1 - 6000
         }] を持っている場合、[アクション${this.actionDetail2 % 10}] を使う。`;
+      } else if (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000) {
+        this.trueClause = `${this.targetParameter.buildTargetClause(true)}が持っているマーク [ID: ${this.actionDetail1- 6000}] のスタック数が [${this.actionValue3.value}] 以上の場合、[アクション${this.actionDetail3 % 10}] を使う。`;
       }
     } else if (this.actionDetail3 == 0) {
       this.trueClause = "効果なし。";
@@ -110,13 +112,13 @@ export class IfForAllAction extends ActionParameter {
           this.actionDetail3 % 10
         }] を使う。`;
       } else if (this.actionDetail1 >= 600 && this.actionDetail1 < 700) {
-        this.falseClause = `${this.targetParameter.buildTargetClause()}が持っているマーク [ID: ${
+        this.falseClause = `${this.targetParameter.buildTargetClause(true)}が持っているマーク [ID: ${
           this.actionDetail1 - 600
         }] のスタック数が [${this.actionValue3.value}] 未満の場合、[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
       } else if (this.actionDetail1 === 700) {
-        this.falseClause = `${this.targetParameter.buildTargetClause()}が単独でない場合、[アクション${
+        this.falseClause = `${this.targetParameter.buildTargetClause(true)}が単独でない場合、[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
       } else if (this.actionDetail1 >= 701 && this.actionDetail1 < 710) {
@@ -155,12 +157,14 @@ export class IfForAllAction extends ActionParameter {
         }] の数が [${this.actionDetail1 % 10}] 未満の場合、[アクション${
           this.actionDetail3 % 10
         }] を使う。`;
-      } else if (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000) {
+      } else if (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000 && this.actionValue3.value === 0) {
         this.falseClause = `${this.targetParameter.buildTargetClause(
           true
         )}がマーク [ID: ${
           this.actionDetail1 - 6000
         }] を持っている場合、[アクション${this.actionDetail3 % 10}] を使う。`;
+      } else if (this.actionDetail1 >= 6000 && this.actionDetail1 < 7000) {
+        this.falseClause = `${this.targetParameter.buildTargetClause(true)}が持っているマーク [ID: ${this.actionDetail1- 6000}] のスタック数が [${this.actionValue3.value}] 未満の場合、[アクション${this.actionDetail3 % 10}] を使う。`;
       }
     } else if (this.actionDetail2 == 0) {
       this.falseClause = "効果なし。";
